@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, Loader2 } from 'lucide-react';
+import { Search, Loader2, FileCode2, Hash } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 interface Usage {
   file: string;
@@ -18,6 +19,7 @@ interface UsageTrackerProps {
 
 export function UsageTracker({ sessionId }: UsageTrackerProps) {
   const [symbol, setSymbol] = useState('');
+  const [searchedSymbol, setSearchedSymbol] = useState('');
   const [usages, setUsages] = useState<Usage[] | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -26,6 +28,7 @@ export function UsageTracker({ sessionId }: UsageTrackerProps) {
     if (!symbol.trim()) return;
 
     setLoading(true);
+    setSearchedSymbol(symbol.trim());
     try {
       const res = await fetch('/api/usage', {
         method: 'POST',
@@ -39,6 +42,30 @@ export function UsageTracker({ sessionId }: UsageTrackerProps) {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Group usages by file
+  const groupedByFile: Record<string, Usage[]> = {};
+  if (usages) {
+    for (const u of usages) {
+      if (!groupedByFile[u.file]) groupedByFile[u.file] = [];
+      groupedByFile[u.file]!.push(u);
+    }
+  }
+
+  const fileCount = Object.keys(groupedByFile).length;
+
+  // Highlight the search term in code
+  const highlightCode = (code: string) => {
+    if (!searchedSymbol) return code;
+    const parts = code.split(new RegExp(`(${searchedSymbol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'g'));
+    return parts.map((part, i) =>
+      part === searchedSymbol ? (
+        <span key={i} className="rounded bg-yellow-500/30 px-0.5 text-yellow-300">{part}</span>
+      ) : (
+        <span key={i}>{part}</span>
+      )
+    );
   };
 
   return (
@@ -66,24 +93,45 @@ export function UsageTracker({ sessionId }: UsageTrackerProps) {
         <Card>
           <CardContent className="p-4">
             {usages.length === 0 ? (
-              <p className="text-sm text-muted">No usages found for &quot;{symbol}&quot;</p>
+              <p className="text-sm text-muted">
+                No usages found for &quot;{searchedSymbol}&quot;
+              </p>
             ) : (
-              <div className="flex flex-col gap-1.5">
-                <p className="text-xs font-medium text-green">
-                  Found {usages.length} usage{usages.length !== 1 ? 's' : ''}
-                </p>
-                <div className="max-h-64 overflow-y-auto scrollbar-thin">
-                  {usages.map((u, i) => (
-                    <div
-                      key={`${u.file}-${u.line}-${i}`}
-                      className="flex items-start gap-2 border-b border-border py-2 last:border-0"
-                    >
-                      <code className="shrink-0 rounded bg-navy px-1.5 py-0.5 font-mono text-xs text-muted">
-                        {u.file}:{u.line}
-                      </code>
-                      <code className="truncate font-mono text-xs text-white/70">
-                        {u.code}
-                      </code>
+              <div className="flex flex-col gap-3">
+                {/* Summary */}
+                <div className="flex items-center gap-3">
+                  <Badge variant="secondary" className="gap-1 text-xs">
+                    <Hash className="h-3 w-3" />
+                    {usages.length} usage{usages.length !== 1 ? 's' : ''}
+                  </Badge>
+                  <Badge variant="secondary" className="gap-1 text-xs">
+                    <FileCode2 className="h-3 w-3" />
+                    {fileCount} file{fileCount !== 1 ? 's' : ''}
+                  </Badge>
+                </div>
+
+                {/* Grouped by file */}
+                <div className="max-h-80 overflow-y-auto scrollbar-thin">
+                  {Object.entries(groupedByFile).map(([file, fileUsages]) => (
+                    <div key={file} className="mb-3 last:mb-0">
+                      <div className="sticky top-0 flex items-center gap-1.5 bg-card py-1">
+                        <FileCode2 className="h-3.5 w-3.5 text-green" />
+                        <span className="font-mono text-xs font-medium text-green">{file}</span>
+                        <span className="text-xs text-muted">({fileUsages.length})</span>
+                      </div>
+                      {fileUsages.map((u, i) => (
+                        <div
+                          key={`${u.line}-${i}`}
+                          className="flex items-start gap-2 border-l-2 border-border py-1.5 pl-3 hover:border-green/50"
+                        >
+                          <span className="shrink-0 font-mono text-xs text-muted/60 tabular-nums">
+                            L{u.line}
+                          </span>
+                          <code className="font-mono text-xs text-white/70">
+                            {highlightCode(u.code)}
+                          </code>
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>

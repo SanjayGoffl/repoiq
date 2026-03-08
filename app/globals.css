@@ -57,43 +57,109 @@
 
 /* Print styles for PDF export */
 @media print {
+  @page {
+    margin: 1.5cm;
+    size: A4;
+  }
+
   body {
     background: white !important;
-    color: black !important;
+    color: #1a1a1a !important;
+    font-size: 11pt !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
-  /* Hide navigation, sidebar, and interactive elements */
+  /* Hide navigation, sidebar, interactive elements, and mobile nav */
   aside,
   nav,
+  footer,
   .print\\:hidden,
-  button:not(.print\\:visible) {
+  button,
+  select,
+  input,
+  form,
+  details {
     display: none !important;
   }
 
   /* Make report content fill the page */
   main {
     margin: 0 !important;
-    padding: 1rem !important;
+    padding: 0 !important;
     max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Remove fixed positioning */
+  * {
+    position: static !important;
+    float: none !important;
   }
 
   /* Style cards for print */
-  [class*="bg-navy"] {
+  [class*="bg-navy"],
+  [class*="bg-card"] {
     background: #f8f9fa !important;
     border: 1px solid #dee2e6 !important;
+    box-shadow: none !important;
   }
 
   [class*="text-white"] {
-    color: black !important;
+    color: #1a1a1a !important;
   }
 
   [class*="text-muted"] {
     color: #555 !important;
   }
 
+  [class*="text-green"] {
+    color: #16a34a !important;
+  }
+
   [class*="border-border"] {
     border-color: #dee2e6 !important;
+  }
+
+  /* Ensure code blocks are readable */
+  pre, code {
+    background: #f1f5f9 !important;
+    color: #1e293b !important;
+    border: 1px solid #e2e8f0 !important;
+    font-size: 9pt !important;
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+
+  /* Keep badges visible with print-safe colors */
+  [class*="badge"],
+  [class*="Badge"] {
+    border: 1px solid #999 !important;
+    color: #333 !important;
+    background: #eee !important;
+  }
+
+  /* Page breaks */
+  section {
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3 {
+    page-break-after: avoid;
+    color: #1a1a1a !important;
+  }
+
+  /* Progress bars should show their fill */
+  [role="progressbar"] > div {
+    background: #16a34a !important;
+  }
+
+  /* Grid layouts should stack on print */
+  .grid {
+    display: block !important;
+  }
+
+  .grid > * {
+    margin-bottom: 0.5rem !important;
   }
 }

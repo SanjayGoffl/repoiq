@@ -64,8 +64,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     await updateSessionStatus(session.session_id, 'indexing');
 
     let files: { path: string; content: string }[];
+    let fetchStats: import('@/lib/bedrock').FetchRepoResult['stats'] | undefined;
     try {
-      files = await fetchRepoFiles(owner, repo, '', 50);
+      const result = await fetchRepoFiles(owner, repo);
+      files = result.files;
+      fetchStats = result.stats;
     } catch (err) {
       await updateSessionStatus(session.session_id, 'failed');
       console.error('[Analyze] GitHub fetch failed:', err);
@@ -107,17 +110,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         console.warn('[Analyze] Failed to save files_data:', err),
       );
 
-      // Update file count and languages
+      // Update file count, languages, and fetch stats
       const { docClient } = await import('@/lib/dynamodb');
       const { UpdateCommand } = await import('@aws-sdk/lib-dynamodb');
       await docClient.send(
         new UpdateCommand({
           TableName: 'RepoIQ_Sessions',
           Key: { session_id: session.session_id },
-          UpdateExpression: 'SET file_count = :fc, languages = :langs',
+          UpdateExpression: 'SET file_count = :fc, languages = :langs, fetch_stats = :fs',
           ExpressionAttributeValues: {
             ':fc': files.length,
             ':langs': languages,
+            ':fs': fetchStats ?? null,
           },
         }),
       );

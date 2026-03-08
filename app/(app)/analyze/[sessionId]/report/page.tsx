@@ -3,8 +3,12 @@
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ReportHeader } from '@/components/report/ReportHeader';
+import { ProgressOverview } from '@/components/report/ProgressOverview';
 import { ArchitectureSummary } from '@/components/report/ArchitectureSummary';
 import { ArchitectureDiagram } from '@/components/report/ArchitectureDiagram';
+import { SecurityScoreCard } from '@/components/report/SecurityScoreCard';
+import { CodeQualityCard } from '@/components/report/CodeQualityCard';
+import { ComplexityHotspots } from '@/components/report/ComplexityHotspots';
 import { StackDetection } from '@/components/report/StackDetection';
 import { LinesOfCode } from '@/components/report/LinesOfCode';
 import { DependenciesPanel } from '@/components/report/DependenciesPanel';
@@ -27,7 +31,7 @@ export default function ReportPage() {
   const params = useParams<{ sessionId: string }>();
   const router = useRouter();
   const sessionId = params.sessionId;
-  const { session, isLoading } = useSession(sessionId);
+  const { session, gaps, isLoading } = useSession(sessionId);
 
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [translatedSummary, setTranslatedSummary] = useState<string | null>(null);
@@ -73,10 +77,31 @@ export default function ReportPage() {
         fileCount={session.file_count}
         createdAt={session.created_at}
         sessionId={sessionId}
+        fetchStats={session.fetch_stats}
       />
 
+      {/* Progress Overview - key metrics at a glance */}
+      <ProgressOverview report={report} gaps={gaps} />
+
       {/* Code Quality Score */}
-      <QualityScoreCard report={report} />
+      <QualityScoreCard report={report}/>
+
+      {/* Security & Code Quality Analysis */}
+      {(report.security || report.code_quality) && (
+        <div className="grid gap-4 lg:grid-cols-2">
+          {report.security && (
+            <SecurityScoreCard security={report.security} />
+          )}
+          {report.code_quality && (
+            <CodeQualityCard quality={report.code_quality} />
+          )}
+        </div>
+      )}
+
+      {/* Complexity Hotspots */}
+      {report.complexity_hotspots && report.complexity_hotspots.length > 0 && (
+        <ComplexityHotspots hotspots={report.complexity_hotspots} />
+      )}
 
       {/* Architecture summary with language & voice controls */}
       <div className="flex flex-col gap-2">
@@ -99,16 +124,17 @@ export default function ReportPage() {
         <StackDetection stackInfo={report.stack_info} />
       )}
 
-      {report.lines_of_code && (
-        <LinesOfCode linesOfCode={report.lines_of_code} />
-      )}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {report.lines_of_code && (
+          <LinesOfCode linesOfCode={report.lines_of_code} />
+        )}
+        {report.runtime_requirements && (
+          <RuntimeInfo runtime={report.runtime_requirements} />
+        )}
+      </div>
 
       {report.dependencies && report.dependencies.length > 0 && (
         <DependenciesPanel dependencies={report.dependencies} />
-      )}
-
-      {report.runtime_requirements && (
-        <RuntimeInfo runtime={report.runtime_requirements} />
       )}
 
       {/* Interactive File Explorer & Code Viewer */}

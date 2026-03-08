@@ -1,7 +1,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { Trophy } from 'lucide-react';
+import { Trophy, Zap, BookOpen, Target } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LeaderboardRow } from '@/components/leaderboard/LeaderboardRow';
 import { computeSessionXP, computeBadges } from '@/lib/gamification';
@@ -81,6 +82,28 @@ export default function LeaderboardPage() {
           Your learning progress ranked by XP across all analyzed repos
         </p>
       </div>
+
+      {/* Stats overview */}
+      {ranked.length > 0 && (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {[
+            { icon: Zap, label: 'Total XP', value: ranked.reduce((s, r) => s + r.xp, 0), color: 'text-yellow-400' },
+            { icon: BookOpen, label: 'Repos Analyzed', value: completedSessions.length, color: 'text-blue-400' },
+            { icon: Target, label: 'Concepts Mastered', value: ranked.reduce((s, r) => s + r.gaps.filter((g) => g.understood).length, 0), color: 'text-emerald-400' },
+            { icon: Trophy, label: 'Total Badges', value: ranked.reduce((s, r) => s + computeBadges(r.session, r.gaps).length, 0), color: 'text-purple-400' },
+          ].map((stat) => (
+            <Card key={stat.label}>
+              <CardContent className="flex items-center gap-3 p-3">
+                <stat.icon className={`h-5 w-5 shrink-0 ${stat.color}`} />
+                <div>
+                  <p className="text-lg font-bold text-white">{stat.value}</p>
+                  <p className="text-xs text-muted">{stat.label}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
       {/* XP Legend */}
       <div className="flex flex-wrap gap-4 text-xs text-muted">
