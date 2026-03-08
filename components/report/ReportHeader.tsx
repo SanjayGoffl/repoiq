@@ -2,6 +2,7 @@
 
 import { Calendar, FileText } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { ExportPDFButton } from '@/components/report/ExportPDFButton';
 import { formatDate } from '@/lib/utils';
 
 interface ReportHeaderProps {
@@ -41,6 +42,7 @@ export function ReportHeader({
           <Calendar className="h-4 w-4" />
           <span>{formatDate(createdAt)}</span>
         </div>
+        <ExportPDFButton />
       </div>
     </div>
   );

@@ -4,11 +4,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ROUTES } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, Search, Settings } from 'lucide-react';
+import { LayoutDashboard, Search, GitCompareArrows, Trophy, Settings } from 'lucide-react';
 
 const NAV_ITEMS = [
   { href: ROUTES.DASHBOARD, label: 'Dashboard', icon: LayoutDashboard },
   { href: ROUTES.ANALYZE, label: 'Analyze', icon: Search },
+  { href: ROUTES.COMPARE, label: 'Compare', icon: GitCompareArrows },
+  { href: ROUTES.LEADERBOARD, label: 'Board', icon: Trophy },
   { href: ROUTES.SETTINGS, label: 'Settings', icon: Settings },
 ];
 

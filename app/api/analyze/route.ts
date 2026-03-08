@@ -6,12 +6,15 @@ import {
   updateSessionReport,
   createAnalyticsEvent,
   createGap,
+  saveSessionFiles,
 } from '@/lib/dynamodb';
 import {
   fetchRepoFiles,
   detectLanguages,
   analyzeWithBedrock,
 } from '@/lib/bedrock';
+import { countLinesOfCode } from '@/lib/loc';
+import { parseDependencies } from '@/lib/dependencies';
 
 const GITHUB_URL_RE = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/?$/;
 
@@ -75,14 +78,27 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     const languages = detectLanguages(files);
 
+    // ── Step 2b: Compute LOC & parse dependencies (no AI needed) ──
+    const linesOfCode = countLinesOfCode(files);
+    const dependencies = parseDependencies(files);
+
     // ── Step 3: Analyze with Bedrock Claude ──
     await updateSessionStatus(session.session_id, 'analyzing');
 
     try {
       const report = await analyzeWithBedrock(files, repo);
 
+      // Attach server-computed data to report
+      report.lines_of_code = linesOfCode;
+      report.dependencies = dependencies;
+
       // ── Step 4: Save report to DynamoDB ──
       await updateSessionReport(session.session_id, report);
+
+      // ── Step 4b: Save file contents for interactive code viewer ──
+      saveSessionFiles(session.session_id, files).catch((err) =>
+        console.warn('[Analyze] Failed to save files_data:', err),
+      );
 
       // Update file count and languages
       const { docClient } = await import('@/lib/dynamodb');

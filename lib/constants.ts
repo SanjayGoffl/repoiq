@@ -2,11 +2,11 @@ import type { UserPlan } from '@/lib/types';
 
 // ---- Quota ----
 export const QUOTA_LIMITS: Record<UserPlan, number> = {
-  free: 3,
+  free: 10,
   pro: 999,
 };
 
-export const FREE_QUOTA = 3;
+export const FREE_QUOTA = 10;
 export const MAX_REPO_SIZE_MB = 50;
 
 // ---- Status labels ----
@@ -45,19 +45,26 @@ export const ROUTES = {
   sessionLoading: (id: string) => `/analyze/${id}/loading`,
   sessionReport: (id: string) => `/analyze/${id}/report`,
   sessionTeach: (id: string) => `/analyze/${id}/teach`,
+  sessionLessons: (id: string) => `/analyze/${id}/lessons`,
   conceptComplete: (sessionId: string, conceptId: string) =>
     `/analyze/${sessionId}/teach/${conceptId}/complete`,
   sessionPath: (id: string) => `/analyze/${id}/path`,
+  COMPARE: '/compare',
+  LEADERBOARD: '/leaderboard',
 } as const;
 
 // ---- API endpoints ----
 export const API = {
   ANALYZE: '/api/analyze',
   CHAT: '/api/chat',
+  CHAT_LINE: '/api/chat/line',
   session: (id: string) => `/api/session/${id}`,
   sessionGaps: (id: string) => `/api/session/${id}/gaps`,
+  sessionFiles: (id: string) => `/api/session/${id}/files`,
+  sessionLessons: (id: string) => `/api/session/${id}/lessons`,
   gap: (id: string) => `/api/gaps/${id}`,
   USER_QUOTA: '/api/user',
+  FIX: '/api/fix',
 } as const;
 
 // ---- Fun facts for loading screen ----

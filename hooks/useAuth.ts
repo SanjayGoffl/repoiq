@@ -15,6 +15,7 @@ interface AuthState {
   isAuthenticated: boolean;
   isAdmin: boolean;
   isGuest: boolean;
+  guestId: string;
 }
 
 /**
@@ -22,11 +23,29 @@ interface AuthState {
  * Returns null user for guests, allowing full app access without login.
  * TODO: Replace with actual Amplify Auth when needed (fetchAuthSession, signInWithRedirect).
  */
+/**
+ * Get or create a persistent guest ID for memory personalization.
+ */
+function getOrCreateGuestId(): string {
+  if (typeof window === 'undefined') return 'guest';
+  const key = 'repoiq_guest_id';
+  let id = localStorage.getItem(key);
+  if (!id) {
+    id = `guest_${crypto.randomUUID()}`;
+    localStorage.setItem(key, id);
+  }
+  return id;
+}
+
 export function useAuth(): AuthState {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [guestId, setGuestId] = useState('guest');
 
   useEffect(() => {
+    // Generate persistent guest ID for AI memory
+    setGuestId(getOrCreateGuestId());
+
     // For now, always return guest mode (no user)
     // In future, uncomment to check Amplify Auth:
     // const checkAuth = async () => {
@@ -48,7 +67,7 @@ export function useAuth(): AuthState {
     //   }
     // };
     // void checkAuth();
-    
+
     setIsLoading(false);
   }, []);
 
@@ -58,5 +77,6 @@ export function useAuth(): AuthState {
     isAuthenticated: user !== null,
     isAdmin: user?.groups?.includes('admins') ?? false,
     isGuest: user === null,
+    guestId,
   };
 }

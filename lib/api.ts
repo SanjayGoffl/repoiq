@@ -3,11 +3,18 @@ import type {
   AnalyzeResponse,
   ChatRequest,
   ChatResponse,
+  FixRequest,
+  FixSuggestion,
   Gap,
   QuotaResponse,
   Session,
 } from '@/lib/types';
 import { API } from '@/lib/constants';
+
+function getGuestId(): string {
+  if (typeof window === 'undefined') return 'guest';
+  return localStorage.getItem('repoiq_guest_id') ?? 'guest';
+}
 
 // ---- Base fetch wrapper ----
 async function apiFetch<T>(
@@ -17,6 +24,7 @@ async function apiFetch<T>(
   const res = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
+      'x-guest-id': getGuestId(),
       ...options?.headers,
     },
     ...options,
@@ -74,4 +82,11 @@ export const api = {
   // Quota
   getQuota: () =>
     apiFetch<QuotaResponse>(API.USER_QUOTA),
+
+  // Fix suggestions
+  getFixSuggestion: (data: FixRequest) =>
+    apiFetch<FixSuggestion>(API.FIX, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
 };

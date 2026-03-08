@@ -2,7 +2,7 @@ import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from '@aws-sdk/client-bedrock-runtime';
-import type { Report } from './types';
+import type { Report, LineChatResponse } from './types';
 
 const bedrockClient = new BedrockRuntimeClient({
   region: process.env.AWS_REGION || 'us-east-1',
@@ -207,7 +207,10 @@ export async function analyzeWithBedrock(
     })
     .join('\n\n');
 
-  const prompt = `You are an expert code analyst. Analyze this GitHub repository "${repoName}" and produce a learning report for a student who vibe-coded this project (used AI to generate the code but doesn't fully understand it).
+  // Build list of file paths for file_importance
+  const filePaths = files.map((f) => f.path);
+
+  const prompt = `You are an expert code analyst. Analyze this GitHub repository "${repoName}" and produce a comprehensive learning report for a student who vibe-coded this project (used AI to generate the code but doesn't fully understand it).
 
 Here are the repository files:
 
@@ -240,6 +243,38 @@ Respond with ONLY valid JSON matching this exact schema (no markdown, no backtic
       "focus": "Topic to study",
       "reason": "Why this comes first"
     }
+  ],
+  "stack_info": {
+    "frameworks": ["e.g. Next.js", "Express"],
+    "libraries": ["e.g. React", "Zustand"],
+    "databases": ["e.g. DynamoDB", "PostgreSQL"],
+    "tools": ["e.g. Docker", "ESLint", "Tailwind CSS"]
+  },
+  "runtime_requirements": {
+    "ram_estimate_mb": 512,
+    "ram_reasoning": "Why this amount of RAM (consider framework overhead, dependencies, etc.)",
+    "runtime_versions": [
+      { "name": "Node.js", "version": "18+" }
+    ],
+    "system_requirements": ["npm or yarn", "any other system deps"]
+  },
+  "file_importance": [
+    {
+      "path": "exact/file/path.ext",
+      "score": 9,
+      "reason": "Why this file matters",
+      "category": "critical"
+    }
+  ],
+  "lessons": [
+    {
+      "order": 1,
+      "title": "Lesson title",
+      "description": "What the student will learn",
+      "files_covered": ["path/to/file.ext"],
+      "concepts_covered": ["Concept name"],
+      "complexity_level": "beginner"
+    }
   ]
 }
 
@@ -247,12 +282,16 @@ Requirements:
 - top_5_concepts: Exactly 5 concepts, ordered by importance
 - bugs_found: 1-5 real bugs or code smells you found
 - learning_path: 3-4 weeks
+- stack_info: Detect ALL frameworks, libraries, databases, and tools used
+- runtime_requirements: Estimate RAM needed to run this project (consider framework, deps, typical usage)
+- file_importance: Rate EVERY file from this list: ${JSON.stringify(filePaths)}. Score 1-10. category: score 8-10="critical", 5-7="important", 1-4="normal"
+- lessons: 5-8 structured lessons ordered by complexity. Each lesson covers a logical chunk of the codebase. Start with beginner concepts, progress to advanced
 - Use actual file paths and line numbers from the code above
 - Focus on concepts a vibe-coder would NOT understand`;
 
   const body = buildNovaBody(
     [{ role: 'user', content: prompt }],
-    { maxTokens: 4096, temperature: 0.3 },
+    { maxTokens: 8192, temperature: 0.3 },
   );
 
   // Try primary model, fall back if it fails
@@ -295,4 +334,131 @@ Requirements:
 
   const report = JSON.parse(jsonStr) as Report;
   return report;
+}
+
+// ──────────────────────────────────────────────────────────────
+// Bedrock: Explain a specific line of code
+// ──────────────────────────────────────────────────────────────
+
+export async function explainLine(
+  fileContent: string,
+  filePath: string,
+  lineNumber: number,
+  codeLine: string,
+  repoName: string,
+  conversationHistory: { role: string; content: string }[],
+  userMemory?: string,
+): Promise<LineChatResponse> {
+  const lines = fileContent.split('\n');
+  const start = Math.max(0, lineNumber - 6);
+  const end = Math.min(lines.length, lineNumber + 5);
+  const surroundingLines = lines
+    .slice(start, end)
+    .map((l, i) => `${start + i + 1}${start + i + 1 === lineNumber ? ' >>>' : '    '} ${l}`)
+    .join('\n');
+
+  const systemPrompt = `You are a code explainer for RepoIQ. A student is reading code from "${repoName}" and clicked on a specific line to understand it.
+
+File: ${filePath}
+Line ${lineNumber}: ${codeLine}
+
+${userMemory ? `Student profile:\n${userMemory}\n` : ''}
+Surrounding code context:
+${surroundingLines}
+
+Explain what this line does. Identify any library/framework functions, variables, and their purpose.
+
+Respond with ONLY valid JSON (no markdown, no backticks):
+{
+  "explanation": "Clear explanation of what this line does",
+  "references": [
+    { "name": "identifier name", "type": "library|variable|function|type", "doc_url": "optional url" }
+  ],
+  "follow_up_suggestion": "A question the student might want to ask next"
+}`;
+
+  const messages = [
+    ...conversationHistory,
+    { role: 'user', content: conversationHistory.length > 0
+      ? codeLine
+      : `Explain line ${lineNumber}: ${codeLine}` },
+  ];
+
+  const body = buildNovaBody(messages, {
+    maxTokens: 2048,
+    temperature: 0.3,
+    systemPrompt,
+  });
+
+  const modelsToTry = [MODEL_ID, FALLBACK_MODEL_ID, FALLBACK_MODEL_ID_2];
+  let lastError: unknown;
+
+  for (const modelId of modelsToTry) {
+    try {
+      const command = new InvokeModelCommand({
+        modelId,
+        contentType: 'application/json',
+        accept: 'application/json',
+        body: new TextEncoder().encode(body),
+      });
+      const response = await bedrockClient.send(command);
+      let text = parseNovaResponse(response.body as Uint8Array).trim();
+      if (text.startsWith('```')) {
+        text = text.replace(/^```json?\n?/, '').replace(/\n?```$/, '');
+      }
+      return JSON.parse(text) as LineChatResponse;
+    } catch (err) {
+      lastError = err;
+      console.error(`[ExplainLine] Model ${modelId} failed:`, err);
+    }
+  }
+
+  throw lastError ?? new Error('All models failed for line explanation');
+}
+
+// ──────────────────────────────────────────────────────────────
+// Bedrock: Update user memory based on interaction
+// ──────────────────────────────────────────────────────────────
+
+export async function generateMemoryUpdate(
+  currentMemory: string,
+  interaction: { userMessage: string; aiResponse: string; context: string },
+): Promise<string> {
+  const prompt = `You manage a learning profile for a student using RepoIQ.
+
+Current memory:
+${currentMemory || 'No memory yet - this is a new student.'}
+
+Latest interaction:
+Context: ${interaction.context}
+Student said: ${interaction.userMessage}
+AI responded: ${interaction.aiResponse}
+
+Update the memory markdown to reflect any new insights about the student's skill level, learning style, what they know, and what they struggle with.
+Only add/modify what's relevant. Keep it concise (max 500 words).
+Return ONLY the updated markdown, no other text or wrapping.`;
+
+  const body = buildNovaBody(
+    [{ role: 'user', content: prompt }],
+    { maxTokens: 1024, temperature: 0.3 },
+  );
+
+  const modelsToTry = [MODEL_ID, FALLBACK_MODEL_ID, FALLBACK_MODEL_ID_2];
+
+  for (const modelId of modelsToTry) {
+    try {
+      const command = new InvokeModelCommand({
+        modelId,
+        contentType: 'application/json',
+        accept: 'application/json',
+        body: new TextEncoder().encode(body),
+      });
+      const response = await bedrockClient.send(command);
+      return parseNovaResponse(response.body as Uint8Array).trim();
+    } catch (err) {
+      console.error(`[MemoryUpdate] Model ${modelId} failed:`, err);
+    }
+  }
+
+  return currentMemory; // Fallback: keep existing memory
 }

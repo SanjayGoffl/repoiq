@@ -190,6 +190,53 @@ export async function updateSessionReport(
 }
 
 // ──────────────────────────────────────────────────────────────
+// SESSION FILES OPERATIONS
+// ──────────────────────────────────────────────────────────────
+
+export async function saveSessionFiles(
+  sessionId: string,
+  files: { path: string; content: string }[],
+): Promise<void> {
+  // Truncate each file to ~2KB to stay within DynamoDB 400KB item limit
+  const truncatedFiles = files.map((f) => ({
+    path: f.path,
+    content: f.content.length > 2000 ? f.content.slice(0, 2000) + '\n... (truncated)' : f.content,
+  }));
+
+  try {
+    await docClient.send(
+      new UpdateCommand({
+        TableName: TABLES.sessions,
+        Key: { session_id: sessionId },
+        UpdateExpression: 'SET files_data = :files',
+        ExpressionAttributeValues: { ':files': truncatedFiles },
+      }),
+    );
+  } catch (error) {
+    console.error('[DynamoDB] Failed to save session files:', error);
+    throw error;
+  }
+}
+
+export async function getSessionFiles(
+  sessionId: string,
+): Promise<{ path: string; content: string }[]> {
+  try {
+    const result = await docClient.send(
+      new GetCommand({
+        TableName: TABLES.sessions,
+        Key: { session_id: sessionId },
+        ProjectionExpression: 'files_data',
+      }),
+    );
+    return (result.Item?.files_data as { path: string; content: string }[]) ?? [];
+  } catch (error) {
+    console.error('[DynamoDB] Failed to get session files:', error);
+    return [];
+  }
+}
+
+// ──────────────────────────────────────────────────────────────
 // GAP OPERATIONS
 // ──────────────────────────────────────────────────────────────
 

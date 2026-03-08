@@ -7,6 +7,8 @@ import { cn } from '@/lib/utils';
 import {
   LayoutDashboard,
   Search,
+  GitCompareArrows,
+  Trophy,
   Settings,
   Brain,
 } from 'lucide-react';
@@ -14,6 +16,8 @@ import {
 const NAV_ITEMS = [
   { href: ROUTES.DASHBOARD, label: 'Dashboard', icon: LayoutDashboard },
   { href: ROUTES.ANALYZE, label: 'Analyze', icon: Search },
+  { href: ROUTES.COMPARE, label: 'Compare', icon: GitCompareArrows },
+  { href: ROUTES.LEADERBOARD, label: 'Leaderboard', icon: Trophy },
   { href: ROUTES.SETTINGS, label: 'Settings', icon: Settings },
 ];
 

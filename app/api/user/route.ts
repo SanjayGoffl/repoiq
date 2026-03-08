@@ -7,7 +7,7 @@ export async function GET(): Promise<NextResponse> {
     // Count guest sessions to calculate quota used
     const sessions = await getGuestSessions();
     const quotaUsed = sessions.length;
-    const quotaLimit = parseInt(process.env.NEXT_PUBLIC_FREE_QUOTA || '3', 10);
+    const quotaLimit = parseInt(process.env.NEXT_PUBLIC_FREE_QUOTA || '10', 10);
 
     const response: QuotaResponse = {
       quota_used: quotaUsed,
@@ -21,7 +21,7 @@ export async function GET(): Promise<NextResponse> {
     // Return default quota on error so the UI doesn't break
     const fallback: QuotaResponse = {
       quota_used: 0,
-      quota_limit: 3,
+      quota_limit: 10,
       plan: 'free',
     };
     return NextResponse.json(fallback);

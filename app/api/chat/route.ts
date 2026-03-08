@@ -9,6 +9,8 @@ import {
   getMessagesBySessionId,
   createMessage,
 } from '@/lib/dynamodb';
+import { getUserMemory, saveUserMemory } from '@/lib/memory';
+import { generateMemoryUpdate } from '@/lib/bedrock';
 
 const bedrockClient = new BedrockRuntimeClient({
   region: process.env.AWS_REGION || 'us-east-1',
@@ -66,9 +68,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       created_at: new Date().toISOString(),
     });
 
-    // ── Build Bedrock prompt ──
-    const systemPrompt = `You are a Socratic coding teacher for RepoIQ. The student vibe-coded a project called "${session.repo_name}" and is now learning concepts they don't understand.
+    // ── Get user memory for personalization ──
+    const guestId = request.headers.get('x-guest-id') ?? 'guest';
+    const userMemory = await getUserMemory(guestId);
 
+    // ── Build Bedrock prompt ──
+    const memorySection = userMemory
+      ? `\nStudent Learning Profile:\n${userMemory}\nUse this profile to personalize your teaching style and skip topics they already know.\n`
+      : '';
+
+    const systemPrompt = `You are a Socratic coding teacher for RepoIQ. The student vibe-coded a project called "${session.repo_name}" and is now learning concepts they don't understand.
+${memorySection}
 Current concept: ${concept?.concept ?? body.concept_id}
 File: ${concept?.file ?? 'unknown'}
 Why critical: ${concept?.why_critical ?? 'Important for understanding the codebase'}
@@ -160,6 +170,15 @@ Rules:
       is_hint: false,
       created_at: new Date().toISOString(),
     });
+
+    // ── Update user memory (non-blocking) ──
+    generateMemoryUpdate(userMemory, {
+      userMessage: body.message,
+      aiResponse: cleanedResponse,
+      context: `Concept: ${concept?.concept ?? body.concept_id}`,
+    })
+      .then((updatedMemory) => saveUserMemory(guestId, updatedMemory))
+      .catch((err) => console.warn('[Chat] Memory update failed:', err));
 
     const response: ChatResponse = {
       response: cleanedResponse,
