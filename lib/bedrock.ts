@@ -493,13 +493,13 @@ Respond with ONLY valid JSON matching this exact schema (no markdown, no backtic
 }
 
 Requirements:
-- top_5_concepts: Exactly 5 concepts, ordered by importance
-- bugs_found: 1-5 real bugs or code smells you found
-- learning_path: 3-4 weeks
+- top_5_concepts: ${files.length <= 10 ? '3-5' : files.length <= 50 ? '5-7' : '7-10'} concepts, ordered by importance. Scale with repo complexity
+- bugs_found: ${files.length <= 10 ? '1-3' : files.length <= 50 ? '3-7' : '5-10'} real bugs or code smells you found. More files = likely more bugs
+- learning_path: ${files.length <= 20 ? '2-3' : files.length <= 100 ? '3-5' : '4-8'} weeks. Scale with codebase size
 - stack_info: Detect ALL frameworks, libraries, databases, and tools used
 - runtime_requirements: Estimate RAM needed to run this project (consider framework, deps, typical usage)
 - file_importance: Rate EVERY file from this list: ${JSON.stringify(filePaths)}. Score 1-10. category: score 8-10="critical", 5-7="important", 1-4="normal"
-- lessons: 5-8 structured lessons ordered by complexity. Each lesson covers a logical chunk of the codebase. Start with beginner concepts, progress to advanced
+- lessons: Generate as many lessons as the codebase needs (small repos: 3-5, medium repos: 6-10, large repos: 10-20). Each lesson should cover ONE logical chunk — a feature, a module, or a pattern. Order by complexity (beginner → advanced). More files/complexity = more lessons. This repo has ${files.length} files across ${new Set(files.map(f => f.path.split('/')[0])).size} top-level directories — scale lessons accordingly
 - security: Scan for OWASP Top 10 vulnerabilities, hardcoded secrets/API keys, missing auth checks, SQL/NoSQL injection, XSS, data exposure, insecure configs. Score 0-100 (100=perfectly secure). List 0-5 specific findings with exact file and line
 - code_quality: Rate maintainability and readability 0-100. Estimate test coverage from presence of test files. List 2-4 anti-patterns found and 2-4 code strengths
 - complexity_hotspots: Identify 3-5 most complex functions (deeply nested logic, long functions, multiple responsibilities). Use actual function names from the code

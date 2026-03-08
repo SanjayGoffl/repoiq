@@ -9,9 +9,10 @@ const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 // Free models ordered by quality — tries best first, falls back
 const FREE_MODELS = [
+  'arcee-ai/trinity-large-preview:free',
   'google/gemma-3-12b-it:free',
   'google/gemma-3-4b-it:free',
-  'google/gemma-3n-e4b-it:free',
+  'openrouter/free',
 ];
 
 interface OpenRouterMessage {

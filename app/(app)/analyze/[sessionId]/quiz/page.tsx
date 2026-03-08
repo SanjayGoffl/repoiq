@@ -30,13 +30,21 @@ export default function QuizPage() {
   const startTime = useRef<number>(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
+  // Quiz config
+  const [questionCount, setQuestionCount] = useState(5);
+  const [topic, setTopic] = useState('all');
+
   const handleGenerate = async () => {
     setLoading(true);
     try {
       const res = await fetch('/api/quiz', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ session_id: sessionId }),
+        body: JSON.stringify({
+          session_id: sessionId,
+          question_count: questionCount,
+          topic: topic === 'all' ? undefined : topic,
+        }),
       });
       const data = await res.json();
       setQuestions(data.questions ?? []);
@@ -76,30 +84,96 @@ export default function QuizPage() {
     }
   };
 
+  const TOPICS = [
+    { value: 'all', label: 'All Topics' },
+    { value: 'architecture', label: 'Architecture & Design' },
+    { value: 'bugs', label: 'Bugs & Code Quality' },
+    { value: 'security', label: 'Security' },
+    { value: 'concepts', label: 'Key Concepts' },
+    { value: 'dependencies', label: 'Dependencies & Stack' },
+  ];
+
   // Start screen
   if (!questions) {
     return (
-      <div className="flex flex-col items-center justify-center gap-6 py-20">
-        <Trophy className="h-16 w-16 text-yellow-400" />
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-white">Quiz Mode</h1>
-          <p className="mt-2 text-sm text-muted">
-            Test your understanding of the codebase with AI-generated questions
-          </p>
+      <div className="mx-auto max-w-md py-12">
+        <div className="flex flex-col items-center gap-6">
+          <Trophy className="h-16 w-16 text-yellow-400" />
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-white">Quiz Mode</h1>
+            <p className="mt-2 text-sm text-muted">
+              Test your understanding of the codebase with AI-generated questions
+            </p>
+          </div>
+
+          {/* Quiz config */}
+          <Card className="w-full">
+            <CardContent className="flex flex-col gap-4 p-4">
+              {/* Question count */}
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-muted">
+                  Number of questions
+                </label>
+                <div className="flex gap-2">
+                  {[3, 5, 10, 15].map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => setQuestionCount(n)}
+                      className={`flex-1 rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
+                        questionCount === n
+                          ? 'border-green bg-green/10 text-green'
+                          : 'border-border bg-navy text-muted hover:text-white'
+                      }`}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Topic */}
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-muted">
+                  Focus topic
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {TOPICS.map((t) => (
+                    <button
+                      key={t.value}
+                      type="button"
+                      onClick={() => setTopic(t.value)}
+                      className={`rounded-lg border px-3 py-2 text-left text-xs font-medium transition-colors ${
+                        topic === t.value
+                          ? 'border-green bg-green/10 text-green'
+                          : 'border-border bg-navy text-muted hover:text-white'
+                      }`}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Button onClick={handleGenerate} disabled={loading} size="lg" className="w-full gap-2">
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+            {loading ? 'Generating Quiz...' : `Start Quiz (${questionCount} questions)`}
+          </Button>
         </div>
-        <Button onClick={handleGenerate} disabled={loading} size="lg" className="gap-2">
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-          {loading ? 'Generating Quiz...' : 'Start Quiz'}
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => router.push(ROUTES.sessionReport(sessionId))}
-          className="gap-1.5 text-muted"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Report
-        </Button>
+
+        <div className="mt-4 flex justify-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.push(ROUTES.sessionReport(sessionId))}
+            className="gap-1.5 text-muted"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Report
+          </Button>
+        </div>
       </div>
     );
   }
