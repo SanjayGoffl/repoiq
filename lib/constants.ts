@@ -65,6 +65,8 @@ export const API = {
   gap: (id: string) => `/api/gaps/${id}`,
   USER_QUOTA: '/api/user',
   FIX: '/api/fix',
+  DIAGRAM: '/api/diagram',
+  USAGE: '/api/usage',
 } as const;
 
 // ---- Fun facts for loading screen ----

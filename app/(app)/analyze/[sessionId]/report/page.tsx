@@ -4,10 +4,12 @@ import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ReportHeader } from '@/components/report/ReportHeader';
 import { ArchitectureSummary } from '@/components/report/ArchitectureSummary';
+import { ArchitectureDiagram } from '@/components/report/ArchitectureDiagram';
 import { StackDetection } from '@/components/report/StackDetection';
 import { LinesOfCode } from '@/components/report/LinesOfCode';
 import { DependenciesPanel } from '@/components/report/DependenciesPanel';
 import { RuntimeInfo } from '@/components/report/RuntimeInfo';
+import { UsageTracker } from '@/components/report/UsageTracker';
 import { ConceptCard } from '@/components/report/ConceptCard';
 import { BugCard } from '@/components/report/BugCard';
 import { FileTree } from '@/components/report/FileTree';
@@ -66,10 +68,14 @@ export default function ReportPage() {
         languages={session.languages}
         fileCount={session.file_count}
         createdAt={session.created_at}
+        sessionId={sessionId}
       />
 
       {/* Architecture summary */}
       <ArchitectureSummary summary={report.architecture_summary} />
+
+      {/* Architecture Diagram */}
+      <ArchitectureDiagram sessionId={sessionId} />
 
       {/* Enhanced Analysis Sections */}
       {report.stack_info && (
@@ -109,6 +115,9 @@ export default function ReportPage() {
           )}
         </div>
       </section>
+
+      {/* Code Usage Tracker */}
+      <UsageTracker sessionId={sessionId} />
 
       {/* Concepts */}
       <section className="flex flex-col gap-2">

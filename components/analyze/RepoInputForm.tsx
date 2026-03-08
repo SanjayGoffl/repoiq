@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button';
 import { isValidGitHubUrl } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 
+export type SkillLevel = 'beginner' | 'intermediate' | 'advanced';
+
 interface RepoInputFormProps {
-  onSubmit: (repoUrl: string) => void;
+  onSubmit: (repoUrl: string, skillLevel: SkillLevel) => void;
   isLoading: boolean;
   isDisabled?: boolean;
 }
@@ -18,6 +20,7 @@ export function RepoInputForm({
   isDisabled = false,
 }: RepoInputFormProps) {
   const [url, setUrl] = useState('');
+  const [skillLevel, setSkillLevel] = useState<SkillLevel>('beginner');
   const [error, setError] = useState<string | null>(null);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -38,7 +41,7 @@ export function RepoInputForm({
     }
 
     setError(null);
-    onSubmit(trimmed);
+    onSubmit(trimmed, skillLevel);
   }
 
   return (
@@ -62,6 +65,28 @@ export function RepoInputForm({
           </p>
         )}
       </div>
+      {/* Skill Level Selector */}
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-muted">Your skill level</label>
+        <div className="grid grid-cols-3 gap-2">
+          {(['beginner', 'intermediate', 'advanced'] as const).map((level) => (
+            <button
+              key={level}
+              type="button"
+              onClick={() => setSkillLevel(level)}
+              disabled={isLoading || isDisabled}
+              className={`rounded-lg border px-3 py-2 text-sm font-medium capitalize transition-colors ${
+                skillLevel === level
+                  ? 'border-green bg-green/10 text-green'
+                  : 'border-border bg-navy text-muted hover:border-green/50 hover:text-white'
+              }`}
+            >
+              {level}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <Button
         type="submit"
         size="lg"

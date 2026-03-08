@@ -3,6 +3,7 @@
 import { Calendar, FileText } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { ExportPDFButton } from '@/components/report/ExportPDFButton';
+import { ShareButton } from '@/components/report/ShareButton';
 import { formatDate } from '@/lib/utils';
 
 interface ReportHeaderProps {
@@ -10,6 +11,7 @@ interface ReportHeaderProps {
   languages: string[];
   fileCount: number;
   createdAt: string;
+  sessionId: string;
 }
 
 export function ReportHeader({
@@ -17,6 +19,7 @@ export function ReportHeader({
   languages,
   fileCount,
   createdAt,
+  sessionId,
 }: ReportHeaderProps) {
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -43,6 +46,7 @@ export function ReportHeader({
           <span>{formatDate(createdAt)}</span>
         </div>
         <ExportPDFButton />
+        <ShareButton sessionId={sessionId} />
       </div>
     </div>
   );

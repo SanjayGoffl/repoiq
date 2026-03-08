@@ -10,6 +10,7 @@ import { useQuota } from '@/hooks/useQuota';
 import { api } from '@/lib/api';
 import { ROUTES } from '@/lib/constants';
 import type { AnalyzeRequest, AnalyzeResponse } from '@/lib/types';
+import type { SkillLevel } from '@/components/analyze/RepoInputForm';
 
 export default function AnalyzePage() {
   const router = useRouter();
@@ -22,8 +23,8 @@ export default function AnalyzePage() {
     },
   });
 
-  const handleSubmit = (repoUrl: string) => {
-    analyzeMutation.mutate({ repo_url: repoUrl });
+  const handleSubmit = (repoUrl: string, skillLevel: SkillLevel) => {
+    analyzeMutation.mutate({ repo_url: repoUrl, skill_level: skillLevel });
   };
 
   if (quotaLoading) {

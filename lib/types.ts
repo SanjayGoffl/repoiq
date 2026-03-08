@@ -168,9 +168,12 @@ export interface CodeReference {
 }
 
 // ---- API Request / Response Types ----
+export type SkillLevel = 'beginner' | 'intermediate' | 'advanced';
+
 export interface AnalyzeRequest {
   repo_url: string;
   language_filter?: string[];
+  skill_level?: SkillLevel;
 }
 
 export interface AnalyzeResponse {

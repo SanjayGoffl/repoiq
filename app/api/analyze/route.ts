@@ -41,9 +41,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     const owner = match[1] as string;
     const repo = match[2] as string;
+    const skillLevel = body.skill_level ?? 'beginner';
 
     // ── Step 1: Create session in DynamoDB (status: ingesting) ──
     const session = await createGuestSession(trimmedUrl, repo);
+
+    // Save skill level to user memory (non-blocking)
+    import('@/lib/memory').then(({ saveUserMemory }) => {
+      const guestId = request.headers.get('x-guest-id') ?? 'guest';
+      saveUserMemory(guestId, `# Student Profile\n- Skill Level: ${skillLevel}\n- Last analyzed: ${repo}\n`);
+    }).catch(() => {});
 
     // Fire analytics (non-blocking)
     createAnalyticsEvent({

@@ -89,4 +89,11 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(data),
     }),
+
+  // Architecture diagram
+  generateDiagram: (sessionId: string) =>
+    apiFetch<{ mermaid_code: string }>(API.DIAGRAM, {
+      method: 'POST',
+      body: JSON.stringify({ session_id: sessionId }),
+    }),
 };
