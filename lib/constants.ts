@@ -67,6 +67,9 @@ export const API = {
   FIX: '/api/fix',
   DIAGRAM: '/api/diagram',
   USAGE: '/api/usage',
+  QUIZ: '/api/quiz',
+  TRANSLATE: '/api/translate',
+  SPEAK: '/api/speak',
 } as const;
 
 // ---- Fun facts for loading screen ----

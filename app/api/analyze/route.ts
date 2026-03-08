@@ -65,7 +65,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     let files: { path: string; content: string }[];
     try {
-      files = await fetchRepoFiles(owner, repo, '', 30);
+      files = await fetchRepoFiles(owner, repo, '', 50);
     } catch (err) {
       await updateSessionStatus(session.session_id, 'failed');
       console.error('[Analyze] GitHub fetch failed:', err);

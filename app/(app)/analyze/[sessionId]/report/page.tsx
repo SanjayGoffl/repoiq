@@ -10,6 +10,9 @@ import { LinesOfCode } from '@/components/report/LinesOfCode';
 import { DependenciesPanel } from '@/components/report/DependenciesPanel';
 import { RuntimeInfo } from '@/components/report/RuntimeInfo';
 import { UsageTracker } from '@/components/report/UsageTracker';
+import { QualityScoreCard } from '@/components/report/QualityScoreCard';
+import { LanguageSelector } from '@/components/report/LanguageSelector';
+import { SpeakButton } from '@/components/report/SpeakButton';
 import { ConceptCard } from '@/components/report/ConceptCard';
 import { BugCard } from '@/components/report/BugCard';
 import { FileTree } from '@/components/report/FileTree';
@@ -27,6 +30,7 @@ export default function ReportPage() {
   const { session, isLoading } = useSession(sessionId);
 
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [translatedSummary, setTranslatedSummary] = useState<string | null>(null);
 
   const handleStartTeach = (concept: Concept) => {
     router.push(ROUTES.sessionTeach(sessionId));
@@ -71,8 +75,21 @@ export default function ReportPage() {
         sessionId={sessionId}
       />
 
-      {/* Architecture summary */}
-      <ArchitectureSummary summary={report.architecture_summary} />
+      {/* Code Quality Score */}
+      <QualityScoreCard report={report} />
+
+      {/* Architecture summary with language & voice controls */}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-white">Architecture</h2>
+          <SpeakButton text={translatedSummary ?? report.architecture_summary} />
+        </div>
+        <ArchitectureSummary summary={translatedSummary ?? report.architecture_summary} />
+        <LanguageSelector
+          text={report.architecture_summary}
+          onTranslated={(text) => setTranslatedSummary(text)}
+        />
+      </div>
 
       {/* Architecture Diagram */}
       <ArchitectureDiagram sessionId={sessionId} />
@@ -168,6 +185,21 @@ export default function ReportPage() {
           </button>
         </section>
       )}
+
+      {/* Quiz CTA */}
+      <section className="rounded-lg border border-border bg-navy-light p-6 text-center">
+        <h2 className="text-lg font-semibold text-white">Test Your Knowledge</h2>
+        <p className="mt-1 text-sm text-muted">
+          Take an AI-generated quiz to test your understanding of this codebase
+        </p>
+        <button
+          type="button"
+          onClick={() => router.push(`/analyze/${sessionId}/quiz`)}
+          className="mt-4 rounded-lg bg-yellow-500 px-6 py-2 text-sm font-medium text-black transition-colors hover:bg-yellow-400"
+        >
+          Start Quiz
+        </button>
+      </section>
 
       {/* CTA */}
       <StartLearningCTA

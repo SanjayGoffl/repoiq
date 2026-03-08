@@ -88,7 +88,7 @@ export async function fetchRepoFiles(
   owner: string,
   repo: string,
   path = '',
-  maxFiles = 30,
+  maxFiles = 50,
 ): Promise<{ path: string; content: string }[]> {
   // Phase 1: Discover downloadable file entries
   const discovered: { path: string; download_url: string }[] = [];
@@ -275,6 +275,36 @@ Respond with ONLY valid JSON matching this exact schema (no markdown, no backtic
       "concepts_covered": ["Concept name"],
       "complexity_level": "beginner"
     }
+  ],
+  "security": {
+    "overall": 75,
+    "summary": "Brief security posture summary",
+    "findings": [
+      {
+        "file": "path/to/file.ext",
+        "line": 10,
+        "issue": "What the security issue is",
+        "severity": "critical|high|medium|low",
+        "category": "injection|auth|data_exposure|misconfiguration|dependency|other",
+        "recommendation": "How to fix it"
+      }
+    ]
+  },
+  "code_quality": {
+    "overall_score": 70,
+    "maintainability": 65,
+    "readability": 80,
+    "test_coverage_estimate": "none|low|moderate|high",
+    "anti_patterns": ["e.g. God function in auth.ts", "No error boundaries"],
+    "strengths": ["e.g. Good separation of concerns", "Consistent naming"]
+  },
+  "complexity_hotspots": [
+    {
+      "file": "path/to/file.ext",
+      "function_name": "functionName",
+      "complexity": "simple|moderate|complex|very_complex",
+      "reason": "Why this function is complex"
+    }
   ]
 }
 
@@ -286,6 +316,9 @@ Requirements:
 - runtime_requirements: Estimate RAM needed to run this project (consider framework, deps, typical usage)
 - file_importance: Rate EVERY file from this list: ${JSON.stringify(filePaths)}. Score 1-10. category: score 8-10="critical", 5-7="important", 1-4="normal"
 - lessons: 5-8 structured lessons ordered by complexity. Each lesson covers a logical chunk of the codebase. Start with beginner concepts, progress to advanced
+- security: Scan for OWASP Top 10 vulnerabilities, hardcoded secrets/API keys, missing auth checks, SQL/NoSQL injection, XSS, data exposure, insecure configs. Score 0-100 (100=perfectly secure). List 0-5 specific findings with exact file and line
+- code_quality: Rate maintainability and readability 0-100. Estimate test coverage from presence of test files. List 2-4 anti-patterns found and 2-4 code strengths
+- complexity_hotspots: Identify 3-5 most complex functions (deeply nested logic, long functions, multiple responsibilities). Use actual function names from the code
 - Use actual file paths and line numbers from the code above
 - Focus on concepts a vibe-coder would NOT understand`;
 
