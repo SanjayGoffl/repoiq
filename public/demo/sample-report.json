@@ -1,0 +1,104 @@
+{
+  "session_id": "demo-session-001",
+  "user_id": "demo-user",
+  "repo_url": "https://github.com/demo/ecommerce-app",
+  "repo_name": "ecommerce-app",
+  "status": "complete",
+  "s3_prefix": "repos/demo-session-001/",
+  "kb_data_source_id": null,
+  "report": {
+    "architecture_summary": "This is a React + Node.js e-commerce application using JWT for authentication, MongoDB for data storage, and a REST API pattern throughout. The frontend uses React Router for navigation and Redux for state management. The backend follows an MVC pattern with Express.js middleware for request handling.",
+    "top_5_concepts": [
+      {
+        "concept": "JWT Authentication",
+        "file": "middleware/auth.js",
+        "lines": [23, 31, 45],
+        "why_critical": "Used in 8 API routes. If you don't understand this, your entire app is a security vulnerability. The middleware validates tokens on every protected request.",
+        "first_question": "What do you think this function checks — the user's identity or the token's validity?"
+      },
+      {
+        "concept": "Redux State Management",
+        "file": "store/cartSlice.js",
+        "lines": [12, 28, 43],
+        "why_critical": "Controls the entire shopping cart flow. 47 components connect to this store. Misunderstanding reducers means your cart will break under edge cases.",
+        "first_question": "Looking at the addToCart reducer — what happens if a user adds the same item twice?"
+      },
+      {
+        "concept": "MongoDB Aggregation Pipeline",
+        "file": "controllers/analytics.js",
+        "lines": [34, 56, 72],
+        "why_critical": "Your sales dashboard depends on this. The pipeline groups, sorts, and filters thousands of orders. A wrong stage order breaks all reporting.",
+        "first_question": "Why do you think the $match stage comes before the $group stage in this pipeline?"
+      },
+      {
+        "concept": "React useEffect Lifecycle",
+        "file": "components/ProductList.jsx",
+        "lines": [15, 22, 38],
+        "why_critical": "Fetches product data on mount and handles cleanup. Missing dependency arrays or cleanup functions cause memory leaks and infinite re-renders.",
+        "first_question": "What would happen if you removed the dependency array from this useEffect?"
+      },
+      {
+        "concept": "Error Handling Middleware",
+        "file": "middleware/errorHandler.js",
+        "lines": [8, 15, 29],
+        "why_critical": "Catches all unhandled errors across 12 routes. Without understanding this, your API returns raw stack traces to users — a security and UX disaster.",
+        "first_question": "This middleware takes 4 parameters instead of the usual 3 — why does Express treat it differently?"
+      }
+    ],
+    "bugs_found": [
+      {
+        "file": "config.js",
+        "line": 8,
+        "issue": "API key hardcoded and likely committed to GitHub. This is a critical security vulnerability — anyone can see your Stripe secret key.",
+        "severity": "critical"
+      },
+      {
+        "file": "controllers/products.js",
+        "line": 34,
+        "issue": "N+1 query — database call inside a forEach loop. Fetches category data separately for each product. Will cause severe performance issues at scale.",
+        "severity": "high"
+      },
+      {
+        "file": "routes/users.js",
+        "line": 67,
+        "issue": "Password returned in user profile response. The API endpoint doesn't exclude the password hash from the response object.",
+        "severity": "high"
+      },
+      {
+        "file": "components/Checkout.jsx",
+        "line": 45,
+        "issue": "Missing error handling on payment API call. If payment fails, the UI shows nothing — no error message, no retry option. Silent failure.",
+        "severity": "medium"
+      },
+      {
+        "file": "utils/validation.js",
+        "line": 12,
+        "issue": "Email regex is too permissive — allows strings like 'test@' without a domain. Will accept invalid emails during registration.",
+        "severity": "low"
+      }
+    ],
+    "learning_path": [
+      {
+        "week": 1,
+        "focus": "JWT Authentication",
+        "reason": "Everything else depends on understanding how your auth system works. It touches 8 routes."
+      },
+      {
+        "week": 2,
+        "focus": "Redux State Management",
+        "reason": "The cart and checkout flow are the core of your app. 47 components depend on this pattern."
+      },
+      {
+        "week": 3,
+        "focus": "Error Handling & API Patterns",
+        "reason": "6 silent failures found. Understanding middleware and error handling prevents production crashes."
+      }
+    ]
+  },
+  "file_count": 47,
+  "languages": ["JavaScript", "JSX", "CSS", "JSON"],
+  "teach_mode_started": false,
+  "teach_mode_completed": false,
+  "created_at": "2026-03-01T10:30:00.000Z",
+  "completed_at": "2026-03-01T10:30:45.000Z"
+}
