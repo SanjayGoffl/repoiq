@@ -48,6 +48,9 @@ export interface StackInfo {
 
 export interface LinesOfCode {
   total: number;
+  code_lines: number;
+  comment_lines: number;
+  blank_lines: number;
   by_language: Record<string, number>;
 }
 
@@ -70,6 +73,50 @@ export interface FileImportance {
   score: number;
   reason: string;
   category: 'critical' | 'important' | 'normal';
+}
+
+// ---- Enhanced Analysis Types (v1.1) ----
+export interface SecurityFinding {
+  file: string;
+  line: number;
+  issue: string;
+  severity: 'critical' | 'high' | 'medium' | 'low';
+  category: 'injection' | 'auth' | 'data_exposure' | 'misconfiguration' | 'dependency' | 'other';
+  recommendation: string;
+}
+
+export interface SecurityScore {
+  overall: number; // 0-100
+  findings: SecurityFinding[];
+  summary: string;
+}
+
+export interface CodeQuality {
+  overall_score: number; // 0-100
+  maintainability: number;
+  readability: number;
+  test_coverage_estimate: 'none' | 'low' | 'moderate' | 'high';
+  anti_patterns: string[];
+  strengths: string[];
+}
+
+export type ComplexityLevel = 'simple' | 'moderate' | 'complex' | 'very_complex';
+
+export interface ComplexityMetric {
+  file: string;
+  function_name: string;
+  complexity: ComplexityLevel;
+  reason: string;
+}
+
+export interface RepoFetchStats {
+  total_in_repo: number;
+  code_files_found: number;
+  files_fetched: number;
+  skipped_large: number;
+  skipped_dirs: number;
+  was_limited: boolean;
+  limit_applied: number;
 }
 
 export interface Lesson {
@@ -102,7 +149,21 @@ export interface Report {
   runtime_requirements?: RuntimeRequirements;
   file_importance?: FileImportance[];
   lessons?: Lesson[];
+  // v1.1 enhancements
+  security?: SecurityScore;
+  code_quality?: CodeQuality;
+  complexity_hotspots?: ComplexityMetric[];
 }
+
+export type ErrorCode =
+  | 'PRIVATE_REPO'
+  | 'REPO_NOT_FOUND'
+  | 'EMPTY_REPO'
+  | 'RATE_LIMITED'
+  | 'REPO_TOO_LARGE'
+  | 'AI_FAILED'
+  | 'NETWORK_ERROR'
+  | 'UNKNOWN';
 
 export interface Session {
   session_id: string;
@@ -120,6 +181,16 @@ export interface Session {
   created_at: string;
   completed_at: string | null;
   files_data?: { path: string; content: string }[];
+  fetch_stats?: RepoFetchStats;
+  // Repo overview
+  readme_content?: string;
+  repo_description?: string;
+  // Progress tracking
+  status_detail?: string;
+  estimated_seconds?: number;
+  // Error info
+  error_code?: ErrorCode;
+  error_message?: string;
 }
 
 export interface Gap {

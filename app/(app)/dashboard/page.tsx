@@ -44,9 +44,17 @@ export default function DashboardPage() {
   const gapsQuery = useQuery<Gap[]>({
     queryKey: ['all-gaps', user?.userId || 'guest'],
     queryFn: async () => {
-      // TODO: Replace with actual API call to list all gaps for this user
-      return [];
+      // Fetch gaps from all completed sessions
+      const completedSessions = (sessionsQuery.data ?? []).filter(
+        (s) => s.status === 'complete',
+      );
+      if (completedSessions.length === 0) return [];
+      const allGaps = await Promise.all(
+        completedSessions.map((s) => api.getSessionGaps(s.session_id)),
+      );
+      return allGaps.flat();
     },
+    enabled: !!sessionsQuery.data,
   });
 
   const sessions = sessionsQuery.data ?? [];

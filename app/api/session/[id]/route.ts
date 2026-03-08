@@ -18,13 +18,7 @@ export async function GET(
       );
     }
 
-    // TODO: Implement authenticated flow:
-    // 1. Verify Cognito JWT from Authorization header
-    // 2. Fetch session from DynamoDB by session_id
-    // 3. Verify session.user_id matches authenticated user (or is 'guest')
-    // 4. Return session or 404 if not found
-
-    // Fetch from DynamoDB
+    // Fetch from DynamoDB (guest-mode: no auth verification needed)
     const session = await getSessionById(id);
 
     if (!session) {

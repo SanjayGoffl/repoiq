@@ -7,7 +7,7 @@ import {
   UpdateCommand,
   ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
-import type { Session, User, Gap, Message, AnalyticsEvent } from './types';
+import type { Session, User, Gap, Message, AnalyticsEvent, ErrorCode } from './types';
 
 const client = new DynamoDBClient({
   region: process.env.AWS_REGION || 'us-east-1',
@@ -145,15 +145,47 @@ export async function getGuestSessions(): Promise<Session[]> {
 export async function updateSessionStatus(
   sessionId: string,
   status: Session['status'],
+  opts?: {
+    detail?: string;
+    error_code?: ErrorCode;
+    error_message?: string;
+    estimated_seconds?: number;
+    file_count?: number;
+  },
 ): Promise<void> {
   try {
+    let updateExpr = 'SET #status = :status';
+    const names: Record<string, string> = { '#status': 'status' };
+    const values: Record<string, unknown> = { ':status': status };
+
+    if (opts?.detail) {
+      updateExpr += ', status_detail = :detail';
+      values[':detail'] = opts.detail;
+    }
+    if (opts?.error_code) {
+      updateExpr += ', error_code = :ecode';
+      values[':ecode'] = opts.error_code;
+    }
+    if (opts?.error_message) {
+      updateExpr += ', error_message = :emsg';
+      values[':emsg'] = opts.error_message;
+    }
+    if (opts?.estimated_seconds !== undefined) {
+      updateExpr += ', estimated_seconds = :eta';
+      values[':eta'] = opts.estimated_seconds;
+    }
+    if (opts?.file_count !== undefined) {
+      updateExpr += ', file_count = :fc';
+      values[':fc'] = opts.file_count;
+    }
+
     await docClient.send(
       new UpdateCommand({
         TableName: TABLES.sessions,
         Key: { session_id: sessionId },
-        UpdateExpression: 'SET #status = :status',
-        ExpressionAttributeNames: { '#status': 'status' },
-        ExpressionAttributeValues: { ':status': status },
+        UpdateExpression: updateExpr,
+        ExpressionAttributeNames: names,
+        ExpressionAttributeValues: values,
       }),
     );
   } catch (error) {
@@ -193,15 +225,44 @@ export async function updateSessionReport(
 // SESSION FILES OPERATIONS
 // ──────────────────────────────────────────────────────────────
 
+/**
+ * Save file contents for interactive code viewer.
+ * DynamoDB has a 400KB item limit, so we:
+ * 1. Prioritize shorter files (more likely to fit fully)
+ * 2. Truncate large files
+ * 3. Cap total payload to ~350KB (leaving room for other session fields)
+ */
 export async function saveSessionFiles(
   sessionId: string,
   files: { path: string; content: string }[],
 ): Promise<void> {
-  // Truncate each file to ~2KB to stay within DynamoDB 400KB item limit
-  const truncatedFiles = files.map((f) => ({
-    path: f.path,
-    content: f.content.length > 2000 ? f.content.slice(0, 2000) + '\n... (truncated)' : f.content,
-  }));
+  const MAX_PAYLOAD_BYTES = 350_000; // ~350KB safe limit
+  const MAX_PER_FILE = 4000; // Allow more content per file (was 2000)
+
+  // Sort: shorter files first so we fit more files fully
+  const sorted = [...files].sort((a, b) => a.content.length - b.content.length);
+
+  const truncatedFiles: { path: string; content: string }[] = [];
+  let estimatedSize = 0;
+
+  for (const f of sorted) {
+    const content = f.content.length > MAX_PER_FILE
+      ? f.content.slice(0, MAX_PER_FILE) + '\n... (truncated)'
+      : f.content;
+
+    // Rough size estimate: path + content + JSON overhead
+    const entrySize = f.path.length + content.length + 50;
+    if (estimatedSize + entrySize > MAX_PAYLOAD_BYTES) {
+      console.log(`[DynamoDB] Files payload capped at ${truncatedFiles.length}/${files.length} files (~${Math.round(estimatedSize / 1024)}KB)`);
+      break;
+    }
+
+    truncatedFiles.push({ path: f.path, content });
+    estimatedSize += entrySize;
+  }
+
+  // Re-sort by path for display
+  truncatedFiles.sort((a, b) => a.path.localeCompare(b.path));
 
   try {
     await docClient.send(

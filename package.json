@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "^6.7.0",
     "@aws-sdk/client-bedrock-runtime": "^3.1000.0",
     "@aws-sdk/client-dynamodb": "^3.1000.0",
     "@aws-sdk/client-s3": "^3.1000.0",
@@ -34,12 +33,10 @@
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-dropzone": "^14.3.5",
     "shiki": "^1.24.0",
     "sonner": "^1.7.0",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7",
-    "zustand": "^5.0.0"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.0",

@@ -2,14 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSessionsByUserId, getGuestSessions } from '@/lib/dynamodb';
 import type { Session } from '@/lib/types';
 
-export async function GET(_request: NextRequest): Promise<NextResponse> {
+export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
-    // TODO: Implement authenticated flow:
-    // 1. Verify Cognito JWT from Authorization header to get user_id
-    // 2. Call getSessionsByUserId(user_id) to fetch their sessions
+    // Guest-mode: all sessions belong to user_id='guest'
+    // Auth header is accepted but not verified (guest fallback)
+    const authHeader = request.headers.get('authorization');
+    const userId = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : 'guest';
 
-    // For now: Fetch guest sessions (user_id = 'guest')
-    const sessions = await getGuestSessions();
+    const sessions = userId !== 'guest'
+      ? await getSessionsByUserId(userId)
+      : await getGuestSessions();
 
     return NextResponse.json(sessions);
   } catch (error: unknown) {

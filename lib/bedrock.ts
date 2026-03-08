@@ -56,15 +56,25 @@ function parseNovaResponse(responseBytes: Uint8Array): string {
 }
 
 // ──────────────────────────────────────────────────────────────
-// GitHub: Fetch repo files via GitHub API (no git clone needed)
+// GitHub: Fetch ALL repo files via GitHub Trees API
+// Uses a single API call to discover the entire repo tree,
+// then downloads all matching files in batched parallel.
 // ──────────────────────────────────────────────────────────────
 
-interface GitHubFile {
-  name: string;
+interface GitHubTreeItem {
   path: string;
-  type: 'file' | 'dir';
-  download_url: string | null;
-  size: number;
+  mode: string;
+  type: 'blob' | 'tree';
+  sha: string;
+  size?: number;
+  url: string;
+}
+
+interface GitHubTreeResponse {
+  sha: string;
+  url: string;
+  tree: GitHubTreeItem[];
+  truncated: boolean;
 }
 
 const CODE_EXTENSIONS = new Set([
@@ -72,101 +82,176 @@ const CODE_EXTENSIONS = new Set([
   '.c', '.cpp', '.h', '.cs', '.php', '.swift', '.kt', '.scala',
   '.vue', '.svelte', '.html', '.css', '.scss', '.sql', '.sh',
   '.yaml', '.yml', '.json', '.toml', '.md',
+  '.prisma', '.graphql', '.gql', '.proto', '.tf', '.hcl',
+  '.dockerfile', '.env.example', '.gitignore',
 ]);
 
 const SKIP_DIRS = new Set([
   'node_modules', '.git', '__pycache__', '.next', 'dist', 'build',
   'coverage', '.vscode', '.idea', 'vendor', 'venv', '.env',
+  '.turbo', '.cache', '.output', 'out', '.svelte-kit',
+  '.nuxt', '.vercel', '.netlify', 'target', 'bin', 'obj',
+  '__snapshots__', '.pytest_cache', '.mypy_cache',
 ]);
 
+/** Max file size in bytes to download (200KB) */
+const MAX_FILE_SIZE = 200_000;
+
+/** Concurrency limit for parallel downloads */
+const DOWNLOAD_BATCH_SIZE = 15;
+
 /**
- * Recursively fetch repo tree from GitHub API.
- * Phase 1: Discover file URLs (sequential tree walk, fast — no content downloads).
- * Phase 2: Download file contents in parallel (up to MAX_FILES).
+ * Check if a file path is inside a skipped directory.
+ */
+function isInSkippedDir(filePath: string): boolean {
+  const parts = filePath.split('/');
+  return parts.some((part) => SKIP_DIRS.has(part.toLowerCase()));
+}
+
+export interface FetchRepoResult {
+  files: { path: string; content: string }[];
+  stats: {
+    total_in_repo: number;
+    code_files_found: number;
+    files_fetched: number;
+    skipped_large: number;
+    skipped_dirs: number;
+    was_limited: boolean;
+    limit_applied: number;
+  };
+}
+
+/**
+ * Fetch ALL code files from a GitHub repo.
+ *
+ * Phase 1: Single API call to get the full recursive tree.
+ * Phase 2: Filter to code files, skip ignored dirs.
+ * Phase 3: Download file contents in batched parallel (15 at a time).
+ *
+ * @param maxFiles - Safety cap (default: no limit). Pass 0 for unlimited.
  */
 export async function fetchRepoFiles(
   owner: string,
   repo: string,
-  path = '',
-  maxFiles = 50,
-): Promise<{ path: string; content: string }[]> {
-  // Phase 1: Discover downloadable file entries
-  const discovered: { path: string; download_url: string }[] = [];
+  _path = '',
+  maxFiles = 0,
+): Promise<FetchRepoResult> {
+  const ghHeaders: Record<string, string> = {
+    Accept: 'application/vnd.github.v3+json',
+    'User-Agent': 'RepoIQ/1.0',
+  };
 
-  async function walk(currentPath: string): Promise<void> {
-    if (discovered.length >= maxFiles) return;
-
-    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${currentPath}`;
-    const res = await fetch(url, {
-      headers: {
-        Accept: 'application/vnd.github.v3+json',
-        'User-Agent': 'RepoIQ/1.0',
-      },
-    });
-
-    if (!res.ok) {
-      console.warn(`[GitHub] Failed to fetch ${url}: ${res.status}`);
-      return;
-    }
-
-    const entries = (await res.json()) as GitHubFile[];
-
-    // Collect dirs to walk in parallel
-    const dirPaths: string[] = [];
-
-    for (const entry of entries) {
-      if (discovered.length >= maxFiles) break;
-
-      if (entry.type === 'dir') {
-        const dirName = entry.name.toLowerCase();
-        if (SKIP_DIRS.has(dirName)) continue;
-        dirPaths.push(entry.path);
-      } else if (entry.type === 'file' && entry.download_url) {
-        const ext = entry.name.includes('.')
-          ? '.' + entry.name.split('.').pop()
-          : '';
-        if (!CODE_EXTENSIONS.has(ext.toLowerCase())) continue;
-        if (entry.size > 100_000) continue; // Skip files > 100KB
-        discovered.push({ path: entry.path, download_url: entry.download_url });
-      }
-    }
-
-    // Walk subdirectories in parallel (bounded)
-    if (dirPaths.length > 0 && discovered.length < maxFiles) {
-      await Promise.all(dirPaths.map((dir) => walk(dir)));
-    }
+  // Optional: use a GitHub token for higher rate limits (5000/hr vs 60/hr)
+  const ghToken = process.env.GITHUB_TOKEN;
+  if (ghToken) {
+    ghHeaders['Authorization'] = `Bearer ${ghToken}`;
   }
 
-  await walk(path);
-
-  // Phase 2: Download file contents in parallel (limit to maxFiles)
-  const toDownload = discovered.slice(0, maxFiles);
-  console.log(`[GitHub] Discovered ${discovered.length} files, downloading ${toDownload.length} in parallel`);
-
-  const results = await Promise.allSettled(
-    toDownload.map(async (entry) => {
-      try {
-        const fileRes = await fetch(entry.download_url);
-        if (fileRes.ok) {
-          const content = await fileRes.text();
-          return { path: entry.path, content };
-        }
-        return null;
-      } catch {
-        console.warn(`[GitHub] Failed to download ${entry.path}`);
-        return null;
-      }
-    }),
+  // ── Phase 1: Get the full repo tree in ONE API call ──
+  // First, get the default branch
+  const repoRes = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}`,
+    { headers: ghHeaders },
   );
+  if (!repoRes.ok) {
+    throw new Error(`GitHub API error: ${repoRes.status} — is the repo public?`);
+  }
+  const repoData = (await repoRes.json()) as { default_branch: string; size: number };
+  const branch = repoData.default_branch;
 
+  console.log(`[GitHub] Repo ${owner}/${repo} — branch: ${branch}, size: ${repoData.size}KB`);
+
+  // Fetch recursive tree (single API call, returns ALL files)
+  const treeRes = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`,
+    { headers: ghHeaders },
+  );
+  if (!treeRes.ok) {
+    throw new Error(`GitHub Trees API error: ${treeRes.status}`);
+  }
+  const treeData = (await treeRes.json()) as GitHubTreeResponse;
+
+  if (treeData.truncated) {
+    console.warn(`[GitHub] Tree was truncated — repo has too many files. Some files may be missing.`);
+  }
+
+  // ── Phase 2: Filter to downloadable code files ──
+  const totalBlobs = treeData.tree.filter((i) => i.type === 'blob').length;
+  let skippedLarge = 0;
+  let skippedDirs = 0;
+
+  const codeFiles = treeData.tree.filter((item) => {
+    if (item.type !== 'blob') return false;
+    if (isInSkippedDir(item.path)) { skippedDirs++; return false; }
+    if (item.size && item.size > MAX_FILE_SIZE) { skippedLarge++; return false; }
+
+    const fileName = item.path.split('/').pop() ?? '';
+    const specialFiles = new Set(['Dockerfile', 'Makefile', 'Procfile', 'docker-compose.yml', 'docker-compose.yaml']);
+    if (specialFiles.has(fileName)) return true;
+
+    const ext = fileName.includes('.')
+      ? '.' + fileName.split('.').pop()!.toLowerCase()
+      : '';
+    return CODE_EXTENSIONS.has(ext);
+  });
+
+  // Sort by importance: critical config files first, then by path
+  codeFiles.sort((a, b) => {
+    const aName = a.path.split('/').pop() ?? '';
+    const bName = b.path.split('/').pop() ?? '';
+    const priorityFiles = ['package.json', 'tsconfig.json', 'requirements.txt', 'Cargo.toml', 'go.mod', 'Gemfile'];
+    const aPriority = priorityFiles.includes(aName) ? -1 : 0;
+    const bPriority = priorityFiles.includes(bName) ? -1 : 0;
+    if (aPriority !== bPriority) return aPriority - bPriority;
+    return a.path.localeCompare(b.path);
+  });
+
+  // Apply max cap if set
+  const wasLimited = maxFiles > 0 && codeFiles.length > maxFiles;
+  const toDownload = maxFiles > 0 ? codeFiles.slice(0, maxFiles) : codeFiles;
+  console.log(`[GitHub] Found ${totalBlobs} total files in repo, ${codeFiles.length} code files, downloading ${toDownload.length}${wasLimited ? ` (limited to ${maxFiles})` : ''}`);
+
+  // ── Phase 3: Download file contents in batched parallel ──
   const files: { path: string; content: string }[] = [];
-  for (const result of results) {
-    if (result.status === 'fulfilled' && result.value) {
-      files.push(result.value);
+
+  for (let i = 0; i < toDownload.length; i += DOWNLOAD_BATCH_SIZE) {
+    const batch = toDownload.slice(i, i + DOWNLOAD_BATCH_SIZE);
+
+    const results = await Promise.allSettled(
+      batch.map(async (item) => {
+        const downloadUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${item.path}`;
+        try {
+          const res = await fetch(downloadUrl, { headers: { 'User-Agent': 'RepoIQ/1.0' } });
+          if (!res.ok) return null;
+          const content = await res.text();
+          return { path: item.path, content };
+        } catch {
+          console.warn(`[GitHub] Failed to download ${item.path}`);
+          return null;
+        }
+      }),
+    );
+
+    for (const result of results) {
+      if (result.status === 'fulfilled' && result.value) {
+        files.push(result.value);
+      }
     }
   }
 
-  return files;
+  console.log(`[GitHub] Successfully downloaded ${files.length}/${toDownload.length} files`);
+  return {
+    files,
+    stats: {
+      total_in_repo: totalBlobs,
+      code_files_found: codeFiles.length,
+      files_fetched: files.length,
+      skipped_large: skippedLarge,
+      skipped_dirs: skippedDirs,
+      was_limited: wasLimited,
+      limit_applied: maxFiles,
+    },
+  };
 }
 
 /**
@@ -190,6 +275,66 @@ export function detectLanguages(files: { path: string }[]): string[] {
 }
 
 // ──────────────────────────────────────────────────────────────
+// GitHub: Fetch README and repo description
+// ──────────────────────────────────────────────────────────────
+
+export interface RepoOverview {
+  readme_content: string;
+  repo_description: string;
+}
+
+/**
+ * Fetch the README content and repo description from GitHub.
+ * Tries README.md, then readme.md, then falls back to empty.
+ */
+export async function fetchRepoOverview(
+  owner: string,
+  repo: string,
+): Promise<RepoOverview> {
+  const ghHeaders: Record<string, string> = {
+    Accept: 'application/vnd.github.v3+json',
+    'User-Agent': 'RepoIQ/1.0',
+  };
+  const ghToken = process.env.GITHUB_TOKEN;
+  if (ghToken) {
+    ghHeaders['Authorization'] = `Bearer ${ghToken}`;
+  }
+
+  // Fetch repo description from API
+  let repoDescription = '';
+  try {
+    const repoRes = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}`,
+      { headers: ghHeaders },
+    );
+    if (repoRes.ok) {
+      const data = (await repoRes.json()) as { description?: string };
+      repoDescription = data.description ?? '';
+    }
+  } catch {
+    // non-critical, continue
+  }
+
+  // Fetch README content via GitHub API (handles case-insensitive lookup)
+  let readmeContent = '';
+  try {
+    const readmeRes = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/readme`,
+      { headers: { ...ghHeaders, Accept: 'application/vnd.github.v3.raw' } },
+    );
+    if (readmeRes.ok) {
+      const raw = await readmeRes.text();
+      // Limit to ~5000 chars to avoid bloating storage
+      readmeContent = raw.length > 5000 ? raw.slice(0, 5000) + '\n\n...(truncated)' : raw;
+    }
+  } catch {
+    // non-critical, continue
+  }
+
+  return { readme_content: readmeContent, repo_description: repoDescription };
+}
+
+// ──────────────────────────────────────────────────────────────
 // Bedrock: Analyze repo code with Claude
 // ──────────────────────────────────────────────────────────────
 
@@ -197,24 +342,63 @@ export async function analyzeWithBedrock(
   files: { path: string; content: string }[],
   repoName: string,
 ): Promise<Report> {
-  // Build a compact code summary for the prompt (truncate large files)
-  const codeContext = files
-    .map((f) => {
-      const truncated = f.content.length > 3000
-        ? f.content.slice(0, 3000) + '\n... (truncated)'
-        : f.content;
-      return `=== ${f.path} ===\n${truncated}`;
-    })
-    .join('\n\n');
+  // Smart context building: fit as many files as possible within ~80K chars
+  // Priority: config files > entry points > source code > others
+  const MAX_CONTEXT_CHARS = 80_000;
+  const MAX_PER_FILE = 3000;
+
+  // Prioritize files for full content inclusion
+  const priorityScore = (path: string): number => {
+    const name = path.split('/').pop() ?? '';
+    if (['package.json', 'tsconfig.json', 'requirements.txt', 'Cargo.toml', 'go.mod', 'Gemfile', 'Makefile', 'Dockerfile'].includes(name)) return 100;
+    if (name.includes('config') || name.includes('schema')) return 80;
+    if (path.includes('route') || path.includes('api/')) return 70;
+    if (name === 'index.ts' || name === 'index.tsx' || name === 'main.ts' || name === 'app.ts') return 65;
+    if (path.includes('lib/') || path.includes('utils/') || path.includes('core/')) return 60;
+    if (path.endsWith('.ts') || path.endsWith('.tsx') || path.endsWith('.py') || path.endsWith('.go') || path.endsWith('.rs')) return 50;
+    if (path.endsWith('.json') || path.endsWith('.yaml') || path.endsWith('.yml')) return 20;
+    if (path.endsWith('.md')) return 10;
+    return 30;
+  };
+
+  const sorted = [...files].sort((a, b) => priorityScore(b.path) - priorityScore(a.path));
+
+  let contextSize = 0;
+  const fullContentFiles: string[] = [];
+  const summaryOnlyFiles: string[] = [];
+
+  for (const f of sorted) {
+    const truncated = f.content.length > MAX_PER_FILE
+      ? f.content.slice(0, MAX_PER_FILE) + '\n... (truncated)'
+      : f.content;
+    const entry = `=== ${f.path} ===\n${truncated}`;
+
+    if (contextSize + entry.length <= MAX_CONTEXT_CHARS) {
+      fullContentFiles.push(entry);
+      contextSize += entry.length;
+    } else {
+      // Include path only for remaining files
+      summaryOnlyFiles.push(f.path);
+    }
+  }
+
+  const codeContext = fullContentFiles.join('\n\n');
+  const allPaths = files.map((f) => f.path);
 
   // Build list of file paths for file_importance
-  const filePaths = files.map((f) => f.path);
+  const filePaths = allPaths;
 
-  const prompt = `You are an expert code analyst. Analyze this GitHub repository "${repoName}" and produce a comprehensive learning report for a student who vibe-coded this project (used AI to generate the code but doesn't fully understand it).
+  const filesNote = summaryOnlyFiles.length > 0
+    ? `\n\nAdditional files in this repo (content not shown, but rate their importance too):\n${summaryOnlyFiles.join('\n')}\n`
+    : '';
+
+  console.log(`[Bedrock] Analyzing ${files.length} files (${fullContentFiles.length} with full content, ${summaryOnlyFiles.length} paths only, ~${Math.round(contextSize / 1024)}KB context)`);
+
+  const prompt = `You are an expert code analyst. Analyze this GitHub repository "${repoName}" (${files.length} total files) and produce a comprehensive learning report for a student who vibe-coded this project (used AI to generate the code but doesn't fully understand it).
 
 Here are the repository files:
 
-${codeContext}
+${codeContext}${filesNote}
 
 Respond with ONLY valid JSON matching this exact schema (no markdown, no backticks, just raw JSON):
 

@@ -6,6 +6,7 @@ import {
 import type { ChatRequest, ChatResponse } from '@/lib/types';
 import {
   getSessionById,
+  getSessionFiles,
   getMessagesBySessionId,
   createMessage,
 } from '@/lib/dynamodb';
@@ -49,6 +50,27 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       (c) => c.concept === body.concept_id || c.file === body.concept_id,
     );
 
+    // Fetch actual file content for the concept being discussed
+    let conceptFileContent = '';
+    if (concept?.file) {
+      try {
+        const sessionFiles = await getSessionFiles(body.session_id);
+        const matchingFile = sessionFiles.find((f) => f.path === concept.file);
+        if (matchingFile) {
+          // Include relevant lines (expand window around concept lines)
+          const lines = matchingFile.content.split('\n');
+          const startLine = Math.max(0, (concept.lines?.[0] ?? 1) - 5);
+          const endLine = Math.min(lines.length, (concept.lines?.[1] ?? lines.length) + 5);
+          conceptFileContent = lines
+            .slice(startLine, endLine)
+            .map((l, i) => `${startLine + i + 1} | ${l}`)
+            .join('\n');
+        }
+      } catch {
+        // Non-critical, proceed without file content
+      }
+    }
+
     // Get chat history for context
     const history = await getMessagesBySessionId(body.session_id);
     const relevantHistory = history
@@ -77,19 +99,24 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       ? `\nStudent Learning Profile:\n${userMemory}\nUse this profile to personalize your teaching style and skip topics they already know.\n`
       : '';
 
+    const codeSection = conceptFileContent
+      ? `\nActual code from their repo (${concept?.file}):\n\`\`\`\n${conceptFileContent}\n\`\`\`\nReference specific lines from this code in your questions.\n`
+      : '';
+
     const systemPrompt = `You are a Socratic coding teacher for RepoIQ. The student vibe-coded a project called "${session.repo_name}" and is now learning concepts they don't understand.
 ${memorySection}
 Current concept: ${concept?.concept ?? body.concept_id}
 File: ${concept?.file ?? 'unknown'}
 Why critical: ${concept?.why_critical ?? 'Important for understanding the codebase'}
-
+${codeSection}
 Rules:
 - NEVER give direct answers. Use Socratic questioning.
 - Ask follow-up questions that lead the student to understanding.
-- Reference specific code from their repo when possible.
+- Reference specific code lines from their repo — quote actual variable names, function names, and patterns you see.
 - If they seem to understand, say "CONCEPT_UNDERSTOOD" at the end.
 - Keep responses concise (2-4 sentences max).
-- If is_hint is true, give a gentle nudge toward the answer without revealing it.`;
+- If is_hint is true, give a gentle nudge toward the answer without revealing it.
+- When the student gives a wrong answer, gently point out which part is incorrect and ask them to reconsider.`;
 
     const messages = [
       ...relevantHistory.map((m) => ({

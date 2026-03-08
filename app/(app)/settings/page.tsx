@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useQuota } from '@/hooks/useQuota';
 import { ROUTES } from '@/lib/constants';
 import { User, Zap, BarChart3, Info } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -121,7 +122,11 @@ export default function SettingsPage() {
                         Unlimited repo analyses and priority support
                       </p>
                     </div>
-                    <Button size="sm" className="gap-2">
+                    <Button
+                      size="sm"
+                      className="gap-2"
+                      onClick={() => toast.info('Pro plan coming soon! You have plenty of free analyses remaining.')}
+                    >
                       <Zap className="h-4 w-4" />
                       Upgrade
                     </Button>

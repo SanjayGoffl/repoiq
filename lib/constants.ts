@@ -49,6 +49,7 @@ export const ROUTES = {
   conceptComplete: (sessionId: string, conceptId: string) =>
     `/analyze/${sessionId}/teach/${conceptId}/complete`,
   sessionPath: (id: string) => `/analyze/${id}/path`,
+  sessionQuiz: (id: string) => `/analyze/${id}/quiz`,
   COMPARE: '/compare',
   LEADERBOARD: '/leaderboard',
 } as const;
@@ -82,6 +83,14 @@ export const LOADING_FACTS = [
   'RepoIQ has found hardcoded API keys in 1 out of 5 repos scanned.',
   'The most common bug: missing error handling on async operations.',
   'Understanding your own code is the fastest path to debugging it.',
+  'Over 60% of junior devs cannot explain their own API route handlers.',
+  'Code reviews catch 60% more bugs when the author can explain every line.',
+  'The teach-back method was invented by Nobel physicist Richard Feynman.',
+  'AI-generated code often lacks proper input validation at system boundaries.',
+  'Most security vulnerabilities come from copy-pasted code snippets.',
+  'Projects with good error handling have 3x fewer production incidents.',
+  'RepoIQ analyzes your code using Amazon Bedrock AI on AWS.',
+  'The best way to learn a codebase is to teach it to someone else.',
 ];
 
 // ---- Severity order ----

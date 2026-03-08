@@ -20,6 +20,7 @@ import { SpeakButton } from '@/components/report/SpeakButton';
 import { ConceptCard } from '@/components/report/ConceptCard';
 import { BugCard } from '@/components/report/BugCard';
 import { FileTree } from '@/components/report/FileTree';
+import { ReadmeOverview } from '@/components/report/ReadmeOverview';
 import { StartLearningCTA } from '@/components/report/StartLearningCTA';
 import { CodeViewerPanel } from '@/components/codeviewer/CodeViewerPanel';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -78,6 +79,13 @@ export default function ReportPage() {
         createdAt={session.created_at}
         sessionId={sessionId}
         fetchStats={session.fetch_stats}
+      />
+
+      {/* Repository Overview - README & description */}
+      <ReadmeOverview
+        repoName={session.repo_name}
+        repoDescription={session.repo_description}
+        readmeContent={session.readme_content}
       />
 
       {/* Progress Overview - key metrics at a glance */}

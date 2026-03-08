@@ -38,6 +38,17 @@ export default function AnalyzePage() {
     onSuccess: (data) => {
       router.push(ROUTES.sessionLoading(data.session_id));
     },
+    onError: (error) => {
+      // If the API returned a session_id (error happened mid-analysis), redirect to loading page
+      // so the user sees the detailed error there
+      const apiErr = error as import('@/lib/api').ApiError;
+      const sessionId = apiErr.body?.session_id as string | undefined;
+      if (sessionId) {
+        router.push(ROUTES.sessionLoading(sessionId));
+        return;
+      }
+      // Otherwise show inline error (validation errors, etc.)
+    },
   });
 
   const handleSubmit = (repoUrl: string, skillLevel: SkillLevel) => {
