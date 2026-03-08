@@ -1,17 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  BedrockRuntimeClient,
-  InvokeModelCommand,
-} from '@aws-sdk/client-bedrock-runtime';
 import { getSessionById } from '@/lib/dynamodb';
-
-const bedrockClient = new BedrockRuntimeClient({
-  region: process.env.AWS_REGION || 'us-east-1',
-});
-
-const MODEL_ID = process.env.BEDROCK_MODEL_ID || 'us.amazon.nova-pro-v1:0';
-const FALLBACK_MODEL_ID = process.env.BEDROCK_FALLBACK_MODEL_ID || 'amazon.nova-lite-v1:0';
-const FALLBACK_MODEL_ID_2 = process.env.BEDROCK_FALLBACK_MODEL_ID_2 || 'amazon.nova-micro-v1:0';
+import { raceBedrockAndOpenRouter, parseJsonResponse } from '@/lib/openrouter';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
@@ -57,40 +46,14 @@ Rules:
 - Reference actual concepts and files from the codebase
 - Mix difficulty: 2 easy, 2 medium, 1 hard`;
 
-    const body = JSON.stringify({
-      messages: [{ role: 'user', content: [{ text: prompt }] }],
-      inferenceConfig: { maxTokens: 4096, temperature: 0.4 },
-    });
-
-    const modelsToTry = [MODEL_ID, FALLBACK_MODEL_ID, FALLBACK_MODEL_ID_2];
-    let lastError: unknown;
-
-    for (const modelId of modelsToTry) {
-      try {
-        const command = new InvokeModelCommand({
-          modelId,
-          contentType: 'application/json',
-          accept: 'application/json',
-          body: new TextEncoder().encode(body),
-        });
-        const response = await bedrockClient.send(command);
-        const responseBody = JSON.parse(new TextDecoder().decode(response.body as Uint8Array)) as {
-          output?: { message?: { content?: { text: string }[] } };
-        };
-        let text = responseBody?.output?.message?.content?.[0]?.text?.trim() ?? '';
-        if (text.startsWith('```')) {
-          text = text.replace(/^```json?\n?/, '').replace(/\n?```$/, '');
-        }
-        const quiz = JSON.parse(text);
-        return NextResponse.json(quiz);
-      } catch (err) {
-        lastError = err;
-        console.error(`[Quiz] Model ${modelId} failed:`, err);
-      }
+    try {
+      const text = await raceBedrockAndOpenRouter(prompt, { maxTokens: 4096, temperature: 0.4 });
+      const quiz = parseJsonResponse(text);
+      return NextResponse.json(quiz);
+    } catch (err) {
+      console.error('[Quiz] All models failed:', err);
+      return NextResponse.json({ error: 'Failed to generate quiz' }, { status: 500 });
     }
-
-    console.error('[Quiz] All models failed:', lastError);
-    return NextResponse.json({ error: 'Failed to generate quiz' }, { status: 500 });
   } catch (error) {
     console.error('[POST /api/quiz] Error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
