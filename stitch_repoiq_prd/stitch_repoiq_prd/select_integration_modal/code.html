@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RepoIQ - Add Integration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "error": "#ffb4ab",
+            "tertiary-fixed": "#ffdcc6",
+            "on-background": "#e5e2e1",
+            "on-secondary": "#490080",
+            "background": "#131313",
+            "primary-fixed-dim": "#adc6ff",
+            "on-tertiary": "#502400",
+            "surface-container-high": "#2a2a2a",
+            "inverse-surface": "#e5e2e1",
+            "outline-variant": "#424754",
+            "on-primary-fixed-variant": "#004395",
+            "secondary-container": "#6f00be",
+            "on-surface-variant": "#c2c6d6",
+            "on-tertiary-fixed-variant": "#723600",
+            "on-error": "#690005",
+            "error-container": "#93000a",
+            "secondary-fixed-dim": "#ddb7ff",
+            "on-primary": "#002e6a",
+            "outline": "#8c909f",
+            "on-tertiary-container": "#461f00",
+            "on-primary-fixed": "#001a42",
+            "surface-dim": "#131313",
+            "inverse-on-surface": "#313030",
+            "on-secondary-fixed": "#2c0051",
+            "on-tertiary-fixed": "#311400",
+            "surface-bright": "#3a3939",
+            "surface-container-highest": "#353534",
+            "surface-tint": "#adc6ff",
+            "tertiary-fixed-dim": "#ffb786",
+            "on-secondary-container": "#d6a9ff",
+            "surface-container": "#201f1f",
+            "surface-container-lowest": "#0e0e0e",
+            "inverse-primary": "#005ac2",
+            "surface": "#131313",
+            "on-secondary-fixed-variant": "#6900b3",
+            "tertiary": "#ffb786",
+            "secondary-fixed": "#f0dbff",
+            "primary-fixed": "#d8e2ff",
+            "on-error-container": "#ffdad6",
+            "surface-variant": "#353534",
+            "on-surface": "#e5e2e1",
+            "on-primary-container": "#00285d",
+            "secondary": "#ddb7ff",
+            "primary-container": "#4d8eff",
+            "tertiary-container": "#df7412",
+            "surface-container-low": "#1c1b1b",
+            "primary": "#adc6ff"
+          },
+          fontFamily: {
+            "headline": ["Inter"],
+            "body": ["Inter"],
+            "label": ["Inter"],
+            "mono": ["JetBrains Mono"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+  </script>
+<style>
+    .glass-overlay {
+      background: rgba(14, 14, 14, 0.8);
+      backdrop-filter: blur(8px);
+    }
+    .modal-container {
+      background: rgba(42, 42, 42, 0.7);
+      backdrop-filter: blur(24px);
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30">
+<!-- Main Background Shell (Simulated Integrations Page) -->
+<div class="min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#131313] flex justify-between items-center px-8 h-16 w-full max-w-full">
+<div class="text-xl font-black tracking-tighter text-[#ADC6FF] dark:text-[#ADC6FF]">RepoIQ</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors font-['Inter'] tracking-tight body-md:text-[0.875rem]" href="#">Dashboard</a>
+<a class="text-[#ADC6FF] font-bold border-b-2 border-[#ADC6FF] pb-1 font-['Inter'] tracking-tight body-md:text-[0.875rem]" href="#">Integrations</a>
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors font-['Inter'] tracking-tight body-md:text-[0.875rem]" href="#">Deployments</a>
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors font-['Inter'] tracking-tight body-md:text-[0.875rem]" href="#">Settings</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#C2C6D6] hover:bg-[#2A2A2A] p-2 rounded-full cursor-pointer transition-all">notifications</span>
+<span class="material-symbols-outlined text-[#C2C6D6] hover:bg-[#2A2A2A] p-2 rounded-full cursor-pointer transition-all">help_outline</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="User profile avatar" data-alt="minimalist user avatar placeholder with a dark theme aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0u9X6tIWWSeiCMHtjvGhYPAEXkGzuJi69hgqoBr-h6JuTs61Dzo1yllDi-HqyZTlMBSa-GpMb5YLAvhV0JvWjB5vF_ZsZ0QWaWgH36jhXpw56V_80VsvJTb-wQggNLp-svyDgWWBGgd5i_nH8JE3Ir1u7xA53twrY2JR7QSRr9zKT5XiA-6x1VKZiu-pJd3diDInupmcJxrUzZN7AbNCOnNsOgaHR-TYJIqpURTkYj-DhZdHx0k1KAIoCT2ehi4daIiAdTbDZbjwt"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 pt-16">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-[#201F1F] flex flex-col py-6 px-4 gap-4 shadow-[20px_0_40px_rgba(0,0,0,0.4)]">
+<div class="flex items-center gap-3 px-2 mb-4">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center text-on-primary font-bold">M</div>
+<div>
+<div class="text-sm font-bold text-[#ADC6FF]">The Monolithic</div>
+<div class="text-[10px] text-on-surface-variant font-mono uppercase tracking-widest">Enterprise Tier</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="flex items-center gap-3 px-3 py-2 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] rounded transition-colors cursor-pointer font-['JetBrains_Mono'] text-sm uppercase tracking-widest">
+<span class="material-symbols-outlined text-lg">dashboard</span> Overview
+          </div>
+<div class="flex items-center gap-3 px-3 py-2 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] rounded transition-colors cursor-pointer font-['JetBrains_Mono'] text-sm uppercase tracking-widest">
+<span class="material-symbols-outlined text-lg">code_blocks</span> Source Control
+          </div>
+<div class="flex items-center gap-3 px-3 py-2 bg-[#2A2A2A] text-[#ADC6FF] border-r-4 border-[#ADC6FF] rounded-l transition-colors cursor-pointer font-['JetBrains_Mono'] text-sm uppercase tracking-widest">
+<span class="material-symbols-outlined text-lg">rocket_launch</span> CI/CD
+          </div>
+<div class="flex items-center gap-3 px-3 py-2 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] rounded transition-colors cursor-pointer font-['JetBrains_Mono'] text-sm uppercase tracking-widest">
+<span class="material-symbols-outlined text-lg">verified_user</span> Security
+          </div>
+<div class="flex items-center gap-3 px-3 py-2 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] rounded transition-colors cursor-pointer font-['JetBrains_Mono'] text-sm uppercase tracking-widest">
+<span class="material-symbols-outlined text-lg">terminal</span> API Access
+          </div>
+</nav>
+<div class="pt-4 mt-4 border-t border-outline-variant/10">
+<div class="flex items-center gap-3 px-3 py-2 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] rounded transition-colors cursor-pointer font-['JetBrains_Mono'] text-sm uppercase tracking-widest">
+<span class="material-symbols-outlined text-lg">menu_book</span> Documentation
+          </div>
+<div class="flex items-center gap-3 px-3 py-2 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] rounded transition-colors cursor-pointer font-['JetBrains_Mono'] text-sm uppercase tracking-widest">
+<span class="material-symbols-outlined text-lg">support_agent</span> Support
+          </div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 flex-1 p-12 bg-surface">
+<div class="max-w-6xl mx-auto">
+<header class="mb-12 flex justify-between items-end">
+<div>
+<h1 class="text-5xl font-black tracking-tighter mb-4">Integrations</h1>
+<p class="text-on-surface-variant max-w-xl">Manage your external service connections and automate your delivery pipeline across the ecosystem.</p>
+</div>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary-container px-6 py-2.5 rounded-md font-bold text-sm tracking-tight active:scale-95 transition-transform">
+              New Integration
+            </button>
+</header>
+<!-- Simulated Content Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/5">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">terminal</span>
+</div>
+<span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-mono tracking-widest uppercase rounded">Active</span>
+</div>
+<h3 class="font-bold text-lg mb-1">GitHub Enterprise</h3>
+<p class="text-sm text-on-surface-variant mb-4">Mirroring 42 repositories. Last sync: 4m ago.</p>
+<div class="h-1 bg-surface-container-highest w-full rounded-full overflow-hidden">
+<div class="h-full bg-primary w-3/4"></div>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/5">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">chat</span>
+</div>
+<span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-mono tracking-widest uppercase rounded">Active</span>
+</div>
+<h3 class="font-bold text-lg mb-1">Slack Notifications</h3>
+<p class="text-sm text-on-surface-variant mb-4">Connected to #ops-war-room.</p>
+<div class="h-1 bg-surface-container-highest w-full rounded-full overflow-hidden">
+<div class="h-full bg-primary w-full"></div>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/5 flex items-center justify-center border-dashed border-2 border-outline-variant/20 hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="text-center">
+<span class="material-symbols-outlined text-4xl text-outline mb-2">add_circle</span>
+<p class="font-mono text-xs uppercase tracking-widest text-outline">Connect Service</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-6 glass-overlay">
+<!-- Modal Content -->
+<div class="modal-container w-full max-w-2xl bg-[#2A2A2A] rounded-xl border border-outline-variant/20 shadow-[0px_20px_40px_rgba(0,0,0,0.4)] overflow-hidden">
+<!-- Modal Header -->
+<div class="px-8 pt-8 pb-6 flex justify-between items-center">
+<h2 class="text-2xl font-black tracking-tight text-[#ADC6FF]">Add Integration</h2>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Search Bar -->
+<div class="px-8 pb-6">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-surface-container-lowest border-none rounded-lg pl-12 py-3.5 text-sm font-mono placeholder:text-outline-variant focus:ring-1 focus:ring-surface-tint transition-all" placeholder="Search for a service (e.g. GitHub, Slack)..." type="text"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 opacity-40">
+<span class="px-1.5 py-0.5 border border-outline rounded text-[10px] font-mono">CMD</span>
+<span class="px-1.5 py-0.5 border border-outline rounded text-[10px] font-mono">K</span>
+</div>
+</div>
+</div>
+<!-- Grid of Services -->
+<div class="px-8 pb-8">
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+<!-- Service Card: GitHub -->
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-lg border border-outline-variant/5 hover:bg-surface-container-high hover:border-primary/20 transition-all group active:scale-95">
+<div class="w-12 h-12 mb-3 bg-surface-container-highest rounded-md flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+<img alt="GitHub icon" class="w-8 h-8 opacity-80 group-hover:opacity-100" data-alt="minimalist white github octocat silhouette on a dark tech background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9Rl2x6pWlAcMiQ0eUVZ_8BQo_4dEcziLNygU2kHyUoz9EpGHFNbPz2g5j3Wj7QxzGYvPEePPTqdhM_Dd0TX5aKWSVlyTRgq9uEHL6Op0YB8xRHVASBf7hnShHAXmBeYX4kwKPfwhxstHdml_bwdXIJxT3frAtj-UzR8oB1ZHB4aEBwvRRA3BAYhUDNTc3Ud7pN9VtOnZEccOceyv-q61Epy48L9y1qiNRRhHjsg1piKIuxZfwPK6NvMZwMuMrDFRy9HWbRc7V-E1k"/>
+</div>
+<span class="text-xs font-bold tracking-tight">GitHub</span>
+</button>
+<!-- Service Card: Slack -->
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-lg border border-outline-variant/5 hover:bg-surface-container-high hover:border-primary/20 transition-all group active:scale-95">
+<div class="w-12 h-12 mb-3 bg-surface-container-highest rounded-md flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+<img alt="Slack icon" class="w-8 h-8 opacity-80 group-hover:opacity-100" data-alt="minimalist slack logo with its characteristic grid colors presented as a refined abstract icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCw9dvikrA39d2-36olS6aQG8PGsLw8NbOvw6z8q_m-M7zkqc5zHBOLIW1p_z3MP_gGnkQUjgEj5Lb7d1uNgqM0Lw94unG0_3XHQ_kU10NPghYWG0O8NZfUoVj86VtVI_V4hMfU0VHtKfe24PmJVEiYxtXwmzbp0vWENCIMwWINiABjquoV5V7gMPj4xuePTW0KepLodzPvMOyVFybWdnE3PhEwrJqNnRSMeeYy8M6OqhmKW3_l5NSi8TSz_aLViN-ONkY86EAXQxqC"/>
+</div>
+<span class="text-xs font-bold tracking-tight">Slack</span>
+</button>
+<!-- Service Card: Discord -->
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-lg border border-outline-variant/5 hover:bg-surface-container-high hover:border-primary/20 transition-all group active:scale-95">
+<div class="w-12 h-12 mb-3 bg-surface-container-highest rounded-md flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+<img alt="Discord icon" class="w-8 h-8 opacity-80 group-hover:opacity-100" data-alt="discord clyde logo silhouette in white against a deep charcoal tech surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkxVpNem9BrXs6N2FmTfTEeNKvTnYoQeUs8aR2bMYltr-LSVeMQHHj8K3H_iCOgnWRi1luGD7BYzKWr_kXG0_HHp1ZimD-oOBO4tcbFJxeGZHbnaKXFXkFYc87sG9n8jMoySXJA2lPedipSjKKXhwgDZ37ScAP-3jMg6w_IAWpcQu410QWaiHUc5G-YZO5P2AgzOGz88qkp9X6oiInBeLpVYLSF7ZnL3xrvqjdZCJ1OvDemOemGYo5bc8oCXQPY0jqXFzyXXnV4I77"/>
+</div>
+<span class="text-xs font-bold tracking-tight">Discord</span>
+</button>
+<!-- Service Card: Linear -->
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-lg border border-outline-variant/5 hover:bg-surface-container-high hover:border-primary/20 transition-all group active:scale-95">
+<div class="w-12 h-12 mb-3 bg-surface-container-highest rounded-md flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+<img alt="Linear icon" class="w-8 h-8 opacity-80 group-hover:opacity-100" data-alt="linear app logo with its characteristic geometric circular shape in a minimalist vector style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXnbQgmIjfbSWl8W1pFeOtvdaxx-LptG_uq4wIiIcPBlvn6uS_Ay6E8nfJg4OBigcW1zlwXbfd9nru3Yyr_VfK2sRubQiBHbAY9IM4X7B-AwLc2urMjojZXGohtVWhtqF1rb310Yv5qVZCK6xGKcRoIBXxL7YDNG1hqYgyJMRrtxzIeVRfc7yk-6uOWhBNF2EVYlIIxrCzRQEgk7uO_o-EhWM6ONuXNI3SCJdDXw2lRDGSuKakaUitxGNtHsOmZ1kJ4Fwom-AexRSE"/>
+</div>
+<span class="text-xs font-bold tracking-tight">Linear</span>
+</button>
+<!-- Service Card: VS Code -->
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-lg border border-outline-variant/5 hover:bg-surface-container-high hover:border-primary/20 transition-all group active:scale-95">
+<div class="w-12 h-12 mb-3 bg-surface-container-highest rounded-md flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+<img alt="VS Code icon" class="w-8 h-8 opacity-80 group-hover:opacity-100" data-alt="visual studio code logo as a sleek blue icon against a dark brushed metal background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeOOn1ACPFc2ofDgpK-TOCSadXcOZHGLaIeMbxX87tteScFejf0P4NB2TGElkFwYXSb7oCyOQutk0C0YqoAUb7zC3JRftgY27fFoUaVNOLhnFNi-KtyxVYLpQm2XikXJwy_y7Iy1R5Q-uU8ValBtonlgEMBDhBYESlvVmDMCrtqeELti-bYI4SZsQoQBd3bmj6sHMG9r0nTwHNn9k0wFcyNoLSUMl1Vj2O5QM8FCLn8mHQEbrg6wdXL4RsQn3502bCzuLvnAOBmSSG"/>
+</div>
+<span class="text-xs font-bold tracking-tight">VS Code</span>
+</button>
+<!-- Service Card: JIRA -->
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-lg border border-outline-variant/5 hover:bg-surface-container-high hover:border-primary/20 transition-all group active:scale-95">
+<div class="w-12 h-12 mb-3 bg-surface-container-highest rounded-md flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+<img alt="JIRA icon" class="w-8 h-8 opacity-80 group-hover:opacity-100" data-alt="atlassian jira logo icon in light blue on a dark matte tech surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeDcOww06J2VKeNzAxKfMSMYAHdw0UahlI10_xABoV9PJLuLxvL5iTYGbKYrpunsKCBPWsn0dg35zYbo_aqIKyqSLybnSsc6F0YgAkWYP1FQ2mNOy8A6Wt4wyVvVWoJ6SxUg6mivAwSDF3B7J_cQWInPX-_gKjSxnGqGegEn_IbCHJDiQV20McDJV2aeC7KOImw0M-o8xgRjutieGglbrKnU1qpKxBY78EmlzDwR0HkdnEigFo1oie0TZjxy-0Mx1N2QtFju_LlXph"/>
+</div>
+<span class="text-xs font-bold tracking-tight">JIRA</span>
+</button>
+<!-- Service Card: Bitbucket -->
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-lg border border-outline-variant/5 hover:bg-surface-container-high hover:border-primary/20 transition-all group active:scale-95">
+<div class="w-12 h-12 mb-3 bg-surface-container-highest rounded-md flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+<img alt="Bitbucket icon" class="w-8 h-8 opacity-80 group-hover:opacity-100" data-alt="bitbucket logo silhouette with its sharp bucket shape in white on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByzBqkAyzTNsu3sv3gebu_pK5Okv2AExUwS1D25m957Zt6xNOoWKr1YDma511x2ogs9Z4bcJAxzqzDjcXuTs3fbTSe5dbxtNz21vi8MNXBDnDMdEIMGICnq4OLS4WwmYPR3c5H7OXvHZQpfC5gkTrPHGiPMIRIDuo8MqovAnZFWcMijiItO7dD1T6XTX7zGjEsz4q_0xuK-f7VH8o-_jfOPixt1pTab_bRP6Q9Uq3b6BvxBBI50j2k1q5_C1caJ5N-9tIZPb-Lljx6"/>
+</div>
+<span class="text-xs font-bold tracking-tight">Bitbucket</span>
+</button>
+<!-- Service Card: GitLab -->
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-lg border border-outline-variant/5 hover:bg-surface-container-high hover:border-primary/20 transition-all group active:scale-95">
+<div class="w-12 h-12 mb-3 bg-surface-container-highest rounded-md flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+<img alt="GitLab icon" class="w-8 h-8 opacity-80 group-hover:opacity-100" data-alt="gitlab tanuki logo silhouette in orange-white tones on a deep charcoal tech surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3IUcds_uzKoa0i7V_gZmArVItVtft54OKv38vnEW9EiJxTEbRadO8zv1sgVkzkJkhMaLRh7n6RxYPrFkIq65PH5syvFx_iS2BqL_Q4p7DAcN367spK4aOCK9uYzqlpB0PUETVBOITpF1t1fi64FvmwybRp_lxrlFdSHM7IbWadXXzukX-boYMUve4RGyNRV4lHW3kWbBftlenrHzI2WJsHunfJn8Ofb7hq72JD5snh1tVr-zLDGVqf1TtUBDZdMrzirMIKGxn9ZQ"/>
+</div>
+<span class="text-xs font-bold tracking-tight">GitLab</span>
+</button>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="px-8 py-6 bg-surface-container-lowest flex justify-between items-center">
+<p class="text-[10px] font-mono text-on-surface-variant uppercase tracking-widest">8 services available</p>
+<div class="flex gap-3">
+<button class="px-6 py-2 text-sm font-bold text-on-surface-variant hover:text-on-surface transition-colors">
+            Cancel
+          </button>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary-container px-6 py-2 rounded-md font-bold text-sm tracking-tight active:scale-95 transition-transform">
+            Continue
+          </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

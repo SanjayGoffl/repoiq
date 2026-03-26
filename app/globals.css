@@ -1,66 +1,288 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── Stitch "Monolithic Intelligence" CSS Custom Properties ── */
 @layer base {
   :root {
-    --background: 222 47% 10%;
-    --foreground: 0 0% 100%;
-    --card: 217 42% 16%;
-    --card-foreground: 0 0% 100%;
-    --popover: 217 42% 16%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 150 34% 35%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 217 42% 20%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 210 18% 60%;
-    --muted-foreground: 210 18% 60%;
-    --accent: 217 42% 20%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 62% 35%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 217 30% 25%;
-    --input: 217 30% 25%;
-    --ring: 150 34% 35%;
-    --radius: 0.5rem;
+    /* Material Design Semantic Tokens */
+    --surface: #131313;
+    --surface-dim: #131313;
+    --surface-bright: #3a3939;
+    --surface-container: #201f1f;
+    --surface-container-low: #1c1b1b;
+    --surface-container-lowest: #0e0e0e;
+    --surface-container-high: #2a2a2a;
+    --surface-container-highest: #353534;
+    --surface-variant: #353534;
+    --surface-tint: #adc6ff;
+
+    --primary: #adc6ff;
+    --primary-container: #4d8eff;
+    --on-primary: #002e6a;
+    --on-primary-container: #00285d;
+
+    --secondary: #ddb7ff;
+    --secondary-container: #6f00be;
+    --on-secondary: #490080;
+    --on-secondary-container: #d6a9ff;
+
+    --tertiary: #ffb786;
+    --tertiary-container: #df7412;
+
+    --on-surface: #e5e2e1;
+    --on-surface-variant: #c2c6d6;
+
+    --outline: #8c909f;
+    --outline-variant: #424754;
+
+    --error: #ffb4ab;
+    --error-container: #93000a;
+
+    /* shadcn/ui var overrides */
+    --background: 10 10% 7.5%;
+    --foreground: 30 10% 89%;
+    --card: 10 5% 12%;
+    --card-foreground: 30 10% 89%;
+    --popover: 10 5% 20%;
+    --popover-foreground: 30 10% 89%;
+    --primary: 215 100% 83%;
+    --primary-foreground: 220 100% 20%;
+    --secondary: 270 100% 84%;
+    --secondary-foreground: 270 100% 25%;
+    --muted: 217 10% 55%;
+    --muted-foreground: 217 10% 55%;
+    --accent: 10 5% 16%;
+    --accent-foreground: 30 10% 89%;
+    --destructive: 3 100% 84%;
+    --destructive-foreground: 0 100% 20%;
+    --border: 228 10% 25%;
+    --input: 228 10% 18%;
+    --ring: 215 100% 83%;
+    --radius: 0.375rem;
   }
 
   * {
     @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    @apply bg-navy text-white antialiased;
+    background-color: #131313;
+    color: #e5e2e1;
+    font-family: 'Inter', system-ui, sans-serif;
+    @apply antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(173,198,255,0.06) 0%, transparent 100%);
+  }
+
+  /* ── Typography Scale ── */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.02em;
+    color: #e5e2e1;
+  }
+
+  code, pre, kbd, samp {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
   }
 }
 
+/* ── Design System Utilities ── */
 @layer utilities {
+  /* Surface hierarchy classes (matching Stitch design tokens) */
+  .surface          { background-color: #131313; }
+  .surface-dim      { background-color: #131313; }
+  .surface-bright   { background-color: #3a3939; }
+  .surface-container        { background-color: #201f1f; }
+  .surface-container-low    { background-color: #1c1b1b; }
+  .surface-container-lowest { background-color: #0e0e0e; }
+  .surface-container-high   { background-color: #2a2a2a; }
+  .surface-container-highest{ background-color: #353534; }
+
+  /* Text token classes */
+  .text-on-surface         { color: #e5e2e1; }
+  .text-on-surface-variant { color: #c2c6d6; }
+  .text-primary-token      { color: #adc6ff; }
+  .text-secondary-token    { color: #ddb7ff; }
+  .text-tertiary-token     { color: #ffb786; }
+  .text-outline            { color: #8c909f; }
+
+  /* Gradient CTAs */
+  .btn-primary-gradient {
+    background: linear-gradient(135deg, #adc6ff 0%, #4d8eff 100%);
+    color: #002e6a;
+    font-weight: 600;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+  }
+  .btn-primary-gradient:hover {
+    box-shadow: 0 0 0 2px rgba(173,198,255,0.3), 0 8px 24px rgba(0,0,0,0.4);
+    opacity: 0.95;
+  }
+
+  /* Ghost border (felt, not seen) */
+  .ghost-border {
+    border: 1px solid rgba(66, 71, 84, 0.15);
+  }
+  .ghost-border-visible {
+    border: 1px solid rgba(66, 71, 84, 0.4);
+  }
+
+  /* Glassmorphism */
+  .glass {
+    background: rgba(53, 53, 52, 0.70);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+  .glass-light {
+    background: rgba(32, 31, 31, 0.80);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  /* Tonal elevation shadows (ambient, not grey) */
+  .shadow-ambient {
+    box-shadow: 0px 20px 40px rgba(0,0,0,0.4);
+  }
+  .shadow-float {
+    box-shadow: 0px 12px 32px rgba(0,0,0,0.5);
+  }
+  .shadow-glow {
+    box-shadow: 0 0 24px rgba(173,198,255,0.12);
+  }
+  .shadow-glow-lg {
+    box-shadow: 0 0 48px rgba(173,198,255,0.18);
+  }
+
+  /* Primary glow accents */
+  .accent-glow {
+    box-shadow:
+      0 0 0 1px rgba(173,198,255,0.12),
+      0 0 24px rgba(173,198,255,0.10);
+  }
+  .accent-glow-hover:hover {
+    box-shadow:
+      0 0 0 1px rgba(173,198,255,0.25),
+      0 0 36px rgba(173,198,255,0.18);
+  }
+
+  /* Monospace technical label style */
+  .label-mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #8c909f;
+  }
+
+  /* Primary accent left bar for AI-highlighted blocks */
+  .ai-accent-bar {
+    border-left: 2px solid #adc6ff;
+  }
+
+  /* Secondary (AI insight) accent */
+  .ai-insight-chip {
+    background: rgba(221,183,255,0.08);
+    border: 1px solid rgba(221,183,255,0.2);
+    color: #ddb7ff;
+    font-size: 0.6875rem;
+    font-family: 'JetBrains Mono', monospace;
+    border-radius: 9999px;
+    padding: 0.125rem 0.5rem;
+  }
+
+  /* Shimmer loading animation */
+  .shimmer-bg {
+    background: linear-gradient(
+      90deg,
+      rgba(42,42,42,0) 0%,
+      rgba(53,53,52,0.8) 50%,
+      rgba(42,42,42,0) 100%
+    );
+    background-size: 200% auto;
+    animation: shimmer 2.4s linear infinite;
+  }
+
+  /* Scrollbar styling */
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: #374151 transparent;
+    scrollbar-color: #424754 transparent;
   }
-
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: #374151;
+    background-color: #424754;
     border-radius: 3px;
+  }
+
+  /* Section separator (tonal, not border line) */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(66,71,84,0.2), transparent);
+  }
+
+  /* Fade-in-up stagger helpers */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+
+  /* Terminal cursor */
+  .terminal-cursor::after {
+    content: '▋';
+    animation: terminal-blink 1.1s step-end infinite;
+    color: #adc6ff;
+    margin-left: 2px;
+  }
+
+  /* VS Code–style active tab indicator */
+  .tab-active {
+    border-top: 2px solid #adc6ff;
+    background-color: #131313;
+    color: #e5e2e1;
+  }
+  .tab-inactive {
+    background-color: #1c1b1b;
+    color: #8c909f;
+  }
+
+  /* Hover surface shift — no dividers needed */
+  .hover-lift {
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .hover-lift:hover {
+    background-color: #2a2a2a;
+    box-shadow: 0 0 0 1px rgba(66,71,84,0.15);
   }
 }
 
-/* Print styles for PDF export */
-@media print {
-  @page {
-    margin: 1.5cm;
-    size: A4;
+/* ── Global interactive state animations ── */
+@layer components {
+  .btn-ghost-interactive {
+    @apply transition-all duration-200 ease-in-out;
   }
+  .btn-ghost-interactive:hover {
+    background-color: rgba(173,198,255,0.06);
+    color: #adc6ff;
+  }
+  .btn-ghost-interactive:active {
+    background-color: rgba(173,198,255,0.12);
+  }
+}
+
+/* ── Print styles ── */
+@media print {
+  @page { margin: 1.5cm; size: A4; }
 
   body {
     background: white !important;
@@ -70,20 +292,10 @@
     print-color-adjust: exact;
   }
 
-  /* Hide navigation, sidebar, interactive elements, and mobile nav */
-  aside,
-  nav,
-  footer,
-  .print\\:hidden,
-  button,
-  select,
-  input,
-  form,
-  details {
+  aside, nav, footer, .print\:hidden, button, select, input, form, details {
     display: none !important;
   }
 
-  /* Make report content fill the page */
   main {
     margin: 0 !important;
     padding: 0 !important;
@@ -91,37 +303,14 @@
     width: 100% !important;
   }
 
-  /* Remove fixed positioning */
-  * {
-    position: static !important;
-    float: none !important;
-  }
+  * { position: static !important; float: none !important; }
 
-  /* Style cards for print */
-  [class*="bg-navy"],
-  [class*="bg-card"] {
+  [class*="bg-"], [class*="surface"] {
     background: #f8f9fa !important;
     border: 1px solid #dee2e6 !important;
     box-shadow: none !important;
   }
 
-  [class*="text-white"] {
-    color: #1a1a1a !important;
-  }
-
-  [class*="text-muted"] {
-    color: #555 !important;
-  }
-
-  [class*="text-green"] {
-    color: #16a34a !important;
-  }
-
-  [class*="border-border"] {
-    border-color: #dee2e6 !important;
-  }
-
-  /* Ensure code blocks are readable */
   pre, code {
     background: #f1f5f9 !important;
     color: #1e293b !important;
@@ -131,35 +320,8 @@
     word-break: break-word !important;
   }
 
-  /* Keep badges visible with print-safe colors */
-  [class*="badge"],
-  [class*="Badge"] {
-    border: 1px solid #999 !important;
-    color: #333 !important;
-    background: #eee !important;
-  }
-
-  /* Page breaks */
-  section {
-    page-break-inside: avoid;
-  }
-
-  h1, h2, h3 {
-    page-break-after: avoid;
-    color: #1a1a1a !important;
-  }
-
-  /* Progress bars should show their fill */
-  [role="progressbar"] > div {
-    background: #16a34a !important;
-  }
-
-  /* Grid layouts should stack on print */
-  .grid {
-    display: block !important;
-  }
-
-  .grid > * {
-    margin-bottom: 0.5rem !important;
-  }
+  h1, h2, h3 { page-break-after: avoid; color: #1a1a1a !important; }
+  section { page-break-inside: avoid; }
+  .grid { display: block !important; }
+  .grid > * { margin-bottom: 0.5rem !important; }
 }

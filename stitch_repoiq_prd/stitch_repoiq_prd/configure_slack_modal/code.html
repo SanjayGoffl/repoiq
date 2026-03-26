@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error": "#ffb4ab",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-background": "#e5e2e1",
+                        "on-secondary": "#490080",
+                        "background": "#131313",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-tertiary": "#502400",
+                        "surface-container-high": "#2a2a2a",
+                        "inverse-surface": "#e5e2e1",
+                        "outline-variant": "#424754",
+                        "on-primary-fixed-variant": "#004395",
+                        "secondary-container": "#6f00be",
+                        "on-surface-variant": "#c2c6d6",
+                        "on-tertiary-fixed-variant": "#723600",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#ddb7ff",
+                        "on-primary": "#002e6a",
+                        "outline": "#8c909f",
+                        "on-tertiary-container": "#461f00",
+                        "on-primary-fixed": "#001a42",
+                        "surface-dim": "#131313",
+                        "inverse-on-surface": "#313030",
+                        "on-secondary-fixed": "#2c0051",
+                        "on-tertiary-fixed": "#311400",
+                        "surface-bright": "#3a3939",
+                        "surface-container-highest": "#353534",
+                        "surface-tint": "#adc6ff",
+                        "tertiary-fixed-dim": "#ffb786",
+                        "on-secondary-container": "#d6a9ff",
+                        "surface-container": "#201f1f",
+                        "surface-container-lowest": "#0e0e0e",
+                        "inverse-primary": "#005ac2",
+                        "surface": "#131313",
+                        "on-secondary-fixed-variant": "#6900b3",
+                        "tertiary": "#ffb786",
+                        "secondary-fixed": "#f0dbff",
+                        "primary-fixed": "#d8e2ff",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#353534",
+                        "on-surface": "#e5e2e1",
+                        "on-primary-container": "#00285d",
+                        "secondary": "#ddb7ff",
+                        "primary-container": "#4d8eff",
+                        "tertiary-container": "#df7412",
+                        "surface-container-low": "#1c1b1b",
+                        "primary": "#adc6ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(53, 53, 52, 0.7);
+            backdrop-filter: blur(24px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #424754;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body antialiased">
+<!-- Header Navigation Shell (TopAppBar) -->
+<header class="fixed top-0 w-full z-50 bg-[#131313] flex justify-between items-center px-8 h-16 w-full max-w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tighter text-[#ADC6FF]">RepoIQ</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors font-['Inter'] tracking-tight body-md:text-[0.875rem]" href="#">Dashboard</a>
+<a class="text-[#ADC6FF] font-bold border-b-2 border-[#ADC6FF] pb-1 font-['Inter'] tracking-tight body-md:text-[0.875rem]" href="#">Integrations</a>
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors font-['Inter'] tracking-tight body-md:text-[0.875rem]" href="#">Deployments</a>
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors font-['Inter'] tracking-tight body-md:text-[0.875rem]" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#C2C6D6] hover:bg-[#2A2A2A] rounded-full transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-[#C2C6D6] hover:bg-[#2A2A2A] rounded-full transition-all">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-high border border-outline-variant/20">
+<img alt="User Profile" data-alt="Close-up professional headshot of a developer in a modern studio setting with soft blue ambient lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxpBRf3muF5pZHmk_PN1bCmtzUb-9Is2s8AOQi--ApUEKlyIVj_f1SgG-q54EZh_Pl3HhCKrPKvAttlD_RVZaCL8NC8dGXj-8PJK0IjXQQ0Ae_FqJdbnjphuZyp2wQ0VtyzfydXIQ-bciZ1dEBMsF9U-oKBNF7nqKNwAJugiRYEwWV-naeZtJvEVJi8S7gL8HCgFHaaUy3r5Vmsgc0e5XXSVjG-LX7C1cv_UaO6rFc204riDFYLRNKGkb0IdvAsOlWaApYH7VHkMls"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation Shell (SideNavBar) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-[#201F1F] flex flex-col py-6 px-4 gap-4 shadow-[20px_0_40px_rgba(0,0,0,0.4)] z-40">
+<div class="flex items-center gap-3 px-2 mb-4">
+<div class="w-10 h-10 bg-[#2A2A2A] flex items-center justify-center rounded-lg border border-outline-variant/10">
+<span class="material-symbols-outlined text-[#ADC6FF]">hub</span>
+</div>
+<div>
+<p class="text-[#ADC6FF] font-bold text-sm">The Monolithic</p>
+<p class="font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-[#C2C6D6] opacity-70">Enterprise Tier</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-all font-['JetBrains_Mono'] text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">dashboard</span> Overview
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded bg-[#2A2A2A] text-[#ADC6FF] border-r-4 border-[#ADC6FF] transition-all font-['JetBrains_Mono'] text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">code_blocks</span> Source Control
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-all font-['JetBrains_Mono'] text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">rocket_launch</span> CI/CD
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-all font-['JetBrains_Mono'] text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">verified_user</span> Security
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-all font-['JetBrains_Mono'] text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">terminal</span> API Access
+            </a>
+</nav>
+<div class="mt-auto flex flex-col gap-1 pt-4 border-t border-outline-variant/10">
+<a class="flex items-center gap-3 px-3 py-2 text-[#C2C6D6] opacity-70 hover:opacity-100 transition-all font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-sm">menu_book</span> Documentation
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#C2C6D6] opacity-70 hover:opacity-100 transition-all font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-sm">support_agent</span> Support
+            </a>
+</div>
+</aside>
+<!-- Main Content Area / Canvas -->
+<main class="ml-64 pt-16 min-h-screen bg-surface-container-lowest relative overflow-hidden">
+<!-- Background decorative elements -->
+<div class="absolute top-20 right-20 w-96 h-96 bg-primary/5 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-20 left-20 w-96 h-96 bg-secondary/5 rounded-full blur-[120px]"></div>
+<!-- Dashboard Placeholder Content -->
+<div class="p-8 max-w-7xl mx-auto opacity-40 select-none pointer-events-none">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h1 class="text-5xl font-extrabold tracking-tighter text-on-surface mb-2">Integrations</h1>
+<p class="text-on-surface-variant max-w-xl">Manage your external service connections and architectural signal routing.</p>
+</div>
+<div class="flex gap-4">
+<div class="h-10 w-32 bg-surface-container rounded"></div>
+<div class="h-10 w-44 bg-primary-container rounded"></div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-6">
+<div class="h-64 bg-surface-container rounded-xl"></div>
+<div class="h-64 bg-surface-container rounded-xl border border-primary/20"></div>
+<div class="h-64 bg-surface-container rounded-xl"></div>
+</div>
+</div>
+<!-- MODAL OVERLAY -->
+<div class="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm">
+<div class="glass-panel w-full max-w-[560px] rounded-xl overflow-hidden shadow-[0px_20px_40px_rgba(0,0,0,0.6)] border border-outline-variant/10 animate-in fade-in zoom-in duration-300">
+<!-- Modal Header -->
+<div class="p-8 pb-4 flex flex-col items-center text-center">
+<div class="relative mb-6">
+<div class="w-16 h-16 bg-[#131313] rounded-2xl flex items-center justify-center shadow-inner border border-outline-variant/20 p-3">
+<img alt="Slack Logo" class="w-full h-full object-contain" data-alt="Vector illustration of the Slack logo with its vibrant four-color palette on a crisp dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9zJFgey82szeIdQpVGOZlllfl897YeNoTpgz93hmYRClVI2AUqZG9olrBssHwQhKf2vOkWgolmaq4Rv_kDQat78YbAqCd-K7YXIWnFAKk20eoVP6TydFIkU2_4mxwxnbsP39y5JoTnoCQfk8glImJwo7BxOkrBDfvl7NEd84OBFDw2nvRNe4V-I5cf_LdDDxMajgGn_IqvzUVRF9tIJ_QeKbEO67vQzRH4YCDtCxoWGX8eQ_DkwKndznjLd72WdLqZLge-sF4iCW9"/>
+</div>
+<div class="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center border-2 border-surface-container-highest">
+<span class="material-symbols-outlined text-[14px] text-on-primary font-bold">link</span>
+</div>
+</div>
+<h2 class="text-2xl font-black tracking-tight text-on-surface mb-2">Connect Slack</h2>
+<p class="text-on-surface-variant text-sm max-w-[320px] leading-relaxed">
+                        RepoIQ will send real-time architectural insights and bug alerts to your chosen channels.
+                    </p>
+</div>
+<!-- Modal Form Body -->
+<div class="px-8 py-4 space-y-6">
+<!-- Step Indicator (Visual Cue) -->
+<div class="flex justify-center gap-2 mb-2">
+<div class="h-1 w-8 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full w-full bg-primary/20"></div>
+</div>
+<div class="h-1 w-8 bg-primary rounded-full"></div>
+<div class="h-1 w-8 bg-surface-container-high rounded-full"></div>
+</div>
+<!-- Section 1: Workspace Selection -->
+<div class="space-y-2">
+<label class="font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-on-surface-variant block ml-1">Workspace selection</label>
+<div class="relative group">
+<button class="w-full bg-surface-container-lowest hover:bg-surface-container-high transition-colors h-12 px-4 rounded-lg flex items-center justify-between text-left border border-transparent focus:border-primary/50 outline-none">
+<div class="flex items-center gap-3">
+<div class="w-6 h-6 bg-secondary-container/20 rounded-md flex items-center justify-center text-[10px] font-bold text-secondary">A</div>
+<span class="text-sm font-medium">Acme Engineering</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Section 2: Channel Selection -->
+<div class="space-y-2">
+<label class="font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-on-surface-variant block ml-1">Channel selection</label>
+<div class="relative bg-surface-container-lowest rounded-lg border border-outline-variant/10">
+<!-- Search Bar -->
+<div class="flex items-center px-4 h-10 border-b border-outline-variant/5">
+<span class="material-symbols-outlined text-sm text-on-surface-variant mr-3">search</span>
+<input class="bg-transparent border-none text-sm w-full focus:ring-0 placeholder:text-outline-variant/60" placeholder="Search channels..." type="text"/>
+</div>
+<!-- List -->
+<div class="max-h-32 overflow-y-auto custom-scrollbar p-1">
+<label class="flex items-center gap-3 p-2 hover:bg-surface-container rounded-md cursor-pointer transition-colors">
+<input checked="" class="rounded border-outline-variant bg-surface text-primary focus:ring-primary focus:ring-offset-surface-container" type="checkbox"/>
+<span class="text-sm font-mono text-on-surface-variant"><span class="opacity-40">#</span> architectural-alerts</span>
+</label>
+<label class="flex items-center gap-3 p-2 hover:bg-surface-container rounded-md cursor-pointer transition-colors">
+<input class="rounded border-outline-variant bg-surface text-primary focus:ring-primary focus:ring-offset-surface-container" type="checkbox"/>
+<span class="text-sm font-mono text-on-surface-variant"><span class="opacity-40">#</span> repo-iq-logs</span>
+</label>
+<label class="flex items-center gap-3 p-2 hover:bg-surface-container rounded-md cursor-pointer transition-colors">
+<input class="rounded border-outline-variant bg-surface text-primary focus:ring-primary focus:ring-offset-surface-container" type="checkbox"/>
+<span class="text-sm font-mono text-on-surface-variant"><span class="opacity-40">#</span> dev-ops-internal</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Section 3: Permission Toggles -->
+<div class="space-y-3">
+<label class="font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-on-surface-variant block ml-1">Permission toggles</label>
+<!-- Toggle 1 -->
+<div class="flex items-center justify-between p-3 bg-surface-container/30 rounded-lg">
+<div class="flex flex-col">
+<span class="text-sm font-semibold">Post as RepoIQ</span>
+<span class="text-[11px] text-on-surface-variant">Allow the bot to send messages as a separate user.</span>
+</div>
+<button class="w-10 h-5 bg-primary/20 rounded-full relative p-0.5 border border-primary/30">
+<div class="w-4 h-4 bg-primary rounded-full absolute right-0.5 shadow-sm"></div>
+</button>
+</div>
+<!-- Toggle 2 -->
+<div class="flex items-center justify-between p-3 bg-surface-container/30 rounded-lg">
+<div class="flex flex-col">
+<span class="text-sm font-semibold">Read channel history</span>
+<span class="text-[11px] text-on-surface-variant">Used to contextualize alerts based on past conversations.</span>
+</div>
+<button class="w-10 h-5 bg-surface-container-highest rounded-full relative p-0.5 border border-outline-variant/30">
+<div class="w-4 h-4 bg-outline rounded-full absolute left-0.5 shadow-sm"></div>
+</button>
+</div>
+</div>
+</div>
+<!-- Modal Footer Actions -->
+<div class="p-8 flex gap-4 mt-2">
+<button class="flex-1 h-11 rounded-lg font-bold text-sm bg-surface-container-high hover:bg-surface-container-highest text-on-surface transition-all border border-outline-variant/10 active:scale-[0.98]">
+                        Back
+                    </button>
+<button class="flex-[2] h-11 rounded-lg font-bold text-sm bg-gradient-to-br from-[#ADC6FF] to-[#4D8EFF] text-on-primary shadow-lg shadow-primary/20 hover:brightness-110 transition-all active:scale-[0.98]">
+                        Authorize &amp; Connect
+                    </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

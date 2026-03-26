@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RepoIQ | Usage &amp; Quota</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-tint": "#adc6ff",
+              "surface-dim": "#131313",
+              "tertiary-container": "#df7412",
+              "on-tertiary-fixed": "#311400",
+              "tertiary-fixed": "#ffdcc6",
+              "surface": "#131313",
+              "surface-container": "#201f1f",
+              "tertiary": "#ffb786",
+              "outline-variant": "#424754",
+              "on-surface-variant": "#c2c6d6",
+              "on-tertiary": "#502400",
+              "surface-variant": "#353534",
+              "on-primary-container": "#00285d",
+              "secondary-fixed": "#f0dbff",
+              "on-primary": "#002e6a",
+              "secondary-fixed-dim": "#ddb7ff",
+              "surface-container-highest": "#353534",
+              "tertiary-fixed-dim": "#ffb786",
+              "outline": "#8c909f",
+              "on-error-container": "#ffdad6",
+              "on-secondary-fixed-variant": "#6900b3",
+              "error-container": "#93000a",
+              "inverse-surface": "#e5e2e1",
+              "secondary": "#ddb7ff",
+              "surface-bright": "#3a3939",
+              "on-primary-fixed-variant": "#004395",
+              "on-secondary-fixed": "#2c0051",
+              "primary-container": "#4d8eff",
+              "error": "#ffb4ab",
+              "secondary-container": "#6f00be",
+              "on-surface": "#e5e2e1",
+              "surface-container-lowest": "#0e0e0e",
+              "background": "#131313",
+              "primary-fixed": "#d8e2ff",
+              "surface-container-low": "#1c1b1b",
+              "on-tertiary-container": "#461f00",
+              "on-background": "#e5e2e1",
+              "on-secondary": "#490080",
+              "surface-container-high": "#2a2a2a",
+              "inverse-on-surface": "#313030",
+              "on-tertiary-fixed-variant": "#723600",
+              "on-error": "#690005",
+              "primary-fixed-dim": "#adc6ff",
+              "on-primary-fixed": "#001a42",
+              "on-secondary-container": "#d6a9ff",
+              "primary": "#adc6ff",
+              "inverse-primary": "#005ac2"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(53, 53, 52, 0.7);
+            backdrop-filter: blur(24px);
+        }
+        .monolithic-gradient {
+            background: linear-gradient(135deg, #ADC6FF 0%, #4D8EFF 100%);
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0E0E0E; }
+        ::-webkit-scrollbar-thumb { background: #424754; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-white">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-[#131313] dark:bg-[#131313] border-b border-[#424754]/15 flex justify-between items-center px-6 py-3">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tighter text-[#ADC6FF] italic">RepoIQ</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Dashboard</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Analyze</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Compare</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Leaderboard</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<div class="flex items-center bg-surface-container-lowest px-3 py-1.5 rounded-lg border border-outline-variant/15">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs text-on-surface w-48 placeholder:text-outline" placeholder="CMD + K to search..." type="text"/>
+</div>
+</div>
+<button class="material-symbols-outlined text-[#C2C6D6] hover:bg-[#2A2A2A] p-2 rounded-full transition-all">notifications</button>
+<button class="material-symbols-outlined text-[#C2C6D6] hover:bg-[#2A2A2A] p-2 rounded-full transition-all">history</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/20 scale-95 active:scale-90 transition-transform cursor-pointer">
+<img alt="User profile avatar" data-alt="minimalistic abstract geometric avatar icon with cool blue and grey tones on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0OubJLh6DkwADH8pcl7eC4Ct7I2fttAV9-gOVPOLdqqmjYuHYo-uYeMFgyVm-RbXbBdRoKVtxJsWOAXRh-f8064mSeZTHT5AfyWWfgiUclN0XX_0zwZkyfb3EIV4yf3qLaiI60dJdK09NGjblVO6o8lTeuJnrZIq5q7l5sWkxW63FGEbZTQJcFMrcQYx4_ATp7obdHL2a8YmOUYVObXsBAOpG6P9-2G8slTfYddB2MOH9NS1HEDkuwGLZ9lVVrlCvNn9Po5pzTgbZ"/>
+</div>
+</div>
+</header>
+<div class="flex h-[calc(100vh-64px)] overflow-hidden">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 left-0 sticky bg-[#201F1F] dark:bg-[#201F1F] flex flex-col py-6 px-4 border-r border-outline-variant/5">
+<div class="flex items-center gap-3 px-2 mb-8">
+<div class="w-10 h-10 bg-surface-container-high rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">terminal</span>
+</div>
+<div>
+<h2 class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#ADC6FF]">facebook/react</h2>
+<p class="text-[10px] text-on-surface-variant/60 font-mono">Main Branch</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-sm font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="analytics">analytics</span>
+                    Report
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-sm font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="account_tree">account_tree</span>
+                    Architecture
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-sm font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="bug_report">bug_report</span>
+                    Bugs
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-sm font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="school">school</span>
+                    Teach
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-sm font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="folder_open">folder_open</span>
+                    Files
+                </a>
+<div class="pt-6">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-sm font-['JetBrains_Mono'] text-xs uppercase tracking-widest bg-[#2A2A2A] text-[#ADC6FF] border-r-2 border-[#ADC6FF]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="settings">settings</span>
+                        Settings
+                    </a>
+</div>
+</nav>
+<div class="mt-auto space-y-1 border-t border-outline-variant/10 pt-4">
+<button class="w-full flex items-center justify-center gap-2 monolithic-gradient text-on-primary font-bold text-xs uppercase tracking-widest py-3 rounded mb-4 scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-sm">add</span>
+                    New Analysis
+                </button>
+<a class="flex items-center gap-3 px-3 py-2 rounded-sm font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="help_outline">help_outline</span>
+                    Support
+                </a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto bg-surface-container-lowest p-8 scroll-smooth">
+<div class="max-w-6xl mx-auto">
+<header class="mb-12">
+<h1 class="text-4xl font-extrabold tracking-tighter text-on-surface mb-2">Quota &amp; Usage</h1>
+<p class="text-on-surface-variant font-medium">Manage your subscription and monitor architectural compute resources.</p>
+</header>
+<!-- Usage Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<!-- AI Tokens Progress -->
+<div class="col-span-1 md:col-span-2 bg-surface p-8 rounded-xl border border-outline-variant/10 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="font-headline text-lg font-bold text-on-surface">AI Tokens Used</h3>
+<p class="text-xs text-on-surface-variant/60 font-mono uppercase tracking-widest mt-1">Llama-3 Compute Credits</p>
+</div>
+<span class="text-2xl font-black text-primary tracking-tighter">74.2%</span>
+</div>
+<div class="space-y-4">
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[74.2%] transition-all duration-1000"></div>
+</div>
+<div class="flex justify-between text-[10px] font-mono text-on-surface-variant uppercase tracking-tighter">
+<span>3.7M / 5.0M Tokens</span>
+<span>Resets in 12 days</span>
+</div>
+</div>
+</div>
+<!-- Repos Analyzed Progress -->
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant/10">
+<div class="mb-6">
+<h3 class="font-headline text-lg font-bold text-on-surface">Repos Analyzed</h3>
+<p class="text-[10px] text-on-surface-variant/60 font-mono uppercase tracking-widest mt-1">Current Billing Cycle</p>
+</div>
+<div class="flex items-center gap-4 mb-4">
+<span class="text-4xl font-black text-secondary tracking-tighter">18</span>
+<span class="text-on-surface-variant text-sm font-medium">/ 25 total</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[72%] transition-all duration-1000"></div>
+</div>
+</div>
+</div>
+<!-- Pricing Section -->
+<div class="mb-12">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-bold tracking-tight text-on-surface">Available Plans</h2>
+<div class="flex bg-surface-container p-1 rounded-lg border border-outline-variant/10">
+<button class="px-4 py-1.5 text-xs font-bold text-primary bg-surface-container-high rounded shadow-sm">Monthly</button>
+<button class="px-4 py-1.5 text-xs font-bold text-on-surface-variant/60 hover:text-on-surface transition-colors">Yearly (-20%)</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Pro Plan -->
+<div class="bg-surface p-8 rounded-xl border border-outline-variant/10 hover:border-primary/30 transition-all flex flex-col">
+<div class="mb-6">
+<h4 class="text-on-surface-variant text-xs font-bold uppercase tracking-[0.2em] mb-2">Pro</h4>
+<div class="flex items-baseline gap-1">
+<span class="text-3xl font-black text-on-surface">$29</span>
+<span class="text-on-surface-variant text-sm">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-8 flex-1">
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                    10M AI Tokens / mo
+                                </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                    50 Repositories
+                                </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                    Advanced Architecture Maps
+                                </li>
+</ul>
+<button class="w-full py-3 text-xs font-bold uppercase tracking-widest border border-outline-variant/30 hover:bg-surface-container-high rounded transition-all">Current Plan</button>
+</div>
+<!-- Team Plan -->
+<div class="bg-surface-container p-8 rounded-xl border-2 border-primary/50 relative transform md:-translate-y-2 flex flex-col shadow-2xl shadow-primary/5">
+<div class="absolute -top-3 right-8 bg-primary text-on-primary text-[10px] font-black px-3 py-1 rounded uppercase tracking-widest">Recommended</div>
+<div class="mb-6">
+<h4 class="text-primary text-xs font-bold uppercase tracking-[0.2em] mb-2">Team</h4>
+<div class="flex items-baseline gap-1">
+<span class="text-3xl font-black text-on-surface">$99</span>
+<span class="text-on-surface-variant text-sm">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-8 flex-1">
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                    Unlimited AI Tokens
+                                </li>
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                    Unlimited Repositories
+                                </li>
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                    SSO &amp; Team Permissions
+                                </li>
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                    Dedicated Compute
+                                </li>
+</ul>
+<button class="w-full py-3 text-xs font-black uppercase tracking-widest monolithic-gradient text-on-primary rounded scale-100 hover:scale-[1.02] active:scale-95 transition-all">Upgrade Now</button>
+</div>
+<!-- Enterprise Plan -->
+<div class="bg-surface p-8 rounded-xl border border-outline-variant/10 hover:border-primary/30 transition-all flex flex-col">
+<div class="mb-6">
+<h4 class="text-on-surface-variant text-xs font-bold uppercase tracking-[0.2em] mb-2">Enterprise</h4>
+<div class="flex items-baseline gap-1">
+<span class="text-3xl font-black text-on-surface">Custom</span>
+</div>
+</div>
+<ul class="space-y-4 mb-8 flex-1">
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                    On-Premise Deployment
+                                </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                    Custom LLM Fine-tuning
+                                </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                    24/7 Priority Support
+                                </li>
+</ul>
+<button class="w-full py-3 text-xs font-bold uppercase tracking-widest border border-outline-variant/30 hover:bg-surface-container-high rounded transition-all">Contact Sales</button>
+</div>
+</div>
+</div>
+<!-- Billing History -->
+<div class="bg-surface rounded-xl border border-outline-variant/10 overflow-hidden">
+<div class="px-8 py-6 border-b border-outline-variant/10 flex justify-between items-center">
+<h2 class="text-xl font-bold text-on-surface">Billing History</h2>
+<button class="text-[10px] font-black uppercase tracking-widest text-primary hover:underline">Download All Receipts</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-on-surface-variant/70">
+<th class="px-8 py-4">Invoice ID</th>
+<th class="px-8 py-4">Date</th>
+<th class="px-8 py-4">Amount</th>
+<th class="px-8 py-4">Status</th>
+<th class="px-8 py-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-5 font-mono text-xs text-on-surface">INV-2024-0012</td>
+<td class="px-8 py-5 text-sm text-on-surface-variant">May 01, 2024</td>
+<td class="px-8 py-5 text-sm font-bold text-on-surface">$29.00</td>
+<td class="px-8 py-5">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-tighter bg-green-500/10 text-green-500">Paid</span>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">download</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-5 font-mono text-xs text-on-surface">INV-2024-0011</td>
+<td class="px-8 py-5 text-sm text-on-surface-variant">Apr 01, 2024</td>
+<td class="px-8 py-5 text-sm font-bold text-on-surface">$29.00</td>
+<td class="px-8 py-5">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-tighter bg-green-500/10 text-green-500">Paid</span>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">download</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-5 font-mono text-xs text-on-surface">INV-2024-0010</td>
+<td class="px-8 py-5 text-sm text-on-surface-variant">Mar 01, 2024</td>
+<td class="px-8 py-5 text-sm font-bold text-on-surface">$29.00</td>
+<td class="px-8 py-5">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-tighter bg-green-500/10 text-green-500">Paid</span>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">download</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full py-8 mt-12 bg-[#0E0E0E] dark:bg-[#0E0E0E] border-t border-[#424754]/10 flex justify-between items-center px-12">
+<span class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#4D8EFF] opacity-80">© 2024 RepoIQ. The Digital Architect.</span>
+<div class="flex gap-6">
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white hover:underline transition-all" href="#">Privacy</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white hover:underline transition-all" href="#">Terms</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white hover:underline transition-all" href="#">API</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white hover:underline transition-all" href="#">Security</a>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

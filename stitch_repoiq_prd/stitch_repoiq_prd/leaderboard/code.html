@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-tint": "#adc6ff",
+              "surface-dim": "#131313",
+              "tertiary-container": "#df7412",
+              "on-tertiary-fixed": "#311400",
+              "tertiary-fixed": "#ffdcc6",
+              "surface": "#131313",
+              "surface-container": "#201f1f",
+              "tertiary": "#ffb786",
+              "outline-variant": "#424754",
+              "on-surface-variant": "#c2c6d6",
+              "on-tertiary": "#502400",
+              "surface-variant": "#353534",
+              "on-primary-container": "#00285d",
+              "secondary-fixed": "#f0dbff",
+              "on-primary": "#002e6a",
+              "secondary-fixed-dim": "#ddb7ff",
+              "surface-container-highest": "#353534",
+              "tertiary-fixed-dim": "#ffb786",
+              "outline": "#8c909f",
+              "on-error-container": "#ffdad6",
+              "on-secondary-fixed-variant": "#6900b3",
+              "error-container": "#93000a",
+              "inverse-surface": "#e5e2e1",
+              "secondary": "#ddb7ff",
+              "surface-bright": "#3a3939",
+              "on-primary-fixed-variant": "#004395",
+              "on-secondary-fixed": "#2c0051",
+              "primary-container": "#4d8eff",
+              "error": "#ffb4ab",
+              "secondary-container": "#6f00be",
+              "on-surface": "#e5e2e1",
+              "surface-container-lowest": "#0e0e0e",
+              "background": "#131313",
+              "primary-fixed": "#d8e2ff",
+              "surface-container-low": "#1c1b1b",
+              "on-tertiary-container": "#461f00",
+              "on-background": "#e5e2e1",
+              "on-secondary": "#490080",
+              "surface-container-high": "#2a2a2a",
+              "inverse-on-surface": "#313030",
+              "on-tertiary-fixed-variant": "#723600",
+              "on-error": "#690005",
+              "primary-fixed-dim": "#adc6ff",
+              "on-primary-fixed": "#001a42",
+              "on-secondary-container": "#d6a9ff",
+              "primary": "#adc6ff",
+              "inverse-primary": "#005ac2"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .champion-card {
+        background: linear-gradient(135deg, rgba(173, 198, 255, 0.05) 0%, rgba(77, 142, 255, 0.02) 100%);
+      }
+      .gold-glow { box-shadow: 0 0 20px rgba(255, 215, 0, 0.15); border: 1px solid rgba(255, 215, 0, 0.2); }
+      .silver-glow { box-shadow: 0 0 20px rgba(192, 192, 192, 0.1); border: 1px solid rgba(192, 192, 192, 0.2); }
+      .bronze-glow { box-shadow: 0 0 20px rgba(205, 127, 50, 0.1); border: 1px solid rgba(205, 127, 50, 0.2); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary/30 min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-[#131313] dark:bg-[#131313] w-full top-0 sticky z-50 border-b border-[#424754]/15 flex justify-between items-center px-6 py-3 w-full max-w-full">
+<div class="flex items-center gap-8">
+<div class="text-xl font-black tracking-tighter text-[#ADC6FF] italic">RepoIQ</div>
+<nav class="hidden md:flex gap-6 font-['Inter'] tracking-tighter text-sm font-medium">
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Dashboard</a>
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Analyze</a>
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Compare</a>
+<a class="text-[#ADC6FF] border-b-2 border-[#ADC6FF] pb-1" href="#">Leaderboard</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-lowest border-none text-xs py-2 pl-10 pr-4 rounded-lg w-64 focus:ring-1 focus:ring-surface-tint" placeholder="Search repositories..." type="text"/>
+</div>
+<button class="p-2 hover:bg-[#2A2A2A] transition-all duration-200 text-[#C2C6D6] rounded-full scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-[#2A2A2A] transition-all duration-200 text-[#C2C6D6] rounded-full scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">history</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30">
+<img alt="User profile avatar" data-alt="close-up portrait of a professional developer in a dimly lit studio with blue neon highlights on their face" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfROEFl5uYM8Sfi3j2o7lZYjAcaDLGGyai50oh7pzjtdiS7n2mw8n5U9v2SaQqijQ7p41csLn-_7dDri7fjMmZPOxEeCDj4FnLch2k-QsbgkUmm4xWR-Gs9k8MVS2_ia6-p7P4J4CKsrmlrA9vu0CYidh2xMSV8AnXysC0BBfq-oFxET7FFvjUxRWVZDHrcudcYNR3REWTf4rrnlMVWKgFLF2YMVE8suKBtcQvilZ7SPxv_d7Zibk5yn9TW0RNhG2vIxtXp2U6v3hZ"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-[#201F1F] dark:bg-[#201F1F] h-screen w-64 left-0 sticky hidden lg:flex flex-col h-full py-6 px-4">
+<div class="mb-8 px-2">
+<div class="flex items-center gap-3 mb-6">
+<img alt="Repository Icon" class="w-10 h-10 rounded-lg bg-surface-container-high p-1" data-alt="minimalist tech logo with geometric shapes in electric blue on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCObjyK1buc9z3zTOq261WOqbZXzZQNycY_yzDgxvJtWVFN_PgjSs23-kOqqUCIvct_OdIPtY1wgfgir30WrCS2g3uVfFWUkrNVuAPm2t0_oQv_HCFHGU9iQY6l5n4pGAHRrGRotyVXEPjzbTbbMZB4OFGQFh37Tm6EODN3LZP2ryFnrlMGYySM-TVi7EpsZAr0M4TxFvDMBlcdI_oZUX3SsL-ZzeYQmdB8MddrVPdQHkuBxy2-h99yUGxPWl__EGzwDRd9RgMuzFGx"/>
+<div>
+<div class="text-lg font-bold text-[#ADC6FF] tracking-tight">facebook/react</div>
+<div class="font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-on-surface-variant opacity-70">Main Branch</div>
+</div>
+</div>
+<button class="w-full bg-gradient-to-br from-[#ADC6FF] to-[#4D8EFF] text-on-primary font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-2 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+                    New Analysis
+                </button>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-4 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                    Report
+                </a>
+<a class="flex items-center gap-4 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+                    Architecture
+                </a>
+<a class="flex items-center gap-4 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">bug_report</span>
+                    Bugs
+                </a>
+<a class="flex items-center gap-4 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">school</span>
+                    Teach
+                </a>
+<a class="flex items-center gap-4 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+                    Files
+                </a>
+</nav>
+<div class="mt-auto space-y-1 border-t border-outline-variant/10 pt-4">
+<a class="flex items-center gap-4 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center gap-4 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+                    Support
+                </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 bg-surface-container-low overflow-y-auto custom-scrollbar">
+<div class="p-8 max-w-7xl mx-auto w-full">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+<div>
+<h1 class="text-4xl font-extrabold tracking-tighter text-on-surface mb-2">Global Leaderboard</h1>
+<p class="text-on-surface-variant max-w-lg">Recognizing the architects driving technical excellence across the open-source ecosystem.</p>
+</div>
+<div class="flex bg-surface-container-lowest p-1 rounded-xl">
+<button class="px-6 py-2 text-xs font-bold rounded-lg bg-surface-container-high text-primary shadow-sm">Global</button>
+<button class="px-6 py-2 text-xs font-bold rounded-lg text-on-surface-variant hover:text-on-surface transition-colors">Friends</button>
+<button class="px-6 py-2 text-xs font-bold rounded-lg text-on-surface-variant hover:text-on-surface transition-colors">Organization</button>
+</div>
+</div>
+<!-- Champions Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 items-end">
+<!-- Rank 2 -->
+<div class="order-2 md:order-1 silver-glow bg-surface-container/40 p-6 rounded-2xl flex flex-col items-center text-center relative overflow-hidden h-[240px] justify-center">
+<div class="absolute top-4 right-4 text-3xl font-black text-[#C0C0C0]/20 italic">#2</div>
+<div class="w-20 h-20 rounded-full border-4 border-[#C0C0C0]/30 p-1 mb-4">
+<img alt="Silver Rank User" class="w-full h-full rounded-full object-cover" data-alt="headshot of a focused software engineer with glasses in a professional studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA56NIi1FWrT4an9Uqgfh_bpjl7pT2PTzIUofZxV_bWC35k_hKT6n3P4b-dU2-XpFvYXpcMvc-LJFQPOHN3tlJOH3Cfby-5dSMzQk3LZvrSIwR8h9P1ttl8zfk8yfVUvxb95QgYuZlNHM3qcUHV3NRCHHZSaMy5KoDnelh_8qzi9FQhkptL7UEHrlMreLZg92sXpFV890995vlTq4zZzkysO3V2883oaSAZXgh8RwKBcx8dvlTH9Idgkqy1gUn0zO5UKZCe5vUJ06O2"/>
+</div>
+<h3 class="font-bold text-lg text-on-surface">Elena Dev</h3>
+<p class="text-[#C0C0C0] font-['JetBrains_Mono'] text-sm font-bold mt-1">12,840 XP</p>
+<div class="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-highest/50 border border-outline-variant/20 text-[10px] uppercase font-bold tracking-widest text-[#C0C0C0]">Silver Tier</div>
+</div>
+<!-- Rank 1 -->
+<div class="order-1 md:order-2 gold-glow bg-surface-container p-8 rounded-2xl flex flex-col items-center text-center relative overflow-hidden h-[300px] justify-center scale-105 border-primary/20">
+<div class="absolute top-6 right-6 text-5xl font-black text-[#FFD700]/20 italic">#1</div>
+<div class="relative mb-6">
+<div class="w-28 h-28 rounded-full border-4 border-[#FFD700]/40 p-1">
+<img alt="Gold Rank User" class="w-full h-full rounded-full object-cover" data-alt="charismatic female lead developer smiling confidently with dramatic lighting on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF1FzhYcoadWMMtFFzBxD8LG0QKT7sLt-6ZSeUDXBU9AsSwq4OtmxVuz_OglQky_PHwFk6s1vrp6Qr6X6SUms9RJJKpV1Cu54QvNHp89FCVCVqqU5iA9YNTCt1yGJRmemOcy6QLl8vjfY4BEN5invZCthUwasg8FAxigPldPBDurpXLNzMl5hG9JU0i-czbqR73UVWPXpQC1R5vE6BwvcfTkwkwmQATxEKCFvEafyuMy9msbL99eKMieD6s2euZvsae6z5TvU7YCn8"/>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#FFD700] text-[#311400] text-[10px] font-black px-4 py-1 rounded-full uppercase">Champion</div>
+</div>
+<h3 class="font-black text-2xl text-on-surface tracking-tight">Marcus Code</h3>
+<p class="text-[#FFD700] font-['JetBrains_Mono'] text-lg font-bold mt-1">15,420 XP</p>
+<p class="text-on-surface-variant text-xs mt-2 italic">Senior Architect @ Google</p>
+</div>
+<!-- Rank 3 -->
+<div class="order-3 bronze-glow bg-surface-container/40 p-6 rounded-2xl flex flex-col items-center text-center relative overflow-hidden h-[240px] justify-center">
+<div class="absolute top-4 right-4 text-3xl font-black text-[#CD7F32]/20 italic">#3</div>
+<div class="w-20 h-20 rounded-full border-4 border-[#CD7F32]/30 p-1 mb-4">
+<img alt="Bronze Rank User" class="w-full h-full rounded-full object-cover" data-alt="pensive asian male developer in a black hoodie looking off-camera in a dark room with server lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAw1zbv6OnKkvv-0nMQeFNwYKWTKdlOCSL8oefYjGY9e_ZUCDfoLKSXk24qGB_Pv4dYHEabO1RqVspvJSWbrZl_NOxQ1ybqnbgpG-PeayDJ4g0mbrJ-J3ahxIYtNaoJj0p1gpBrvLRosN8AGQi1obVnA88KN5yBaUDuk7HbxsJy2Bmkb7GJ2Ly-XWdnYSf88ij3kjtXUJG7dr19z77DZq_IEnnUDnVygQSrSmFzqKqiBLbVKoU33yY5H2JgUFIpUGvUsHYhlBjwS8Xt"/>
+</div>
+<h3 class="font-bold text-lg text-on-surface">Chen Wei</h3>
+<p class="text-[#CD7F32] font-['JetBrains_Mono'] text-sm font-bold mt-1">11,200 XP</p>
+<div class="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-highest/50 border border-outline-variant/20 text-[10px] uppercase font-bold tracking-widest text-[#CD7F32]">Bronze Tier</div>
+</div>
+</div>
+<!-- Leaderboard Table Container -->
+<div class="bg-surface-container rounded-2xl overflow-hidden border border-outline-variant/10">
+<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
+<h2 class="font-bold text-on-surface tracking-tight">Full Rankings</h2>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-lowest border-none text-[10px] py-2 pl-9 pr-4 rounded-lg w-48 focus:ring-1 focus:ring-surface-tint uppercase tracking-widest font-bold" placeholder="Find user..." type="text"/>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead>
+<tr class="text-left font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-on-surface-variant border-b border-outline-variant/5">
+<th class="px-8 py-5 font-bold">Rank</th>
+<th class="px-8 py-5 font-bold">User</th>
+<th class="px-8 py-5 font-bold">Top Repo Analyzed</th>
+<th class="px-8 py-5 font-bold text-right">Experience</th>
+<th class="px-8 py-5 font-bold text-center">Badges</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="px-8 py-6 font-['JetBrains_Mono'] font-bold text-primary">#4</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-outline-variant/20">
+<img alt="User" data-alt="professional headshot of a young developer in a neutral gray setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRgf6iT1hBxcx1L6qFGrxsXFCG9Se3hCHeCnQXDFemzP7pq3IKtO8SP7QISqBIGmj74y2UMB0-aTOTab2MuLIHduCGIrYZYUmRBYmTAzAzSpXz5APxs9GDR71ltZbyr-0sDR685HHzSaJunlmbYhka-pcGybVa_w0DsZLfOXAmb6_iT3q_oAquD5Aq-3VlUX4OVzklKeIN9NRXP_jd-QKC4v_22mtO9BUsquV6Z7O2jDabCqg0BIM6M3khnpn07B2p7ziEe0NznSPU"/>
+</div>
+<div>
+<div class="text-sm font-bold text-on-surface">Sarah Connor</div>
+<div class="text-[10px] text-on-surface-variant uppercase tracking-tighter">@sarah_c</div>
+</div>
+</div>
+</td>
+<td class="px-8 py-6 font-['JetBrains_Mono'] text-xs text-secondary-fixed-dim">tensorflow/tensorflow</td>
+<td class="px-8 py-6 text-right font-bold text-on-surface">9,845 XP</td>
+<td class="px-8 py-6">
+<div class="flex justify-center gap-2">
+<span class="material-symbols-outlined text-sm text-tertiary" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="px-8 py-6 font-['JetBrains_Mono'] font-bold text-primary">#5</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-outline-variant/20">
+<img alt="User" data-alt="close-up portrait of a developer with cool blue backlighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBjppcGzUI8KXSYIRk3_vk4Sy0na9c7Exp4z7QHa-asH5eJQqYYp-G6swdwFlWq9FACRlVx7Q1yNCFMYXSVlRXgIsoVi3So7NHI01tbXKQEKOoqhzk2vMcttlPlgJgOxdvPD-l8uTpr6wozH1XIIA4i0x4dTq-6Eu6pD-Gl5SQ8u7M8NXZcHD_JgC8EIXoH7cozc06xp-urdFhDYUt8hBuxIF8VUDufGYXYlW82GnlggFHEDcibowIm0pMxEAyzAuV-W3Yku60KBeH"/>
+</div>
+<div>
+<div class="text-sm font-bold text-on-surface">Alex Rivera</div>
+<div class="text-[10px] text-on-surface-variant uppercase tracking-tighter">@arivera</div>
+</div>
+</div>
+</td>
+<td class="px-8 py-6 font-['JetBrains_Mono'] text-xs text-secondary-fixed-dim">kubernetes/kubernetes</td>
+<td class="px-8 py-6 text-right font-bold text-on-surface">8,120 XP</td>
+<td class="px-8 py-6">
+<div class="flex justify-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="px-8 py-6 font-['JetBrains_Mono'] font-bold text-primary">#6</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-outline-variant/20">
+<img alt="User" data-alt="portrait of a software engineer in high-contrast cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMMH8arnKwYDJu9EbL7Eo-p4BGH3jqluVpvR8tII2GHC3FQaEIlFY-_ZiassYediYEULqooN9Rw9JhJXc-fvbOwFxffFAVeeOQ4N5qkt8HZTDw0jvHc7OHO6FrFn4_Y30CmKgAge4J1Hb2H5oTV4zDxfa8S754yKYCaAuMLrknwLTTmWQZ6VN9yjjliRx435padgQyx9uP1873cogSgToFqSr0JB70s-UhmXrj4cNK3ZnRG6kQdacfmtmNcSwbamLGpRrgTM_DtJVd"/>
+</div>
+<div>
+<div class="text-sm font-bold text-on-surface">James T.</div>
+<div class="text-[10px] text-on-surface-variant uppercase tracking-tighter">@jt_codes</div>
+</div>
+</div>
+</td>
+<td class="px-8 py-6 font-['JetBrains_Mono'] text-xs text-secondary-fixed-dim">microsoft/vscode</td>
+<td class="px-8 py-6 text-right font-bold text-on-surface">7,650 XP</td>
+<td class="px-8 py-6">
+<div class="flex justify-center gap-2">
+<span class="material-symbols-outlined text-sm text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="px-8 py-6 font-['JetBrains_Mono'] font-bold text-primary">#7</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-outline-variant/20">
+<img alt="User" data-alt="female programmer in tech setting with ambient glow from multiple monitors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWdlzrVqXYZ1ySv8YZDyUZD-II3xu_ImNbzItBMovwu1hCnK2jd7H-ejIaEAHAsgpEaKrKKMn_64OwOaVG97O2WR4mk3f5OWrgkvcb13BzrC_l5gCB-zw8oHtpRgxuMj7IlCsMofTCXGnzFCDcJbuqwSCLroh6dW62DVIBzowUQ3DEHhTIySKUBwHyQklshVqwbwZxC1G1kJEFNAgKxVLbEYX1T6ujd5jggdDfXBlBJ36vmcEZj_VYqK8QSTyz2azliB2CvbvMZlpt"/>
+</div>
+<div>
+<div class="text-sm font-bold text-on-surface">Monica Bel</div>
+<div class="text-[10px] text-on-surface-variant uppercase tracking-tighter">@moni_b</div>
+</div>
+</div>
+</td>
+<td class="px-8 py-6 font-['JetBrains_Mono'] text-xs text-secondary-fixed-dim">rust-lang/rust</td>
+<td class="px-8 py-6 text-right font-bold text-on-surface">7,100 XP</td>
+<td class="px-8 py-6">
+<div class="flex justify-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-6 bg-surface-container-highest/20 flex justify-center border-t border-outline-variant/10">
+<button class="text-[10px] font-black uppercase tracking-widest text-primary hover:underline transition-all">Show More Architects</button>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="bg-[#0E0E0E] dark:bg-[#0E0E0E] w-full py-8 mt-auto border-t border-[#424754]/10 flex justify-between items-center px-12 w-full">
+<div class="flex gap-8">
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white hover:underline opacity-80 hover:opacity-100 transition-all duration-200" href="#">Privacy</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white hover:underline opacity-80 hover:opacity-100 transition-all duration-200" href="#">Terms</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white hover:underline opacity-80 hover:opacity-100 transition-all duration-200" href="#">API</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white hover:underline opacity-80 hover:opacity-100 transition-all duration-200" href="#">Security</a>
+</div>
+<div class="font-['Inter'] text-[10px] uppercase tracking-tighter text-on-surface-variant opacity-60">
+                    © 2024 RepoIQ. The Digital Architect.
+                </div>
+</footer>
+</main>
+</div>
+</body></html>

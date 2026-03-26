@@ -1,0 +1,41 @@
+# RepoIQ Product Requirements Document (PRD)
+
+## 1. Product Vision
+RepoIQ is an AI-powered learning platform that transforms complex GitHub repositories into personalized educational experiences. It bridges the gap between "reading code" and "understanding architecture" through AI tutoring, automated documentation, and interactive challenges.
+
+## 2. Target Audience
+- **Junior/Mid-level Developers:** Rapidly onboarding onto new codebases.
+- **Students:** Learning best practices from open-source projects.
+- **Engineering Managers:** Assessing code quality and architectural health.
+
+## 3. Core Functional Pillars
+### A. Repository Intelligence
+- **Deep Scan:** Multi-language analysis (Python, JS/TS, Go, Rust, etc.).
+- **Code Quality & Security:** Automated scoring and vulnerability detection.
+- **Bug Hunter:** AI-driven bug identification with one-click fix suggestions.
+
+### B. Personalized Learning
+- **Teach Mode:** Socratic AI tutor that explains code contextually.
+- **Knowledge Maps:** Visual representation of concepts within a repo.
+- **Lessons & Quizzes:** Auto-generated curriculum based on the codebase.
+
+### C. Visual & Interactive Tools
+- **Architecture Diagrams:** Auto-generated Mermaid/SVG diagrams of system flow.
+- **Interactive Code Viewer:** VS Code-like experience with inline AI annotations.
+- **Compare Mode:** Side-by-side analysis of two repos (e.g., comparing React vs. Vue internals).
+
+## 4. User Journeys
+1. **Onboarding:** User connects GitHub -> Selects skills/interests -> Sets learning goals.
+2. **Analysis:** User inputs a URL -> Processing state with live logs -> Report Overview.
+3. **Deep Dive:** User explores "Architecture" -> Enters "Teach Mode" -> Completes a Quiz.
+4. **Maintenance:** User checks "Bugs & Fixes" -> Exports a PDF report for the team.
+
+## 5. Information Architecture
+- **Global Nav:** Dashboard, Repositories, Learning Path, Leaderboard, Settings.
+- **Session Nav (Contextual):** Report, Architecture, Bugs, Teach Mode, Files, Quiz.
+
+## 6. Technical Design Constraints
+- **Theme:** Strict Dark Mode (Primary), High Contrast.
+- **Grid:** 12-column (1440px), 8px baseline spacing.
+- **Typography:** Inter (UI), JetBrains Mono (Code).
+- **Components:** Radix UI / Shadcn patterns.

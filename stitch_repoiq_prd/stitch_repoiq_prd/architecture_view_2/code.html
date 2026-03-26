@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RepoIQ | Architecture View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-tint": "#adc6ff",
+              "surface-dim": "#131313",
+              "tertiary-container": "#df7412",
+              "on-tertiary-fixed": "#311400",
+              "tertiary-fixed": "#ffdcc6",
+              "surface": "#131313",
+              "surface-container": "#201f1f",
+              "tertiary": "#ffb786",
+              "outline-variant": "#424754",
+              "on-surface-variant": "#c2c6d6",
+              "on-tertiary": "#502400",
+              "surface-variant": "#353534",
+              "on-primary-container": "#00285d",
+              "secondary-fixed": "#f0dbff",
+              "on-primary": "#002e6a",
+              "secondary-fixed-dim": "#ddb7ff",
+              "surface-container-highest": "#353534",
+              "tertiary-fixed-dim": "#ffb786",
+              "outline": "#8c909f",
+              "on-error-container": "#ffdad6",
+              "on-secondary-fixed-variant": "#6900b3",
+              "error-container": "#93000a",
+              "inverse-surface": "#e5e2e1",
+              "secondary": "#ddb7ff",
+              "surface-bright": "#3a3939",
+              "on-primary-fixed-variant": "#004395",
+              "on-secondary-fixed": "#2c0051",
+              "primary-container": "#4d8eff",
+              "error": "#ffb4ab",
+              "secondary-container": "#6f00be",
+              "on-surface": "#e5e2e1",
+              "surface-container-lowest": "#0e0e0e",
+              "background": "#131313",
+              "primary-fixed": "#d8e2ff",
+              "surface-container-low": "#1c1b1b",
+              "on-tertiary-container": "#461f00",
+              "on-background": "#e5e2e1",
+              "on-secondary": "#490080",
+              "surface-container-high": "#2a2a2a",
+              "inverse-on-surface": "#313030",
+              "on-tertiary-fixed-variant": "#723600",
+              "on-error": "#690005",
+              "primary-fixed-dim": "#adc6ff",
+              "on-primary-fixed": "#001a42",
+              "on-secondary-container": "#d6a9ff",
+              "primary": "#adc6ff",
+              "inverse-primary": "#005ac2"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(53, 53, 52, 0.7);
+            backdrop-filter: blur(24px);
+        }
+        .canvas-grid {
+            background-image: radial-gradient(#424754 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+        .nodeline {
+            stroke-dasharray: 4;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-[#131313] dark:bg-[#131313] w-full top-0 sticky z-50 border-b border-[#424754]/15 flex justify-between items-center px-6 py-3 w-full max-w-full font-['Inter'] tracking-tighter text-sm font-medium">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tighter text-[#ADC6FF] italic">RepoIQ</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Dashboard</a>
+<a class="text-[#ADC6FF] border-b-2 border-[#ADC6FF] pb-1" href="{{DATA:SCREEN:SCREEN_5}}">Analyze</a>
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Compare</a>
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Leaderboard</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center bg-surface-container-lowest px-3 py-1.5 rounded gap-2 border border-outline-variant/10">
+<span class="material-symbols-outlined text-on-surface-variant text-base" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs w-48 placeholder:text-outline" placeholder="Search architecture..." type="text"/>
+<span class="text-[10px] text-outline font-mono">CMD+K</span>
+</div>
+<button class="p-2 hover:bg-[#2A2A2A] transition-all duration-200 text-[#C2C6D6] rounded">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 hover:bg-[#2A2A2A] transition-all duration-200 text-[#C2C6D6] rounded">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/20">
+<img alt="User profile avatar" data-alt="close-up portrait of a professional developer in soft studio lighting with a neutral gray background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaHco8nngEW7mWQepcMParJeNBMkK2wd3-RHe8cAOYO-E4ibVZKq6RYWp665vIqG1TsUMwdJPpXGlwSwIS3egPoHyZQhHEJ09Yjd56yiQng6ntvTMLA96iMAk1Y3px53I5cJ74v3hzaQm2I-7yuUjW86msLsqgLOPo8NPv8zk1J0I9x5K6I4HRVMnMdpIgc8pdSrJdxm4uptPyX2kgjkJauZfazUASzNAt1xAoPSlajoYCxcPcES4OC80mDzQn1yI6rUCReI5fj8LC"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-[#201F1F] dark:bg-[#201F1F] h-full w-64 left-0 sticky flex flex-col h-full py-6 px-4 font-['JetBrains_Mono'] text-xs uppercase tracking-widest border-r border-outline-variant/10">
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-[#ADC6FF]" data-icon="terminal">terminal</span>
+</div>
+<div>
+<h3 class="text-[#ADC6FF] font-bold text-sm tracking-normal capitalize">facebook/react</h3>
+<p class="text-[10px] text-outline opacity-70 tracking-tighter normal-case">Main Branch</p>
+</div>
+</div>
+<nav class="space-y-1 flex-1">
+<a class="flex items-center gap-3 px-3 py-3 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Report</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 bg-[#2A2A2A] text-[#ADC6FF] border-r-2 border-[#ADC6FF] transition-all duration-300 ease-in-out rounded-l" href="{{DATA:SCREEN:SCREEN_5}}">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span>Architecture</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded" href="#">
+<span class="material-symbols-outlined" data-icon="bug_report">bug_report</span>
+<span>Bugs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span>Teach</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded" href="{{DATA:SCREEN:SCREEN_11}}">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span>Files</span>
+</a>
+</nav>
+<button class="mt-4 mb-8 bg-gradient-to-br from-[#ADC6FF] to-[#4D8EFF] text-[#002e6a] font-bold py-2.5 rounded text-[11px] tracking-widest hover:brightness-110 transition-all uppercase">
+                New Analysis
+            </button>
+<div class="space-y-1 pt-4 border-t border-outline-variant/10">
+<a class="flex items-center gap-3 px-3 py-2 text-[#C2C6D6] opacity-70 hover:opacity-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-base" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#C2C6D6] opacity-70 hover:opacity-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-base" data-icon="help_outline">help_outline</span>
+<span>Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area: Diagram Canvas -->
+<main class="flex-1 relative bg-surface-container-lowest canvas-grid overflow-hidden">
+<!-- Canvas Toolbar -->
+<div class="absolute top-6 left-6 z-10 flex flex-col gap-4">
+<div class="glass-panel p-1 rounded-lg border border-outline-variant/20 flex flex-col gap-1">
+<button class="p-2 text-on-surface hover:bg-surface-container-high rounded transition-colors" title="Zoom In">
+<span class="material-symbols-outlined">zoom_in</span>
+</button>
+<button class="p-2 text-on-surface hover:bg-surface-container-high rounded transition-colors" title="Zoom Out">
+<span class="material-symbols-outlined">zoom_out</span>
+</button>
+<div class="h-px bg-outline-variant/20 mx-2"></div>
+<button class="p-2 text-on-surface hover:bg-surface-container-high rounded transition-colors" title="Fit to Screen">
+<span class="material-symbols-outlined">center_focus_strong</span>
+</button>
+</div>
+<div class="glass-panel p-1.5 rounded-full border border-outline-variant/20 flex flex-col gap-1">
+<button class="p-2 text-primary bg-primary/10 rounded-full transition-colors" title="Select Tool">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">near_me</span>
+</button>
+<button class="p-2 text-on-surface hover:bg-surface-container-high rounded-full transition-colors" title="Hand Tool">
+<span class="material-symbols-outlined">pan_tool</span>
+</button>
+</div>
+</div>
+<!-- Context Toggle & Export -->
+<div class="absolute top-6 right-6 z-10 flex items-center gap-4">
+<div class="glass-panel px-1 py-1 rounded-full border border-outline-variant/20 flex items-center">
+<button class="px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-primary text-on-primary transition-all" onclick="window.location.href='{{DATA:SCREEN:SCREEN_10}}'">Data Flow</button>
+<button class="px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-all">Class Structure</button>
+</div>
+<button class="glass-panel flex items-center gap-2 px-4 py-2 rounded-lg border border-outline-variant/20 text-on-surface hover:border-primary/40 transition-all text-xs font-bold uppercase tracking-tighter">
+<span class="material-symbols-outlined text-lg">download</span>
+                    Export
+                </button>
+</div>
+<!-- Diagram Surface (Simulated) -->
+<div class="w-full h-full flex items-center justify-center p-12">
+<svg class="w-full h-full max-w-4xl" fill="none" viewbox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+<!-- Connections -->
+<path class="nodeline" d="M200 300 C 300 300, 300 150, 400 150" stroke="#4D8EFF" stroke-width="2"></path>
+<path class="nodeline" d="M200 300 C 300 300, 300 450, 400 450" stroke="#424754" stroke-width="2"></path>
+<path class="nodeline" d="M550 150 L 650 300" stroke="#4D8EFF" stroke-width="2"></path>
+<path class="nodeline" d="M550 450 L 650 300" stroke="#424754" stroke-width="2"></path>
+<!-- Nodes -->
+<!-- Node 1: Dispatcher -->
+<g transform="translate(50, 260)">
+<rect fill="#1C1B1B" height="80" rx="4" stroke="#ADC6FF" stroke-width="1" width="150"></rect>
+<rect fill="#ADC6FF" height="80" rx="2" width="4"></rect>
+<text fill="#E5E2E1" font-family="JetBrains Mono" font-size="12" font-weight="bold" x="20" y="35">ReactDispatcher</text>
+<text fill="#C2C6D6" font-family="Inter" font-size="10" x="20" y="55">Core reconciler layer</text>
+</g>
+<!-- Node 2: Hook Registry -->
+<g transform="translate(400, 110)">
+<rect fill="#2A2A2A" height="80" rx="4" stroke="#4D8EFF" stroke-width="2" width="150"></rect>
+<rect fill="#4D8EFF" height="80" rx="2" width="4"></rect>
+<text fill="#ADC6FF" font-family="JetBrains Mono" font-size="12" font-weight="bold" x="20" y="35">HookRegistry</text>
+<text fill="#C2C6D6" font-family="Inter" font-size="10" x="20" y="55">State persistence</text>
+<circle cx="150" cy="40" fill="#4D8EFF" r="4"></circle>
+</g>
+<!-- Node 3: DOM Renderer -->
+<g transform="translate(400, 410)">
+<rect fill="#1C1B1B" height="80" rx="4" stroke="#424754" stroke-width="1" width="150"></rect>
+<rect fill="#424754" height="80" rx="2" width="4"></rect>
+<text fill="#C2C6D6" font-family="JetBrains Mono" font-size="12" font-weight="bold" x="20" y="35">DOMRenderer</text>
+<text fill="#C2C6D6" font-family="Inter" font-size="10" x="20" y="55">Platform bridge</text>
+</g>
+<!-- Node 4: FiberTree -->
+<g transform="translate(650, 260)">
+<rect fill="#1C1B1B" height="80" rx="4" stroke="#424754" stroke-width="1" width="150"></rect>
+<rect fill="#424754" height="80" rx="2" width="4"></rect>
+<text fill="#E5E2E1" font-family="JetBrains Mono" font-size="12" font-weight="bold" x="20" y="35">FiberTree</text>
+<text fill="#C2C6D6" font-family="Inter" font-size="10" x="20" y="55">Virtual node map</text>
+</g>
+</svg>
+</div>
+</main>
+<!-- Right Info Panel -->
+<aside class="w-80 bg-surface-container border-l border-outline-variant/10 flex flex-col overflow-y-auto">
+<div class="p-6">
+<div class="flex items-center justify-between mb-6">
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary">Selected Module</span>
+<button class="text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+</div>
+<div class="mb-8">
+<h2 class="text-2xl font-black tracking-tight text-on-surface mb-2 font-headline">HookRegistry</h2>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                        Manages the internal state of all active hooks within a component's lifecycle. Responsible for tracking hook order and persistence between render cycles.
+                    </p>
+</div>
+<div class="space-y-6">
+<div>
+<h4 class="text-[10px] font-bold uppercase tracking-widest text-outline mb-3">Responsibility</h4>
+<ul class="space-y-2">
+<li class="flex items-start gap-2 text-xs">
+<span class="material-symbols-outlined text-primary text-sm mt-0.5">check_circle</span>
+<span>Maintains a linked list of hook objects.</span>
+</li>
+<li class="flex items-start gap-2 text-xs">
+<span class="material-symbols-outlined text-primary text-sm mt-0.5">check_circle</span>
+<span>Validates hook calling order consistency.</span>
+</li>
+<li class="flex items-start gap-2 text-xs">
+<span class="material-symbols-outlined text-primary text-sm mt-0.5">check_circle</span>
+<span>Integrates with Fiber reconciler for updates.</span>
+</li>
+</ul>
+</div>
+<div>
+<h4 class="text-[10px] font-bold uppercase tracking-widest text-outline mb-3">Dependencies</h4>
+<div class="space-y-2">
+<div class="bg-surface-container-low p-3 rounded border border-outline-variant/10 hover:border-primary/30 transition-all cursor-pointer group">
+<div class="flex items-center justify-between">
+<span class="text-xs font-mono group-hover:text-primary transition-colors">ReactDispatcher</span>
+<span class="material-symbols-outlined text-sm text-outline">arrow_forward_ios</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-1">Upstream control signal provider.</p>
+</div>
+<div class="bg-surface-container-low p-3 rounded border border-outline-variant/10 hover:border-primary/30 transition-all cursor-pointer group">
+<div class="flex items-center justify-between">
+<span class="text-xs font-mono group-hover:text-primary transition-colors">FiberWorkLoop</span>
+<span class="material-symbols-outlined text-sm text-outline">arrow_forward_ios</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-1">Executes scheduled hook updates.</p>
+</div>
+</div>
+</div>
+<div>
+<h4 class="text-[10px] font-bold uppercase tracking-widest text-outline mb-3">Activity Peak</h4>
+<div class="h-24 bg-surface-container-lowest rounded overflow-hidden relative border border-outline-variant/5">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
+<!-- Mock Sparkline -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 40">
+<path d="M0 35 L10 32 L20 38 L30 25 L40 28 L50 10 L60 15 L70 5 L80 12 L90 8 L100 20" fill="none" stroke="#ADC6FF" stroke-width="1.5"></path>
+</svg>
+<span class="absolute bottom-2 right-2 text-[8px] font-mono text-outline">Last 30 Days</span>
+</div>
+</div>
+</div>
+<button class="w-full mt-8 flex items-center justify-center gap-2 bg-surface-container-high py-3 rounded text-xs font-bold uppercase tracking-widest border border-outline-variant/20 hover:bg-surface-variant transition-all" onclick="window.location.href='{{DATA:SCREEN:SCREEN_11}}'">
+<span class="material-symbols-outlined text-base">code</span>
+                    View Module Code
+                </button>
+</div>
+</aside>
+</div>
+<!-- Footer -->
+<footer class="bg-[#0E0E0E] dark:bg-[#0E0E0E] w-full py-4 border-t border-[#424754]/10 flex justify-between items-center px-12 w-full font-['Inter'] text-[10px] uppercase tracking-tighter shrink-0">
+<div class="text-[#C2C6D6] opacity-80 flex gap-6">
+<span class="text-[#4D8EFF] font-bold">RepoIQ</span>
+<span>© 2024 The Digital Architect.</span>
+</div>
+<div class="flex items-center gap-8 text-[#C2C6D6]">
+<a class="hover:text-white hover:underline transition-all" href="#">Privacy</a>
+<a class="hover:text-white hover:underline transition-all" href="#">Terms</a>
+<a class="hover:text-white hover:underline transition-all" href="#">API</a>
+<a class="hover:text-white hover:underline transition-all" href="#">Security</a>
+<div class="flex items-center gap-2 bg-surface-container px-2 py-1 rounded">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="text-[8px] text-emerald-500">System Nominal</span>
+</div>
+</div>
+</footer>
+</body></html>

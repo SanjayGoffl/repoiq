@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RepoIQ Teach Mode | facebook/react</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-tint": "#adc6ff",
+                        "surface-dim": "#131313",
+                        "tertiary-container": "#df7412",
+                        "on-tertiary-fixed": "#311400",
+                        "tertiary-fixed": "#ffdcc6",
+                        "surface": "#131313",
+                        "surface-container": "#201f1f",
+                        "tertiary": "#ffb786",
+                        "outline-variant": "#424754",
+                        "on-surface-variant": "#c2c6d6",
+                        "on-tertiary": "#502400",
+                        "surface-variant": "#353534",
+                        "on-primary-container": "#00285d",
+                        "secondary-fixed": "#f0dbff",
+                        "on-primary": "#002e6a",
+                        "secondary-fixed-dim": "#ddb7ff",
+                        "surface-container-highest": "#353534",
+                        "tertiary-fixed-dim": "#ffb786",
+                        "outline": "#8c909f",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#6900b3",
+                        "error-container": "#93000a",
+                        "inverse-surface": "#e5e2e1",
+                        "secondary": "#ddb7ff",
+                        "surface-bright": "#3a3939",
+                        "on-primary-fixed-variant": "#004395",
+                        "on-secondary-fixed": "#2c0051",
+                        "primary-container": "#4d8eff",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#6f00be",
+                        "on-surface": "#e5e2e1",
+                        "surface-container-lowest": "#0e0e0e",
+                        "background": "#131313",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-container-low": "#1c1b1b",
+                        "on-tertiary-container": "#461f00",
+                        "on-background": "#e5e2e1",
+                        "on-secondary": "#490080",
+                        "surface-container-high": "#2a2a2a",
+                        "inverse-on-surface": "#313030",
+                        "on-tertiary-fixed-variant": "#723600",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-primary-fixed": "#001a42",
+                        "on-secondary-container": "#d6a9ff",
+                        "primary": "#adc6ff",
+                        "inverse-primary": "#005ac2"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .code-glow {
+            text-shadow: 0 0 10px rgba(173, 198, 255, 0.2);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #424754;
+        }
+        .glass-panel {
+            background: rgba(53, 53, 52, 0.7);
+            backdrop-filter: blur(24px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-[#131313] dark:bg-[#131313] w-full top-0 sticky z-50 border-b border-[#424754]/15 flex justify-between items-center px-6 py-3 w-full max-w-full">
+<div class="flex items-center gap-8">
+<div class="text-xl font-black tracking-tighter text-[#ADC6FF] italic">RepoIQ</div>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Dashboard</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Analyze</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Compare</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Leaderboard</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#C2C6D6] hover:bg-[#2A2A2A] transition-all duration-200 rounded scale-95 active:scale-90">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-[#C2C6D6] hover:bg-[#2A2A2A] transition-all duration-200 rounded scale-95 active:scale-90">
+<span class="material-symbols-outlined">history</span>
+</button>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full border border-outline-variant/30" data-alt="Close-up portrait of a professional software engineer with glasses in a minimalist modern studio setting with blue ambient lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCp1UCKPggWbLSll6Lhn6NcT_vjg5-9yikmhIC70o_qCBzLSqv58G1HJFGJqhELIjvsfXMIWMzrkaHIfFCml4JdqAmkmFiDYf5rY8UA3i5mJFpnTYtSIsEFP3Rkd2zjLsH9mHIL9T0584yakp37w9YCa0WU-W2XQYEqDVJSCjJ7jzx4EsntazDa9DdGReZujwnO0RXPGyomza7WiaPkyL7catzDBd5qv1HtTRUi0kyDBx51OXIh7Ei6Edw2-A8gh9jzlyUA_W68lHTv"/>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-[#201F1F] dark:bg-[#201F1F] h-full w-64 left-0 sticky flex flex-col h-full py-6 px-4">
+<div class="mb-8">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-[#ADC6FF]">deployed_code</span>
+</div>
+<div>
+<div class="text-lg font-bold text-[#ADC6FF]">facebook/react</div>
+<div class="font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-[#C2C6D6] opacity-70">Main Branch</div>
+</div>
+</div>
+</div>
+<button class="mb-6 w-full py-2 bg-gradient-to-br from-primary to-primary-container text-on-primary-container font-bold text-xs uppercase tracking-widest rounded-md hover:brightness-110 transition-all active:scale-95">
+                New Analysis
+            </button>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 py-2.5 px-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded-r-none" href="#">
+<span class="material-symbols-outlined text-base">analytics</span>
+                    Report
+                </a>
+<a class="flex items-center gap-3 py-2.5 px-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded-r-none" href="#">
+<span class="material-symbols-outlined text-base">account_tree</span>
+                    Architecture
+                </a>
+<a class="flex items-center gap-3 py-2.5 px-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded-r-none" href="#">
+<span class="material-symbols-outlined text-base">bug_report</span>
+                    Bugs
+                </a>
+<a class="flex items-center gap-3 py-2.5 px-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest bg-[#2A2A2A] text-[#ADC6FF] border-r-2 border-[#ADC6FF] transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined text-base">school</span>
+                    Teach
+                </a>
+<a class="flex items-center gap-3 py-2.5 px-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors rounded-r-none" href="#">
+<span class="material-symbols-outlined text-base">folder_open</span>
+                    Files
+                </a>
+</nav>
+<div class="mt-auto pt-6 border-t border-[#424754]/15 space-y-1">
+<a class="flex items-center gap-3 py-2 px-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-base">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center gap-3 py-2 px-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-base">help_outline</span>
+                    Support
+                </a>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="flex-1 flex overflow-hidden bg-surface">
+<!-- Code Pane -->
+<section class="flex-1 flex flex-col border-r border-outline-variant/10">
+<!-- Code Header -->
+<div class="h-12 flex items-center px-6 bg-surface-container-low border-b border-outline-variant/5 justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">javascript</span>
+<span class="text-xs font-mono text-on-surface-variant">packages / react-reconciler / src / <span class="text-primary font-semibold">ReactFiberWorkLoop.js</span></span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant border border-outline-variant/20">UTF-8</span>
+<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant border border-outline-variant/20">JS (Babel)</span>
+</div>
+</div>
+<!-- Code Content -->
+<div class="flex-1 overflow-auto bg-surface-container-lowest relative group">
+<div class="flex font-mono text-sm leading-relaxed p-6 min-h-full">
+<!-- Line Numbers -->
+<div class="text-right pr-6 select-none opacity-30 border-r border-outline-variant/10">
+                            1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25
+                        </div>
+<!-- Actual Code -->
+<div class="pl-6 text-on-surface-variant whitespace-pre">
+<span class="text-[#ffb786]">function</span> <span class="text-primary font-semibold">performUnitOfWork</span>(unitOfWork: Fiber): <span class="text-[#ddb7ff]">void</span> {
+  <span class="text-outline-variant italic">// The current, flushed, version of this fiber is the alternate.</span>
+<span class="text-[#ffb786]">const</span> current = unitOfWork.alternate;
+
+  <span class="text-primary">setCurrentDebugFiberInService</span>(unitOfWork);
+
+  <span class="text-[#ffb786]">let</span> next;
+  <span class="text-[#ffb786]">if</span> (__DEV__) {
+    next = <span class="text-primary">beginWorkWithDebugAction</span>(current, unitOfWork, renderLanes);
+  } <span class="text-[#ffb786]">else</span> {
+    <span class="bg-primary/20 text-on-surface ring-1 ring-primary/40 rounded px-1 relative group/selection">next = beginWork(current, unitOfWork, renderLanes);
+    <!-- Context Menu Overlay -->
+<div class="absolute top-full left-0 mt-2 z-50 glass-panel border border-outline-variant/30 rounded-lg p-1 shadow-2xl min-w-[200px] hidden group-hover/selection:block">
+<button class="w-full text-left px-3 py-2 text-xs hover:bg-primary/10 rounded flex items-center gap-2 text-on-surface transition-colors">
+<span class="material-symbols-outlined text-sm text-primary">school</span>
+            Explain this function
+        </button>
+<button class="w-full text-left px-3 py-2 text-xs hover:bg-primary/10 rounded flex items-center gap-2 text-on-surface transition-colors">
+<span class="material-symbols-outlined text-sm">terminal</span>
+            Run usage example
+        </button>
+<div class="h-px bg-outline-variant/20 my-1"></div>
+<button class="w-full text-left px-3 py-2 text-xs hover:bg-primary/10 rounded flex items-center gap-2 text-on-surface transition-colors">
+<span class="material-symbols-outlined text-sm">find_in_page</span>
+            Find all references
+        </button>
+</div>
+</span>
+  }
+
+  <span class="text-primary">resetCurrentDebugFiberInService</span>();
+  unitOfWork.memoizedProps = unitOfWork.pendingProps;
+
+  <span class="text-[#ffb786]">if</span> (next === <span class="text-[#ddb7ff]">null</span>) {
+    <span class="text-outline-variant italic">// If this fiber doesn't have any children, complete it.</span>
+<span class="text-primary">completeUnitOfWork</span>(unitOfWork);
+  } <span class="text-[#ffb786]">else</span> {
+    workInProgress = next;
+  }
+}</div>
+</div>
+<!-- Floating Action Buttons -->
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-40">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-highest border border-outline-variant/30 rounded-full text-[10px] uppercase font-bold tracking-widest text-[#ADC6FF] hover:bg-surface-container-high transition-all shadow-xl group">
+<span class="material-symbols-outlined text-lg">account_tree</span>
+                            Explain Architecture
+                        </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-highest border border-outline-variant/30 rounded-full text-[10px] uppercase font-bold tracking-widest text-[#ADC6FF] hover:bg-surface-container-high transition-all shadow-xl group">
+<span class="material-symbols-outlined text-lg">play_arrow</span>
+                            Run Example
+                        </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-highest border border-outline-variant/30 rounded-full text-[10px] uppercase font-bold tracking-widest text-[#ADC6FF] hover:bg-surface-container-high transition-all shadow-xl group">
+<span class="material-symbols-outlined text-lg">near_me</span>
+                            Jump to Definition
+                        </button>
+</div>
+</div>
+</section>
+<!-- AI Chat Panel -->
+<section class="w-[450px] flex flex-col bg-surface-container-low border-l border-outline-variant/15">
+<!-- Chat Header -->
+<div class="p-6 border-b border-outline-variant/5">
+<h2 class="text-lg font-black tracking-tighter text-on-surface mb-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                        Teach Mode
+                    </h2>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-medium opacity-60">Socratic Assistant Active</p>
+</div>
+<!-- Chat Messages -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+<!-- AI Message (Socratic) -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-2 text-primary font-mono text-[10px] uppercase tracking-widest font-bold">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+                            RepoIQ Architect
+                        </div>
+<div class="bg-surface-container-high p-4 rounded-xl rounded-tl-none border border-outline-variant/10 text-sm leading-relaxed text-on-surface">
+                            I see you're looking at <code class="font-mono text-primary bg-primary/5 px-1">performUnitOfWork</code>. This is the heart of the React reconciliation engine.
+                            <br/><br/>
+                            To understand the flow here, <span class="font-bold text-primary">what do you think the "alternate" property on the Fiber represents in line 3?</span>
+</div>
+<div class="flex gap-2">
+<button class="text-[10px] bg-surface-container-highest hover:bg-outline-variant/20 px-3 py-1.5 rounded-full border border-outline-variant/30 transition-colors">The previous state?</button>
+<button class="text-[10px] bg-surface-container-highest hover:bg-outline-variant/20 px-3 py-1.5 rounded-full border border-outline-variant/30 transition-colors">A backup copy?</button>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex flex-col gap-3 items-end">
+<div class="flex items-center gap-2 text-on-surface-variant font-mono text-[10px] uppercase tracking-widest font-bold">
+                            You
+                            <span class="material-symbols-outlined text-sm">account_circle</span>
+</div>
+<div class="bg-primary/10 p-4 rounded-xl rounded-tr-none border border-primary/20 text-sm leading-relaxed text-on-surface max-w-[90%]">
+                            Is it the version of the component that is currently visible on the user's screen?
+                        </div>
+</div>
+<!-- AI Response -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-2 text-primary font-mono text-[10px] uppercase tracking-widest font-bold">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+                            RepoIQ Architect
+                        </div>
+<div class="bg-surface-container-high p-4 rounded-xl rounded-tl-none border border-outline-variant/10 text-sm leading-relaxed text-on-surface">
+                            Spot on! That's exactly right. React uses a **Double Buffering** strategy.
+                            <br/><br/>
+                            The <code class="font-mono text-primary bg-primary/5 px-1">unitOfWork</code> is part of the "work-in-progress" tree, while its <code class="font-mono text-primary bg-primary/5 px-1">alternate</code> is the "current" tree that is already rendered.
+                            <br/><br/>
+                            Look at line 12. If <code class="font-mono text-primary bg-primary/5 px-1">next</code> is null, it calls <code class="font-mono text-primary bg-primary/5 px-1">completeUnitOfWork</code>. What does that suggest about how React traverses the component tree?
+                        </div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-6 border-t border-outline-variant/15">
+<div class="relative">
+<textarea class="w-full bg-surface-container-lowest border-none focus:ring-1 focus:ring-surface-tint rounded-xl p-4 text-sm placeholder:text-on-surface-variant/40 resize-none font-mono" placeholder="Ask a question or explain your reasoning..." rows="3"></textarea>
+<div class="absolute bottom-3 right-3 flex items-center gap-2">
+<span class="text-[10px] font-mono text-on-surface-variant/50">CMD + ENTER</span>
+<button class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-on-primary-container shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-base">send</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-[#0E0E0E] dark:bg-[#0E0E0E] w-full py-2 mt-auto border-t border-[#424754]/10 flex justify-between items-center px-6 w-full z-50">
+<div class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] opacity-80">
+            © 2024 RepoIQ. The Digital Architect.
+        </div>
+<div class="flex gap-6">
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white transition-opacity hover:underline" href="#">Privacy</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white transition-opacity hover:underline" href="#">Terms</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white transition-opacity hover:underline" href="#">API</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white transition-opacity hover:underline" href="#">Security</a>
+</div>
+</footer>
+</body></html>

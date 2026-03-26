@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-tint": "#adc6ff",
+              "surface-dim": "#131313",
+              "tertiary-container": "#df7412",
+              "on-tertiary-fixed": "#311400",
+              "tertiary-fixed": "#ffdcc6",
+              "surface": "#131313",
+              "surface-container": "#201f1f",
+              "tertiary": "#ffb786",
+              "outline-variant": "#424754",
+              "on-surface-variant": "#c2c6d6",
+              "on-tertiary": "#502400",
+              "surface-variant": "#353534",
+              "on-primary-container": "#00285d",
+              "secondary-fixed": "#f0dbff",
+              "on-primary": "#002e6a",
+              "secondary-fixed-dim": "#ddb7ff",
+              "surface-container-highest": "#353534",
+              "tertiary-fixed-dim": "#ffb786",
+              "outline": "#8c909f",
+              "on-error-container": "#ffdad6",
+              "on-secondary-fixed-variant": "#6900b3",
+              "error-container": "#93000a",
+              "inverse-surface": "#e5e2e1",
+              "secondary": "#ddb7ff",
+              "surface-bright": "#3a3939",
+              "on-primary-fixed-variant": "#004395",
+              "on-secondary-fixed": "#2c0051",
+              "primary-container": "#4d8eff",
+              "error": "#ffb4ab",
+              "secondary-container": "#6f00be",
+              "on-surface": "#e5e2e1",
+              "surface-container-lowest": "#0e0e0e",
+              "background": "#131313",
+              "primary-fixed": "#d8e2ff",
+              "surface-container-low": "#1c1b1b",
+              "on-tertiary-container": "#461f00",
+              "on-background": "#e5e2e1",
+              "on-secondary": "#490080",
+              "surface-container-high": "#2a2a2a",
+              "inverse-on-surface": "#313030",
+              "on-tertiary-fixed-variant": "#723600",
+              "on-error": "#690005",
+              "primary-fixed-dim": "#adc6ff",
+              "on-primary-fixed": "#001a42",
+              "on-secondary-container": "#d6a9ff",
+              "primary": "#adc6ff",
+              "inverse-primary": "#005ac2"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"],
+              "mono": ["JetBrains Mono"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(53, 53, 52, 0.7);
+            backdrop-filter: blur(24px);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #ADC6FF 0%, #4D8EFF 100%);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30 selection:text-primary">
+<!-- TopAppBar Shell -->
+<header class="bg-[#131313] dark:bg-[#131313] w-full top-0 sticky z-50 border-b border-[#424754]/15 flex justify-between items-center px-6 py-3 w-full max-w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tighter text-[#ADC6FF] italic">RepoIQ</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Dashboard</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#ADC6FF] border-b-2 border-[#ADC6FF] pb-1" href="{{DATA:SCREEN:SCREEN_5}}">Analyze</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Compare</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Leaderboard</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#C2C6D6] hover:bg-[#2A2A2A] p-2 rounded-full transition-all duration-200 active:scale-90">notifications</button>
+<button class="material-symbols-outlined text-[#C2C6D6] hover:bg-[#2A2A2A] p-2 rounded-full transition-all duration-200 active:scale-90">history</button>
+<div class="h-8 w-8 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant/30">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="minimalist professional avatar for a software engineer with glasses and a tech-style hoodie" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjVniosg8TTReBG_7xW72BmLpSNJ8dN7zyvlqnJ3XDw4iTuJxxrukohDl5DuqYtGlSYKPD-K-OUd8Wx-1uoGXF_w77B9PRdVYiU_SILEJqDHYsv00NPFdBNAp3zbHfUV0nHkPCvPLok0ZHo6U4LvqEO-mF4-Hi-_8qsoXYA5YCGxSCkJE-s5zOZk0rqMi4xPaY_bnBJtBX3iN8Hx0Rcd97jnE8qpEb1_PNpi5ZNfKD8zgn1IDLyfu9XenrCeAx9XwHTfb8Y2PVltNv"/>
+</div>
+</div>
+</header>
+<div class="flex min-h-[calc(100-64px)]">
+<!-- SideNavBar Shell -->
+<aside class="bg-[#201F1F] dark:bg-[#201F1F] h-screen w-64 left-0 sticky flex flex-col h-full py-6 px-4 hidden lg:flex">
+<div class="mb-8 px-2 flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-lowest rounded flex items-center justify-center border border-outline-variant/10">
+<span class="material-symbols-outlined text-[#ADC6FF]">deployed_code</span>
+</div>
+<div>
+<h2 class="font-bold text-[#ADC6FF] text-sm leading-tight">facebook/react</h2>
+<p class="font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-[#C2C6D6] opacity-60">Main Branch</p>
+</div>
+</div>
+<button class="mb-8 w-full py-2.5 px-4 primary-gradient text-on-primary-fixed font-bold text-xs uppercase tracking-widest rounded transition-transform active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+                New Analysis
+            </button>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 py-2.5 px-4 bg-[#2A2A2A] text-[#ADC6FF] border-r-2 border-[#ADC6FF] font-['JetBrains_Mono'] text-xs uppercase tracking-widest transition-all duration-300" href="{{DATA:SCREEN:SCREEN_18}}">
+<span class="material-symbols-outlined text-lg">analytics</span>
+                    Report
+                </a>
+<a class="flex items-center gap-3 py-2.5 px-4 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] font-['JetBrains_Mono'] text-xs uppercase tracking-widest transition-all duration-300" href="{{DATA:SCREEN:SCREEN_5}}">
+<span class="material-symbols-outlined text-lg">account_tree</span>
+                    Architecture
+                </a>
+<a class="flex items-center gap-3 py-2.5 px-4 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] font-['JetBrains_Mono'] text-xs uppercase tracking-widest transition-all duration-300" href="{{DATA:SCREEN:SCREEN_6}}">
+<span class="material-symbols-outlined text-lg">bug_report</span>
+                    Bugs
+                </a>
+<a class="flex items-center gap-3 py-2.5 px-4 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] font-['JetBrains_Mono'] text-xs uppercase tracking-widest transition-all duration-300" href="{{DATA:SCREEN:SCREEN_17}}">
+<span class="material-symbols-outlined text-lg">school</span>
+                    Teach
+                </a>
+<a class="flex items-center gap-3 py-2.5 px-4 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] font-['JetBrains_Mono'] text-xs uppercase tracking-widest transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">folder_open</span>
+                    Files
+                </a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant/10 space-y-1">
+<a class="flex items-center gap-3 py-2 px-4 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] font-['JetBrains_Mono'] text-xs uppercase tracking-widest transition-all" href="#">
+<span class="material-symbols-outlined text-lg">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center gap-3 py-2 px-4 text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] font-['JetBrains_Mono'] text-xs uppercase tracking-widest transition-all" href="#">
+<span class="material-symbols-outlined text-lg">help_outline</span>
+                    Support
+                </a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 bg-surface-container-low min-w-0 p-8 overflow-y-auto hide-scrollbar">
+<!-- Hero Header -->
+<div class="mb-12">
+<span class="text-primary font-mono text-xs tracking-widest uppercase mb-2 block">Repository Intelligence Report</span>
+<h1 class="text-5xl font-black tracking-tighter text-on-surface mb-6">Report Overview</h1>
+<!-- Bento Grid: Score Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Quality Score -->
+<div class="bg-surface-container p-6 rounded relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">verified</span>
+</div>
+<p class="text-[10px] font-mono uppercase tracking-widest text-on-surface-variant mb-1">Code Quality</p>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-bold text-primary">88</span>
+<span class="text-on-surface-variant text-sm">/ 100</span>
+</div>
+<div class="mt-4 w-full bg-surface-container-lowest h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[88%]"></div>
+</div>
+<p class="mt-4 text-xs text-on-surface-variant">Exceptional modularity with minor style drift in hooks.</p>
+</div>
+<!-- Security Score -->
+<div class="bg-surface-container p-6 rounded relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-error">security</span>
+</div>
+<p class="text-[10px] font-mono uppercase tracking-widest text-on-surface-variant mb-1">Security Health</p>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-bold text-error">64</span>
+<span class="text-on-surface-variant text-sm">/ 100</span>
+</div>
+<div class="mt-4 w-full bg-surface-container-lowest h-1 rounded-full overflow-hidden">
+<div class="bg-error h-full w-[64%]"></div>
+</div>
+<p class="mt-4 text-xs text-on-surface-variant">3 Critical dependencies out of date. Urgent patch needed.</p>
+</div>
+<!-- Complexity Score -->
+<div class="bg-surface-container p-6 rounded relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-secondary">psychology</span>
+</div>
+<p class="text-[10px] font-mono uppercase tracking-widest text-on-surface-variant mb-1">Cognitive Complexity</p>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-bold text-secondary">72</span>
+<span class="text-on-surface-variant text-sm">/ 100</span>
+</div>
+<div class="mt-4 w-full bg-surface-container-lowest h-1 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[72%]"></div>
+</div>
+<p class="mt-4 text-xs text-on-surface-variant">Moderate learning curve. Core reconciler logic is dense.</p>
+</div>
+</div>
+</div>
+<!-- AI Executive Summary & Skills -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-6 mb-12">
+<!-- AI Summary -->
+<div class="xl:col-span-7 bg-surface-container-lowest border border-outline-variant/10 p-8 rounded-xl relative">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h3 class="text-lg font-bold tracking-tight">Executive Summary</h3>
+</div>
+<div class="space-y-4 text-on-surface-variant leading-relaxed">
+<p class="first-letter:text-4xl first-letter:font-bold first-letter:mr-1 first-letter:float-left first-letter:text-primary">The current repository structure demonstrates high architectural maturity, particularly in the implementation of the concurrent rendering engine. However, technical debt is accruing in the legacy maintenance of the SyntheticEvent wrapper classes.</p>
+<p>Our analysis suggests that while the repo is extremely stable, the learning potential is concentrated in the <code class="bg-surface-container-high px-1 rounded font-mono text-primary-fixed-dim">src/reconciler</code> directory. Security hotspots were identified in third-party bundle dependencies that lack modern integrity checks. Immediate focus should be placed on refactoring the circular reference chain discovered in the hydration logic to prevent memory leaks in long-running sessions.</p>
+</div>
+</div>
+<!-- Skill Coverage (Radar Mockup) -->
+<div class="xl:col-span-5 bg-surface-container p-8 rounded-xl flex flex-col items-center justify-center text-center">
+<h3 class="text-sm font-mono uppercase tracking-widest mb-8">Skill Coverage Profile</h3>
+<div class="relative w-48 h-48 mb-8">
+<!-- Abstract Radar Graphic -->
+<div class="absolute inset-0 border border-outline-variant/20 rounded-full"></div>
+<div class="absolute inset-4 border border-outline-variant/20 rounded-full"></div>
+<div class="absolute inset-8 border border-outline-variant/20 rounded-full"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<svg class="w-full h-full rotate-45" viewbox="0 0 100 100">
+<polygon fill="rgba(173, 198, 255, 0.2)" points="50,10 90,40 70,85 30,85 10,40" stroke="#ADC6FF" stroke-width="1"></polygon>
+<line stroke="#424754" stroke-width="0.5" x1="50" x2="50" y1="50" y2="10"></line>
+<line stroke="#424754" stroke-width="0.5" x1="50" x2="90" y1="50" y2="40"></line>
+<line stroke="#424754" stroke-width="0.5" x1="50" x2="70" y1="50" y2="85"></line>
+<line stroke="#424754" stroke-width="0.5" x1="50" x2="30" y1="50" y2="85"></line>
+<line stroke="#424754" stroke-width="0.5" x1="50" x2="10" y1="50" y2="40"></line>
+</svg>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 w-full">
+<div class="text-left">
+<p class="text-[10px] text-on-surface-variant uppercase font-mono">React Core</p>
+<p class="text-lg font-bold">Expert</p>
+</div>
+<div class="text-left">
+<p class="text-[10px] text-on-surface-variant uppercase font-mono">TS / Flow</p>
+<p class="text-lg font-bold">High</p>
+</div>
+<div class="text-left">
+<p class="text-[10px] text-on-surface-variant uppercase font-mono">Performance</p>
+<p class="text-lg font-bold">Medium</p>
+</div>
+<div class="text-left">
+<p class="text-[10px] text-on-surface-variant uppercase font-mono">CI / DX</p>
+<p class="text-lg font-bold">Low</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Top Findings & Learning Path -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Top Findings List -->
+<div class="lg:col-span-2 space-y-4">
+<h3 class="text-xl font-bold tracking-tight mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">list_alt</span>
+                        Top Findings
+                    </h3>
+<a class="bg-surface p-5 border-l-4 border-error flex items-start gap-4 hover:bg-surface-container transition-colors group block" href="{{DATA:SCREEN:SCREEN_5}}">
+<div class="p-2 bg-error/10 rounded">
+<span class="material-symbols-outlined text-error">sync_problem</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-sm mb-1 group-hover:text-primary transition-colors">Circular dependencies in /src/events</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">Detected 4 circular import paths that complicate tree-shaking and can lead to runtime initialization errors in specific environments.</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward_ios</span>
+</a>
+<a class="bg-surface p-5 border-l-4 border-tertiary flex items-start gap-4 hover:bg-surface-container transition-colors group block" href="{{DATA:SCREEN:SCREEN_6}}">
+<div class="p-2 bg-tertiary/10 rounded">
+<span class="material-symbols-outlined text-tertiary">experiment</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-sm mb-1 group-hover:text-primary transition-colors">Missing unit tests for auth-reconciliation</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">Critical logic in the authentication handshake module is only covered by integration tests, leaving edge cases unverified.</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward_ios</span>
+</a>
+<a class="bg-surface p-5 border-l-4 border-primary flex items-start gap-4 hover:bg-surface-container transition-colors group block" href="{{DATA:SCREEN:SCREEN_6}}">
+<div class="p-2 bg-primary/10 rounded">
+<span class="material-symbols-outlined text-primary">speed</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-sm mb-1 group-hover:text-primary transition-colors">O(n²) Complexity in legacy diffing</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">A nested loop in the compatibility layer is causing performance degradation during large dataset updates.</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward_ios</span>
+</a>
+</div>
+<!-- Learning Path CTA -->
+<div class="bg-primary-container text-on-primary-container p-8 rounded-2xl flex flex-col h-full overflow-hidden relative">
+<div class="absolute -top-10 -right-10 w-40 h-40 bg-on-primary-container opacity-5 rounded-full"></div>
+<div class="relative z-10">
+<h3 class="text-2xl font-black mb-4 leading-tight">Recommended Learning Path</h3>
+<p class="text-sm font-medium opacity-90 mb-8 leading-relaxed">We've mapped your current gaps against this repository's architectural complexity. Start your journey here.</p>
+<div class="space-y-6 mb-10">
+<div class="flex items-center gap-4">
+<span class="w-6 h-6 rounded-full border border-on-primary-container flex items-center justify-center text-[10px] font-bold">01</span>
+<span class="text-sm font-bold">Deep Dive: Fiber Reconciler</span>
+</div>
+<div class="flex items-center gap-4 opacity-70">
+<span class="w-6 h-6 rounded-full border border-on-primary-container flex items-center justify-center text-[10px] font-bold">02</span>
+<span class="text-sm font-bold">Mastering Synthetic Events</span>
+</div>
+<div class="flex items-center gap-4 opacity-70">
+<span class="w-6 h-6 rounded-full border border-on-primary-container flex items-center justify-center text-[10px] font-bold">03</span>
+<span class="text-sm font-bold">Security Best Practices</span>
+</div>
+</div>
+<a class="mt-auto w-full py-4 bg-on-primary-container text-primary-container font-black uppercase tracking-widest text-xs rounded hover:shadow-xl transition-all inline-block text-center" href="{{DATA:SCREEN:SCREEN_17}}">
+                            Start Learning Path
+                        </a>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer Shell -->
+<footer class="bg-[#0E0E0E] dark:bg-[#0E0E0E] w-full py-8 mt-auto border-t border-[#424754]/10 flex justify-between items-center px-12 w-full">
+<p class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] opacity-80">© 2024 RepoIQ. The Digital Architect.</p>
+<div class="flex items-center gap-6">
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white transition-all opacity-80 hover:opacity-100" href="#">Privacy</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white transition-all opacity-80 hover:opacity-100" href="#">Terms</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white transition-all opacity-80 hover:opacity-100" href="#">API</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white transition-all opacity-80 hover:opacity-100" href="#">Security</a>
+</div>
+</footer>
+</body></html>

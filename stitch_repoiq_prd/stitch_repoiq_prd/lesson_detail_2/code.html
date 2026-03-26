@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-tint": "#adc6ff",
+              "surface-dim": "#131313",
+              "tertiary-container": "#df7412",
+              "on-tertiary-fixed": "#311400",
+              "tertiary-fixed": "#ffdcc6",
+              "surface": "#131313",
+              "surface-container": "#201f1f",
+              "tertiary": "#ffb786",
+              "outline-variant": "#424754",
+              "on-surface-variant": "#c2c6d6",
+              "on-tertiary": "#502400",
+              "surface-variant": "#353534",
+              "on-primary-container": "#00285d",
+              "secondary-fixed": "#f0dbff",
+              "on-primary": "#002e6a",
+              "secondary-fixed-dim": "#ddb7ff",
+              "surface-container-highest": "#353534",
+              "tertiary-fixed-dim": "#ffb786",
+              "outline": "#8c909f",
+              "on-error-container": "#ffdad6",
+              "on-secondary-fixed-variant": "#6900b3",
+              "error-container": "#93000a",
+              "inverse-surface": "#e5e2e1",
+              "secondary": "#ddb7ff",
+              "surface-bright": "#3a3939",
+              "on-primary-fixed-variant": "#004395",
+              "on-secondary-fixed": "#2c0051",
+              "primary-container": "#4d8eff",
+              "error": "#ffb4ab",
+              "secondary-container": "#6f00be",
+              "on-surface": "#e5e2e1",
+              "surface-container-lowest": "#0e0e0e",
+              "background": "#131313",
+              "primary-fixed": "#d8e2ff",
+              "surface-container-low": "#1c1b1b",
+              "on-tertiary-container": "#461f00",
+              "on-background": "#e5e2e1",
+              "on-secondary": "#490080",
+              "surface-container-high": "#2a2a2a",
+              "inverse-on-surface": "#313030",
+              "on-tertiary-fixed-variant": "#723600",
+              "on-error": "#690005",
+              "primary-fixed-dim": "#adc6ff",
+              "on-primary-fixed": "#001a42",
+              "on-secondary-container": "#d6a9ff",
+              "primary": "#adc6ff",
+              "inverse-primary": "#005ac2"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .syntax-keyword { color: #ddb7ff; }
+        .syntax-string { color: #ffb786; }
+        .syntax-comment { color: #8c909f; }
+        .syntax-function { color: #adc6ff; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30 selection:text-primary min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-[#131313] dark:bg-[#131313] w-full top-0 sticky z-50 border-b border-[#424754]/15 flex justify-between items-center px-6 py-3 w-full max-w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tighter text-[#ADC6FF] italic">RepoIQ</span>
+<nav class="hidden md:flex gap-6 items-center h-full">
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Dashboard</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#ADC6FF] border-b-2 border-[#ADC6FF] pb-1" href="#">Analyze</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Compare</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Leaderboard</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-lowest rounded px-3 py-1.5 flex items-center gap-2 border border-outline-variant/10">
+<span class="material-symbols-outlined text-outline text-sm">search</span>
+<input class="bg-transparent border-none outline-none text-sm w-48 font-label" placeholder="Search Repo..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-[#C2C6D6] hover:bg-[#2A2A2A] p-2 rounded-full transition-all">notifications</button>
+<button class="material-symbols-outlined text-[#C2C6D6] hover:bg-[#2A2A2A] p-2 rounded-full transition-all">history</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="close-up portrait of a developer with glasses in a dimly lit studio with neon blue highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEZh_wxB0-RAk9WD_Qrecb4r4Dfc6glqns6Y0wip4ayflSrU_LKyiXV6vMraVSPNQGuc0VJY8zgOEpr1kttXttPry6n64TnynF_JejZkruIp8e0PlrBP1PawtZn1O14MMoDbKVd4geTpX-1yuYWwxdkDjpsJfHB-lONNiaOoHu0BQSsBDgmoKZnyX_sw5QMSVQ1fsY-g1wm0KhiIDoCJhrVXflHLMYbKWZLcb7jUdP-rcK5XrvpUngiU6TVWi-6x6pu-ED4r1TX5Mj"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-[#201F1F] dark:bg-[#201F1F] h-[calc(100vh-64px)] w-64 sticky top-16 hidden lg:flex flex-col py-6 px-4">
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary text-lg">account_tree</span>
+</div>
+<div>
+<h3 class="font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-[#ADC6FF]">facebook/react</h3>
+<p class="text-[10px] text-on-surface-variant/60 font-medium">Main Branch</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 py-2.5 px-3 rounded font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="analytics">analytics</span>
+<span>Report</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-3 rounded font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="account_tree">account_tree</span>
+<span>Architecture</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-3 rounded font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="bug_report">bug_report</span>
+<span>Bugs</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-3 rounded font-['JetBrains_Mono'] text-xs uppercase tracking-widest bg-[#2A2A2A] text-[#ADC6FF] border-r-2 border-[#ADC6FF] transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="school">school</span>
+<span>Teach</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-3 rounded font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="folder_open">folder_open</span>
+<span>Files</span>
+</a>
+</nav>
+<button class="mt-8 mb-4 w-full bg-gradient-to-br from-[#ADC6FF] to-[#4D8EFF] text-on-primary py-2.5 rounded font-bold text-xs uppercase tracking-widest active:scale-95 transition-transform">
+                New Analysis
+            </button>
+<div class="mt-auto space-y-1">
+<a class="flex items-center gap-3 py-2 px-3 rounded font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-3 rounded font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="help_outline">help_outline</span>
+<span>Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 flex flex-col min-w-0 bg-surface">
+<!-- Breadcrumbs / Page Header -->
+<div class="px-8 py-6 border-b border-outline-variant/10 flex items-center justify-between bg-surface-container-low">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-on-surface-variant text-xs font-label">
+<span>Teach</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span>Concurrent Mode</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary">02. Fiber Reconciliation</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-1.5 rounded-md border border-outline-variant/20 hover:bg-surface-container-high transition-colors text-xs font-label text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">bookmark</span>
+                        Save Module
+                    </button>
+<button class="flex items-center gap-2 px-4 py-1.5 rounded-md bg-primary-container text-on-primary-container hover:brightness-110 transition-all text-xs font-bold">
+                        Mark as Complete
+                    </button>
+</div>
+</div>
+<!-- Learning Interface: Two-Column -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Left Column: Reading Material -->
+<div class="w-1/2 overflow-y-auto p-12 hide-scrollbar bg-surface border-r border-outline-variant/10">
+<div class="max-w-2xl mx-auto">
+<h1 class="text-5xl font-extrabold tracking-tighter mb-8 text-on-surface leading-tight">
+                            Understanding the <span class="text-primary italic">Reconciliation</span> Loop
+                        </h1>
+<div class="prose prose-invert prose-blue max-w-none">
+<p class="text-lg text-on-surface-variant leading-relaxed mb-6">
+                                The Fiber architecture allows React to split the rendering work into small chunks and spread it out over multiple frames. This is essentially what enables <span class="text-primary">Concurrent Mode</span>.
+                            </p>
+<!-- Diagram / Illustration Placeholder -->
+<div class="my-10 p-1 bg-surface-container-low rounded-xl border border-outline-variant/20 overflow-hidden shadow-2xl">
+<div class="bg-surface-container h-64 relative flex items-center justify-center group cursor-zoom-in">
+<img alt="Technical diagram of fiber reconciliation tree" class="w-full h-full object-cover opacity-60 mix-blend-lighten" data-alt="minimalist architectural visualization of a data tree structure with glowing blue nodes and dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD8ZYPQK0uT1oR049Kam4A3FHYp_d5N3T0Gc-XAOQABBkiPaSS1x5aERqbEduZonBIWQ6YhigHUdVyLclUYnknEcU6EoghbOYUTbpp7womyY1r-r3Csd6jOpyLswDuqludt1iRuCtAaJ_CS5hnHAyBmgJrBRrVXqUWby0VQq_nnhaJheVz6zlVJphiG51ogyQaxW9R6oG2n_H-4pc54I71D-CqBjpCsQOyEUiSA1JG6H7O3bTEzskabhnADgGMaizuNw1BbaK0oL7Z"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent flex items-end p-6">
+<p class="font-['JetBrains_Mono'] text-[10px] text-primary uppercase tracking-[0.2em]">Fig 1.2: The Work Loop Interruption Pattern</p>
+</div>
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container/40">
+<span class="material-symbols-outlined text-4xl text-white">zoom_in</span>
+</div>
+</div>
+</div>
+<h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+<span class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary text-sm">1</span>
+                                Work Progress
+                            </h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">
+                                When React starts working on a tree, it creates a <code>workInProgress</code> tree that mirrors the current state. Each node in this tree is a "Fiber" — a plain JavaScript object that contains information about a component, its input, and its output.
+                            </p>
+<div class="bg-surface-container-high/50 p-6 rounded-lg border-l-4 border-primary mb-10">
+<h4 class="font-bold text-primary mb-2 text-sm uppercase tracking-wider">Insight</h4>
+<p class="text-sm italic text-on-surface italic">"Fibers are like stack frames for the web. They hold context, state, and child references in a way that can be paused and resumed by the browser's main thread."</p>
+</div>
+<h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+<span class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary text-sm">2</span>
+                                Effect Tags
+                            </h2>
+<p class="text-on-surface-variant mb-12 leading-relaxed">
+                                As the reconciliation proceeds, React marks fibers with <span class="text-secondary font-semibold">Effect Tags</span> (like Placement, Update, or Deletion). These are processed later during the "commit" phase.
+                            </p>
+<!-- Quiz Trigger -->
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-primary/20 shadow-inner">
+<h3 class="text-xl font-bold mb-2">Ready to test your knowledge?</h3>
+<p class="text-on-surface-variant text-sm mb-6">Take a quick 3-question quiz to lock in the "Work Loop" concept.</p>
+<button class="w-full py-4 bg-primary text-on-primary font-black uppercase tracking-widest text-sm rounded shadow-lg shadow-primary/20 active:scale-[0.98] transition-all">
+                                    Take Quiz
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Code Workspace -->
+<div class="w-1/2 flex flex-col bg-surface-container-lowest">
+<!-- File Tabs -->
+<div class="flex border-b border-outline-variant/15 bg-surface-container overflow-x-auto hide-scrollbar">
+<div class="px-6 py-3 border-r border-outline-variant/15 flex items-center gap-2 bg-surface-container-high border-b-2 border-primary">
+<span class="material-symbols-outlined text-[#ADC6FF] text-sm">javascript</span>
+<span class="font-['JetBrains_Mono'] text-xs text-on-surface">ReactFiberWorkLoop.js</span>
+</div>
+<div class="px-6 py-3 border-r border-outline-variant/15 flex items-center gap-2 text-on-surface-variant/50 hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-sm group-hover:text-on-surface">javascript</span>
+<span class="font-['JetBrains_Mono'] text-xs">ReactFiberBeginWork.js</span>
+</div>
+<div class="px-6 py-3 border-r border-outline-variant/15 flex items-center gap-2 text-on-surface-variant/50 hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-sm group-hover:text-on-surface">javascript</span>
+<span class="font-['JetBrains_Mono'] text-xs">ReactChildFiber.js</span>
+</div>
+</div>
+<!-- Code Viewer Controls -->
+<div class="px-6 py-3 flex items-center justify-between border-b border-outline-variant/5">
+<div class="flex items-center gap-4">
+<button class="text-[10px] font-['JetBrains_Mono'] uppercase tracking-widest text-primary flex items-center gap-1.5 px-3 py-1 rounded bg-primary/10 hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-sm">input</span>
+                                Jump to File
+                            </button>
+<span class="text-[10px] font-['JetBrains_Mono'] text-on-surface-variant/40">src/react/packages/react-reconciler/src/ReactFiberWorkLoop.new.js</span>
+</div>
+<div class="flex gap-1">
+<button class="material-symbols-outlined p-1.5 text-on-surface-variant hover:bg-surface-container-high rounded text-lg">content_copy</button>
+<button class="material-symbols-outlined p-1.5 text-on-surface-variant hover:bg-surface-container-high rounded text-lg">settings_ethernet</button>
+</div>
+</div>
+<!-- Code Content -->
+<div class="flex-1 font-['JetBrains_Mono'] text-sm p-8 overflow-y-auto hide-scrollbar relative">
+<!-- Code Lines -->
+<div class="space-y-1">
+<div class="flex group">
+<span class="w-12 text-on-surface-variant/20 select-none">124</span>
+<span class="text-on-surface"><span class="syntax-keyword">function</span> <span class="syntax-function">performUnitOfWork</span>(unitOfWork: Fiber): <span class="syntax-keyword">void</span> {</span>
+</div>
+<div class="flex group">
+<span class="w-12 text-on-surface-variant/20 select-none">125</span>
+<span class="text-on-surface-variant/60">  <span class="syntax-comment">// The current, flushed, state of this fiber is the alternate.</span></span>
+</div>
+<div class="flex group">
+<span class="w-12 text-on-surface-variant/20 select-none">126</span>
+<span class="text-on-surface">  <span class="syntax-keyword">const</span> current = unitOfWork.alternate;</span>
+</div>
+<div class="flex group bg-primary/5 -mx-8 px-8 border-l-2 border-primary">
+<span class="w-12 text-primary select-none">127</span>
+<span class="text-on-surface">  <span class="syntax-keyword">let</span> next = <span class="syntax-function">beginWork</span>(current, unitOfWork, renderLanes);</span>
+<div class="ml-4 flex items-center">
+<span class="material-symbols-outlined text-primary text-xs" style="font-variation-settings: 'FILL' 1;">info</span>
+<span class="text-[10px] text-primary font-bold uppercase tracking-tighter ml-1">Reconciliation Entry</span>
+</div>
+</div>
+<div class="flex group">
+<span class="w-12 text-on-surface-variant/20 select-none">128</span>
+<span class="text-on-surface"></span>
+</div>
+<div class="flex group">
+<span class="w-12 text-on-surface-variant/20 select-none">129</span>
+<span class="text-on-surface">  unitOfWork.memoizedProps = unitOfWork.pendingProps;</span>
+</div>
+<div class="flex group">
+<span class="w-12 text-on-surface-variant/20 select-none">130</span>
+<span class="text-on-surface">  <span class="syntax-keyword">if</span> (next === <span class="syntax-keyword">null</span>) {</span>
+</div>
+<div class="flex group">
+<span class="w-12 text-on-surface-variant/20 select-none">131</span>
+<span class="text-on-surface">    <span class="syntax-comment">// If this returns null, that means we've completed the work.</span></span>
+</div>
+<div class="flex group">
+<span class="w-12 text-on-surface-variant/20 select-none">132</span>
+<span class="text-on-surface">    <span class="syntax-function">completeUnitOfWork</span>(unitOfWork);</span>
+</div>
+<div class="flex group">
+<span class="w-12 text-on-surface-variant/20 select-none">133</span>
+<span class="text-on-surface">  } <span class="syntax-keyword">else</span> {</span>
+</div>
+<div class="flex group">
+<span class="w-12 text-on-surface-variant/20 select-none">134</span>
+<span class="text-on-surface">    workInProgress = next;</span>
+</div>
+<div class="flex group">
+<span class="w-12 text-on-surface-variant/20 select-none">135</span>
+<span class="text-on-surface">  }</span>
+</div>
+<div class="flex group">
+<span class="w-12 text-on-surface-variant/20 select-none">136</span>
+<span class="text-on-surface">}</span>
+</div>
+</div>
+<!-- Mini Map Overlay / Terminal style -->
+<div class="absolute bottom-6 right-6 p-4 bg-surface-container/80 backdrop-blur-md rounded border border-outline-variant/30 w-48 shadow-2xl">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[9px] uppercase tracking-widest text-on-surface-variant/60 font-bold">Context Insight</span>
+<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+</div>
+<p class="text-[10px] text-on-surface-variant leading-tight">
+                                This function is the primary driver for the <span class="text-primary">WorkLoop</span>. It executes a single "unit" of rendering work.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-[#0E0E0E] dark:bg-[#0E0E0E] w-full py-8 mt-auto border-t border-[#424754]/10 flex justify-between items-center px-12 w-full">
+<div class="flex items-center gap-2">
+<span class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6]">© 2024 RepoIQ. The Digital Architect.</span>
+</div>
+<div class="flex gap-8">
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white hover:underline transition-all opacity-80 hover:opacity-100" href="#">Privacy</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white hover:underline transition-all opacity-80 hover:opacity-100" href="#">Terms</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white hover:underline transition-all opacity-80 hover:opacity-100" href="#">API</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white hover:underline transition-all opacity-80 hover:opacity-100" href="#">Security</a>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-tint": "#adc6ff",
+              "surface-dim": "#131313",
+              "tertiary-container": "#df7412",
+              "on-tertiary-fixed": "#311400",
+              "tertiary-fixed": "#ffdcc6",
+              "surface": "#131313",
+              "surface-container": "#201f1f",
+              "tertiary": "#ffb786",
+              "outline-variant": "#424754",
+              "on-surface-variant": "#c2c6d6",
+              "on-tertiary": "#502400",
+              "surface-variant": "#353534",
+              "on-primary-container": "#00285d",
+              "secondary-fixed": "#f0dbff",
+              "on-primary": "#002e6a",
+              "secondary-fixed-dim": "#ddb7ff",
+              "surface-container-highest": "#353534",
+              "tertiary-fixed-dim": "#ffb786",
+              "outline": "#8c909f",
+              "on-error-container": "#ffdad6",
+              "on-secondary-fixed-variant": "#6900b3",
+              "error-container": "#93000a",
+              "inverse-surface": "#e5e2e1",
+              "secondary": "#ddb7ff",
+              "surface-bright": "#3a3939",
+              "on-primary-fixed-variant": "#004395",
+              "on-secondary-fixed": "#2c0051",
+              "primary-container": "#4d8eff",
+              "error": "#ffb4ab",
+              "secondary-container": "#6f00be",
+              "on-surface": "#e5e2e1",
+              "surface-container-lowest": "#0e0e0e",
+              "background": "#131313",
+              "primary-fixed": "#d8e2ff",
+              "surface-container-low": "#1c1b1b",
+              "on-tertiary-container": "#461f00",
+              "on-background": "#e5e2e1",
+              "on-secondary": "#490080",
+              "surface-container-high": "#2a2a2a",
+              "inverse-on-surface": "#313030",
+              "on-tertiary-fixed-variant": "#723600",
+              "on-error": "#690005",
+              "primary-fixed-dim": "#adc6ff",
+              "on-primary-fixed": "#001a42",
+              "on-secondary-container": "#d6a9ff",
+              "primary": "#adc6ff",
+              "inverse-primary": "#005ac2"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"],
+              "mono": ["JetBrains Mono"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-panel {
+        background: rgba(53, 53, 52, 0.7);
+        backdrop-filter: blur(24px);
+      }
+      .diagram-grid {
+        background-image: radial-gradient(circle, #424754 1px, transparent 1px);
+        background-size: 32px 32px;
+      }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary/30 h-screen flex flex-col overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-[#131313] dark:bg-[#131313] w-full top-0 sticky z-50 border-b border-[#424754]/15 flex justify-between items-center px-6 py-3 w-full max-w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tighter text-[#ADC6FF] italic">RepoIQ</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Dashboard</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#ADC6FF] border-b-2 border-[#ADC6FF] pb-1" href="#">Analyze</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Compare</a>
+<a class="font-['Inter'] tracking-tighter text-sm font-medium text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Leaderboard</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-lowest px-3 py-1.5 flex items-center gap-2 rounded border border-outline-variant/10">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs text-on-surface w-48" placeholder="Search architecture..." type="text"/>
+</div>
+<button class="p-2 hover:bg-[#2A2A2A] transition-all duration-200 rounded scale-95 active:scale-90">
+<span class="material-symbols-outlined text-[#C2C6D6]">notifications</span>
+</button>
+<button class="p-2 hover:bg-[#2A2A2A] transition-all duration-200 rounded scale-95 active:scale-90">
+<span class="material-symbols-outlined text-[#C2C6D6]">history</span>
+</button>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full border border-primary/20" data-alt="professional male headshot with clean lighting and minimal background for a tech professional profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh3kY8CYbTNBE2ez1k4HOdrntjkIihHF1NoG1asMYu-MgdyBlPe2P1A1Ovig5-t20qxp3tJkBcrdiByYzu__ZxNLdsl6xlSNfBh9Be40u_Zuu4KyHiNNEagOg_j34Tbh_zmtF7Tb0bZNGlVXf_TGza3dukRbwHkxd7NAsIrJ8IkqSsL0qnFoizXaFgxXoKqFNGCKSQaQsHsGFKtR7tamyAEhQ_PI38wMx4kHazQgLEmDFdU5ZR-AJIt1UGBDq0LJvsBaHwHWAhAOoe"/>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar (Left Rail) -->
+<aside class="bg-[#201F1F] dark:bg-[#201F1F] h-screen w-64 left-0 sticky flex flex-col h-full py-6 px-4">
+<div class="mb-8 px-2">
+<div class="flex items-center gap-3 mb-1">
+<span class="material-symbols-outlined text-[#ADC6FF]" style="font-variation-settings: 'FILL' 1;">account_tree</span>
+<span class="text-lg font-bold text-[#ADC6FF] font-headline">facebook/react</span>
+</div>
+<span class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70">Main Branch</span>
+</div>
+<button class="mb-8 w-full py-3 bg-gradient-to-br from-primary to-primary-container text-on-primary-fixed font-bold rounded-md flex items-center justify-center gap-2 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-sm">add</span>
+<span class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest">New Analysis</span>
+</button>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Report</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest bg-[#2A2A2A] text-[#ADC6FF] border-r-2 border-[#ADC6FF] transition-colors" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span>Architecture</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined">bug_report</span>
+<span>Bugs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined">school</span>
+<span>Teach</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span>Files</span>
+</a>
+</nav>
+<div class="mt-auto space-y-1">
+<a class="flex items-center gap-3 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-colors" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span>Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content (Diagram Canvas) -->
+<main class="flex-1 relative flex flex-col bg-surface overflow-hidden">
+<!-- Canvas Toolbar -->
+<div class="h-14 border-b border-outline-variant/10 flex items-center justify-between px-6 z-10 bg-surface/80 backdrop-blur-md">
+<div class="flex items-center gap-6">
+<h1 class="text-sm font-bold tracking-tight">DIAGRAM_GEN_v2.rd</h1>
+<div class="h-4 w-[1px] bg-outline-variant/20"></div>
+<div class="flex items-center gap-2">
+<button class="p-1.5 rounded hover:bg-surface-container-high text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">zoom_in</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-container-high text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">zoom_out</span>
+</button>
+<span class="text-[10px] font-mono text-on-surface-variant px-2">100%</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-1.5 text-[10px] font-mono uppercase tracking-wider border border-outline-variant/20 hover:bg-surface-container-high transition-colors">Auto Layout</button>
+<button class="px-4 py-1.5 text-[10px] font-mono uppercase tracking-wider bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors">Regenerate</button>
+</div>
+</div>
+<!-- The Grid Canvas -->
+<div class="flex-1 diagram-grid relative overflow-hidden flex items-center justify-center">
+<!-- Node 1: Entry Point -->
+<div class="absolute top-[20%] left-[10%] w-64 p-4 surface-container-high bg-surface-container-high border-l-4 border-primary shadow-2xl z-20">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[10px] font-mono text-primary uppercase">Entry_Point</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">terminal</span>
+</div>
+<h3 class="font-bold text-sm mb-1">main.tsx</h3>
+<p class="text-xs text-on-surface-variant font-mono">React.render(<app></app>)</p>
+<div class="mt-4 flex gap-1">
+<div class="h-1 flex-1 bg-primary/40 rounded-full"></div>
+<div class="h-1 flex-1 bg-primary/10 rounded-full"></div>
+</div>
+</div>
+<!-- SVG Lines Connecting Nodes -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none">
+<path d="M 320 180 L 500 250" fill="none" opacity="0.4" stroke="#4D8EFF" stroke-dasharray="4" stroke-width="2"></path>
+<path d="M 320 180 L 500 120" fill="none" opacity="0.4" stroke="#4D8EFF" stroke-dasharray="4" stroke-width="2"></path>
+<path d="M 720 250 L 900 250" fill="none" stroke="#ADC6FF" stroke-width="2"></path>
+</svg>
+<!-- Node 2: App Shell -->
+<div class="absolute top-[35%] left-[40%] w-56 p-4 glass-panel border border-outline-variant/20 rounded-lg shadow-2xl z-20">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-sm text-secondary">deployed_code</span>
+<span class="text-xs font-bold">App.tsx</span>
+</div>
+<div class="space-y-1.5">
+<div class="flex items-center justify-between px-2 py-1 bg-surface-container rounded text-[10px] font-mono text-on-surface-variant">
+<span>AuthProvider</span>
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+</div>
+<div class="flex items-center justify-between px-2 py-1 bg-surface-container rounded text-[10px] font-mono text-on-surface-variant">
+<span>QueryClient</span>
+<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+</div>
+</div>
+</div>
+<!-- Node 3: API Service -->
+<div class="absolute top-[35%] right-[15%] w-60 p-5 bg-surface-container-lowest border border-outline-variant/30 rounded shadow-2xl z-20">
+<div class="flex items-center justify-between mb-4">
+<span class="text-[10px] font-mono text-tertiary uppercase">External_API</span>
+<span class="material-symbols-outlined text-sm text-tertiary">api</span>
+</div>
+<h3 class="font-bold text-sm mb-2">fetchRepository()</h3>
+<div class="text-[10px] font-mono text-on-surface-variant space-y-1 bg-surface/50 p-2 border-l border-outline-variant">
+<div class="text-secondary">GET /api/v1/repos</div>
+<div>Cache: TTL_3600</div>
+</div>
+</div>
+<!-- Floating Legend -->
+<div class="absolute bottom-6 left-6 p-4 glass-panel border border-outline-variant/10 rounded-md">
+<span class="text-[10px] font-mono uppercase text-on-surface-variant mb-3 block">Diagram Legend</span>
+<div class="space-y-2">
+<div class="flex items-center gap-3">
+<span class="w-3 h-3 bg-primary rounded-sm"></span>
+<span class="text-[10px] font-mono">Direct Dependency</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="w-3 h-[2px] bg-primary/40 border-t border-dashed border-primary/60"></span>
+<span class="text-[10px] font-mono">Async Event</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Right Panel (Style & Export) -->
+<aside class="w-80 bg-surface-container border-l border-outline-variant/10 flex flex-col p-6 space-y-8 overflow-y-auto">
+<!-- Diagram Layers -->
+<section>
+<h2 class="text-[10px] font-mono uppercase tracking-[0.2em] text-on-surface-variant mb-4">Diagram Layers</h2>
+<div class="space-y-3">
+<label class="flex items-center justify-between p-3 bg-surface-container-high rounded cursor-pointer border border-transparent hover:border-outline-variant transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-sm">swap_horiz</span>
+<span class="text-xs font-medium">Data Flow</span>
+</div>
+<input checked="" class="rounded border-outline-variant bg-surface text-primary focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between p-3 bg-surface-container-high rounded cursor-pointer border border-transparent hover:border-outline-variant transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-sm">hub</span>
+<span class="text-xs font-medium">Networking</span>
+</div>
+<input checked="" class="rounded border-outline-variant bg-surface text-secondary focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between p-3 bg-surface-container-high rounded cursor-pointer border border-transparent hover:border-outline-variant transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary text-sm">lock</span>
+<span class="text-xs font-medium">Auth Boundaries</span>
+</div>
+<input class="rounded border-outline-variant bg-surface text-tertiary focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+</label>
+</div>
+</section>
+<!-- Style Overrides -->
+<section>
+<h2 class="text-[10px] font-mono uppercase tracking-[0.2em] text-on-surface-variant mb-4">Themes</h2>
+<div class="grid grid-cols-2 gap-2">
+<button class="p-2 border border-primary bg-primary/5 rounded flex flex-col items-center gap-2">
+<div class="w-full h-12 bg-surface-container-lowest rounded overflow-hidden flex items-center justify-center">
+<div class="w-4 h-4 bg-primary rounded-full"></div>
+</div>
+<span class="text-[10px] font-mono">Midnight</span>
+</button>
+<button class="p-2 border border-outline-variant/20 hover:border-outline-variant rounded flex flex-col items-center gap-2">
+<div class="w-full h-12 bg-[#2E2E2E] rounded overflow-hidden flex items-center justify-center">
+<div class="w-4 h-4 bg-secondary rounded-full"></div>
+</div>
+<span class="text-[10px] font-mono">Slate</span>
+</button>
+</div>
+</section>
+<!-- Export Code -->
+<section class="flex-1">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-[10px] font-mono uppercase tracking-[0.2em] text-on-surface-variant">Mermaid Code</h2>
+<button class="text-[10px] font-mono text-primary hover:underline">Copy</button>
+</div>
+<div class="p-4 bg-surface-container-lowest rounded font-mono text-[10px] text-on-surface-variant leading-relaxed h-48 overflow-y-auto border border-outline-variant/10">
+<span class="text-tertiary">graph TD</span><br/>
+                      A[main.tsx] --&gt; B[App.tsx]<br/>
+                      B --&gt; C{AuthProvider}<br/>
+                      B --&gt; D[Layout]<br/>
+                      D --&gt; E[Sidebar]<br/>
+                      D --&gt; F[Content]<br/>
+                      F --&gt; G((API_Service))
+                </div>
+</section>
+<!-- Actions -->
+<div class="pt-4 space-y-3">
+<button class="w-full py-2.5 text-xs font-bold uppercase tracking-widest bg-surface-container-highest border border-outline-variant/20 hover:bg-surface-bright transition-colors rounded">
+                    Save Draft
+                </button>
+<button class="w-full py-2.5 text-xs font-bold uppercase tracking-widest bg-primary text-on-primary hover:bg-primary-container transition-colors rounded flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">download</span>
+                    Download Export
+                </button>
+</div>
+</aside>
+</div>
+<!-- Footer -->
+<footer class="bg-[#0E0E0E] dark:bg-[#0E0E0E] w-full py-4 mt-auto border-t border-[#424754]/10 flex justify-between items-center px-12 w-full">
+<span class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] opacity-80">© 2024 RepoIQ. The Digital Architect.</span>
+<div class="flex gap-6">
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white transition-all opacity-80 hover:opacity-100 hover:underline" href="#">Privacy</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white transition-all opacity-80 hover:opacity-100 hover:underline" href="#">Terms</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white transition-all opacity-80 hover:opacity-100 hover:underline" href="#">API</a>
+<a class="font-['Inter'] text-[10px] uppercase tracking-tighter text-[#C2C6D6] hover:text-white transition-all opacity-80 hover:opacity-100 hover:underline" href="#">Security</a>
+</div>
+</footer>
+</body></html>

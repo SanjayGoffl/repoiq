@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RepoIQ | Knowledge Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-tint": "#adc6ff",
+              "surface-dim": "#131313",
+              "tertiary-container": "#df7412",
+              "on-tertiary-fixed": "#311400",
+              "tertiary-fixed": "#ffdcc6",
+              "surface": "#131313",
+              "surface-container": "#201f1f",
+              "tertiary": "#ffb786",
+              "outline-variant": "#424754",
+              "on-surface-variant": "#c2c6d6",
+              "on-tertiary": "#502400",
+              "surface-variant": "#353534",
+              "on-primary-container": "#00285d",
+              "secondary-fixed": "#f0dbff",
+              "on-primary": "#002e6a",
+              "secondary-fixed-dim": "#ddb7ff",
+              "surface-container-highest": "#353534",
+              "tertiary-fixed-dim": "#ffb786",
+              "outline": "#8c909f",
+              "on-error-container": "#ffdad6",
+              "on-secondary-fixed-variant": "#6900b3",
+              "error-container": "#93000a",
+              "inverse-surface": "#e5e2e1",
+              "secondary": "#ddb7ff",
+              "surface-bright": "#3a3939",
+              "on-primary-fixed-variant": "#004395",
+              "on-secondary-fixed": "#2c0051",
+              "primary-container": "#4d8eff",
+              "error": "#ffb4ab",
+              "secondary-container": "#6f00be",
+              "on-surface": "#e5e2e1",
+              "surface-container-lowest": "#0e0e0e",
+              "background": "#131313",
+              "primary-fixed": "#d8e2ff",
+              "surface-container-low": "#1c1b1b",
+              "on-tertiary-container": "#461f00",
+              "on-background": "#e5e2e1",
+              "on-secondary": "#490080",
+              "surface-container-high": "#2a2a2a",
+              "inverse-on-surface": "#313030",
+              "on-tertiary-fixed-variant": "#723600",
+              "on-error": "#690005",
+              "primary-fixed-dim": "#adc6ff",
+              "on-primary-fixed": "#001a42",
+              "on-secondary-container": "#d6a9ff",
+              "primary": "#adc6ff",
+              "inverse-primary": "#005ac2"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .knowledge-grid {
+            background-image: radial-gradient(circle at 1px 1px, #424754 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        .node-pulse {
+            box-shadow: 0 0 0 0 rgba(173, 198, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30">
+<!-- TopAppBar -->
+<header class="bg-[#131313] dark:bg-[#131313] w-full top-0 sticky z-50 border-b border-[#424754]/15 flex justify-between items-center px-6 py-3 w-full max-w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tighter text-[#ADC6FF] italic">RepoIQ</span>
+<nav class="hidden md:flex gap-6 font-['Inter'] tracking-tighter text-sm font-medium">
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Dashboard</a>
+<a class="text-[#ADC6FF] border-b-2 border-[#ADC6FF] pb-1" href="#">Analyze</a>
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Compare</a>
+<a class="text-[#C2C6D6] hover:text-[#ADC6FF] transition-colors" href="#">Leaderboard</a>
+</nav>
+</div>
+<div class="flex-1 max-w-xl mx-12">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-sm">search</span>
+</div>
+<input class="block w-full bg-surface-container-lowest border-none focus:ring-1 focus:ring-surface-tint text-sm py-2 pl-10 rounded-md placeholder:text-outline/50" placeholder="Search concepts (e.g. Hooks, Middleware)..." type="text"/>
+<div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+<span class="font-['JetBrains_Mono'] text-[10px] text-outline/40 border border-outline/20 px-1.5 rounded">CMD+K</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#C2C6D6] hover:bg-[#2A2A2A] transition-all duration-200 scale-95 active:scale-90 rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-[#C2C6D6] hover:bg-[#2A2A2A] transition-all duration-200 scale-95 active:scale-90 rounded-full">
+<span class="material-symbols-outlined">history</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant/30">
+<img alt="User profile avatar" data-alt="minimalist 3d avatar of a young professional with short hair and glasses on a soft grey background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMG93deX_VpJQrPK5kmO2B-ZKjNL_OFNK_S09pirZkSavjXSnYVT2vJxa48yJhoYkHQS6fdWMHaezkGS86qT3AtJT2rEP58XBlFm_8dE9tGc0U8KByLtCbsOb52YRdZu073HOrndW7hGeWpFqU_bKkOaXbjSdIMEGlk_Eh6-6KXiP0ENrZN1IJtpPXmHRfQjctOICV0raHtCputAAmHy8Q2WLPGMtnkhaPrlASu8L26_qgN9jVxzhspc1-f_-13WFIqCzVPHH2Ls3E"/>
+</div>
+</div>
+</header>
+<div class="flex h-[calc(100vh-64px)] overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-[#201F1F] dark:bg-[#201F1F] h-screen w-64 left-0 sticky flex flex-col h-full py-6 px-4 border-r border-outline-variant/10">
+<div class="mb-8 px-2">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-6 h-6 rounded bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xs">source</span>
+</div>
+<span class="text-lg font-bold text-[#ADC6FF]">facebook/react</span>
+</div>
+<span class="font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-[#C2C6D6] opacity-60 ml-9">Main Branch</span>
+</div>
+<button class="mb-8 w-full py-3 bg-gradient-to-br from-primary to-primary-container text-on-primary-container font-bold text-xs uppercase tracking-widest rounded transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                New Analysis
+            </button>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest bg-[#2A2A2A] text-[#ADC6FF] border-r-2 border-[#ADC6FF] transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">analytics</span>
+                    Report
+                </a>
+<a class="flex items-center gap-3 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">account_tree</span>
+                    Architecture
+                </a>
+<a class="flex items-center gap-3 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">bug_report</span>
+                    Bugs
+                </a>
+<a class="flex items-center gap-3 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">school</span>
+                    Teach
+                </a>
+<a class="flex items-center gap-3 px-3 py-3 font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg">folder_open</span>
+                    Files
+                </a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant/15 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-all" href="#">
+<span class="material-symbols-outlined text-base">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-[#C2C6D6] opacity-70 hover:opacity-100 hover:bg-[#2A2A2A] transition-all" href="#">
+<span class="material-symbols-outlined text-base">help_outline</span>
+                    Support
+                </a>
+</div>
+</aside>
+<!-- Main Content: Knowledge Graph Canvas -->
+<main class="flex-1 relative overflow-hidden bg-surface-container-lowest knowledge-grid">
+<!-- Canvas Overlay UI -->
+<div class="absolute top-8 left-8 z-10">
+<h1 class="text-4xl font-black tracking-tightest mb-2 flex items-center gap-3">
+                    Knowledge Map
+                    <span class="text-xs font-mono font-normal tracking-normal text-primary/60 border border-primary/30 px-2 py-0.5 rounded uppercase">Experimental</span>
+</h1>
+<p class="text-on-surface-variant font-medium text-sm">Visualizing 142 architectural patterns &amp; logic flows.</p>
+</div>
+<!-- Graph Legend -->
+<div class="absolute bottom-8 left-8 z-10 flex flex-col gap-2 bg-surface/80 backdrop-blur-xl p-4 rounded-xl border border-outline-variant/10">
+<div class="flex items-center gap-3 text-xs font-['JetBrains_Mono'] uppercase tracking-wider">
+<span class="w-3 h-3 rounded-full bg-primary shadow-[0_0_10px_rgba(173,198,255,0.6)]"></span>
+<span>Completed</span>
+</div>
+<div class="flex items-center gap-3 text-xs font-['JetBrains_Mono'] uppercase tracking-wider">
+<span class="w-3 h-3 rounded-full bg-surface-container-high border border-outline/30"></span>
+<span>Locked</span>
+</div>
+<div class="flex items-center gap-3 text-xs font-['JetBrains_Mono'] uppercase tracking-wider">
+<span class="w-3 h-3 rounded-full border-2 border-dashed border-primary/40"></span>
+<span>In Progress</span>
+</div>
+</div>
+<!-- Knowledge Map SVG Graph -->
+<div class="w-full h-full flex items-center justify-center p-20 select-none">
+<svg class="overflow-visible" height="100%" viewbox="0 0 1000 600" width="100%">
+<!-- Connections -->
+<g class="stroke-outline-variant/30 stroke-1 fill-none">
+<path class="stroke-primary/40" d="M500 300 L300 150"></path>
+<path class="stroke-primary/40" d="M500 300 L700 150"></path>
+<path d="M300 150 L150 100"></path>
+<path d="M300 150 L200 250"></path>
+<path d="M700 150 L850 100"></path>
+<path d="M700 150 L800 250"></path>
+<path d="M500 300 L500 500"></path>
+<path d="M500 500 L350 550"></path>
+<path d="M500 500 L650 550"></path>
+</g>
+<!-- Central Node: Core Architecture -->
+<g class="cursor-pointer group" transform="translate(500, 300)">
+<circle class="fill-surface-container-highest stroke-primary stroke-[3px] shadow-2xl" r="45"></circle>
+<text class="fill-primary font-black text-xs uppercase tracking-tighter" text-anchor="middle" y="5">Core Architecture</text>
+<circle class="fill-none stroke-primary/20 stroke-[1px] animate-pulse" r="60"></circle>
+</g>
+<!-- Completed Node: Hooks -->
+<g class="cursor-pointer group" transform="translate(300, 150)">
+<circle class="fill-primary-container stroke-primary stroke-[2px]" r="35"></circle>
+<text class="fill-on-primary-container font-bold text-[10px] uppercase tracking-widest" text-anchor="middle" y="5">Hooks</text>
+<g transform="translate(25, -25)">
+<circle class="fill-primary stroke-surface stroke-2" r="10"></circle>
+<text class="fill-on-primary font-bold text-[8px] material-symbols-outlined" dy="3.5" style="font-size: 12px" text-anchor="middle">check</text>
+</g>
+</g>
+<!-- Completed Node: Virtual DOM -->
+<g class="cursor-pointer group" transform="translate(700, 150)">
+<circle class="fill-primary-container stroke-primary stroke-[2px]" r="35"></circle>
+<text class="fill-on-primary-container font-bold text-[10px] uppercase tracking-widest" text-anchor="middle" y="5">Virtual DOM</text>
+<g transform="translate(25, -25)">
+<circle class="fill-primary stroke-surface stroke-2" r="10"></circle>
+<text class="fill-on-primary font-bold text-[8px] material-symbols-outlined" dy="3.5" style="font-size: 12px" text-anchor="middle">check</text>
+</g>
+</g>
+<!-- Locked Node: Fiber Engine -->
+<g class="cursor-pointer group opacity-60" transform="translate(850, 100)">
+<circle class="fill-surface-container-low border border-outline-variant/30" r="28"></circle>
+<text class="fill-on-surface-variant font-bold text-[8px] uppercase tracking-widest" text-anchor="middle" y="5">Fiber Engine</text>
+<g transform="translate(20, -20)">
+<circle class="fill-surface-variant stroke-surface stroke-1" r="8"></circle>
+<text class="fill-on-surface-variant material-symbols-outlined" dy="3" style="font-size: 10px" text-anchor="middle">lock</text>
+</g>
+</g>
+<!-- Active Progress Node: Hydration -->
+<g class="cursor-pointer group" transform="translate(500, 500)">
+<circle class="fill-surface-container border-2 border-dashed border-primary/50" r="35"></circle>
+<text class="fill-primary font-bold text-[10px] uppercase tracking-widest" text-anchor="middle" y="5">Hydration</text>
+<circle class="fill-none stroke-primary/30 stroke-[1px] animate-ping opacity-20" r="45"></circle>
+</g>
+</svg>
+</div>
+<!-- Contextual Insight Panel -->
+<aside class="absolute top-8 right-8 w-80 z-10 bg-surface-container/70 backdrop-blur-2xl p-6 rounded-2xl border border-outline-variant/10 shadow-2xl transform transition-transform duration-500">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[10px] font-['JetBrains_Mono'] text-primary uppercase tracking-[0.2em] mb-1 block">Selected Node</span>
+<h3 class="text-xl font-black italic tracking-tighter">React Hooks</h3>
+</div>
+<span class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">auto_awesome</span>
+</span>
+</div>
+<div class="space-y-6">
+<div>
+<p class="text-on-surface-variant text-xs leading-relaxed mb-4">
+                            Mastered 4 of 6 primary patterns. The logic flow demonstrates advanced understanding of state persistence and effect orchestration.
+                        </p>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[66%] shadow-[0_0_8px_rgba(173,198,255,0.8)]"></div>
+</div>
+</div>
+<div class="space-y-3">
+<h4 class="text-[10px] font-bold uppercase tracking-widest text-outline">Unlocks dependencies</h4>
+<div class="flex items-center gap-3 p-3 bg-surface-container-lowest rounded border border-outline-variant/5">
+<span class="material-symbols-outlined text-tertiary text-lg">account_tree</span>
+<div class="flex-1">
+<span class="text-[10px] font-bold block">Custom Reconciler</span>
+<span class="text-[9px] text-outline italic">Requires: Hooks, Fiber</span>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 bg-surface-container-lowest/50 rounded border border-dashed border-outline-variant/20 opacity-50">
+<span class="material-symbols-outlined text-outline text-lg">school</span>
+<div class="flex-1">
+<span class="text-[10px] font-bold block">Server Components</span>
+<span class="text-[9px] text-outline italic">Locked (Complete Hydration)</span>
+</div>
+</div>
+</div>
+<button class="w-full py-4 border border-primary/20 hover:bg-primary/5 text-primary text-[10px] font-bold uppercase tracking-widest transition-all">
+                        Open Deep Dive Study
+                    </button>
+</div>
+</aside>
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-[#0E0E0E] dark:bg-[#0E0E0E] w-full py-8 mt-auto border-t border-[#424754]/10 flex justify-between items-center px-12 w-full">
+<div class="flex items-center gap-6">
+<span class="text-[#4D8EFF] font-['Inter'] text-[10px] uppercase tracking-tighter font-bold">© 2024 RepoIQ. The Digital Architect.</span>
+</div>
+<div class="flex gap-8">
+<a class="text-[#C2C6D6] hover:text-white font-['Inter'] text-[10px] uppercase tracking-tighter hover:underline opacity-80 hover:opacity-100" href="#">Privacy</a>
+<a class="text-[#C2C6D6] hover:text-white font-['Inter'] text-[10px] uppercase tracking-tighter hover:underline opacity-80 hover:opacity-100" href="#">Terms</a>
+<a class="text-[#C2C6D6] hover:text-white font-['Inter'] text-[10px] uppercase tracking-tighter hover:underline opacity-80 hover:opacity-100" href="#">API</a>
+<a class="text-[#C2C6D6] hover:text-white font-['Inter'] text-[10px] uppercase tracking-tighter hover:underline opacity-80 hover:opacity-100" href="#">Security</a>
+</div>
+</footer>
+</body></html>
